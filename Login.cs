@@ -18,6 +18,22 @@ namespace pcbaoi
             InitializeComponent();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // if it is a hotkey, return true; otherwise, return false
+            switch (keyData)
+            {
+                case Keys.Enter:
+                    button1.Focus();
+                    button1.PerformClick();
+                    return true;
+                //......
+                default:
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             string username = textBox1.Text;
@@ -39,7 +55,6 @@ namespace pcbaoi
             }
             else {
                 MessageBox.Show("用户名 密码错误");
-            
             
             }
         }
