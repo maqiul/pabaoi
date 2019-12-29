@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -81,14 +81,16 @@ namespace pcbaoi
             pPcbInfoTitle.Show();
             pMain.Show();
             drawlineact();
-            lastwidth = pictureBox1.Width;
+            lastwidth = pbMainImg.Width;
             string selectsql = "select * from bad";
             DataTable dataTable =SQLiteHelper.GetDataTable(selectsql);
             if (dataTable.Rows.Count > 0) {
-                textBox2.Text = dataTable.Rows[0]["badwidth"].ToString();
+                tbPcbName.Text = dataTable.Rows[0]["badname"].ToString();
+                tbPcbWidth.Text = dataTable.Rows[0]["badwidth"].ToString();
+                tbPcbLength.Text = dataTable.Rows[0]["badheight"].ToString();
             }
-            pictureBox1.Height = oldlastheight;
-            pictureBox1.Width = oldlastwidth;
+            pbMainImg.Height = oldlastheight;
+            pbMainImg.Width = oldlastwidth;
 
 
 
@@ -687,9 +689,9 @@ namespace pcbaoi
             pbMainImg.Image = p.Image;
             tbFrontOrBack.Text = "正面";
             Settings.Default.frontorside = "front";
-            foreach (Control control in pictureBox1.Controls) {
+            foreach (Control control in pbMainImg.Controls) {
                 if (control is PictureBox) {
-                    pictureBox1.Controls.Remove(control);                
+                    pbMainImg.Controls.Remove(control);                
                 }
             }
             
@@ -881,7 +883,15 @@ namespace pcbaoi
                 MessageBox.Show("请先采集");
                 return;
             }
+            string selectsvaesql = "select * from zijiban where isuse= '0'";
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectsvaesql);
+            if (dataTable.Rows.Count > 0)
+            {
                 MessageBox.Show("请先保存数据");
+                return;
+            }
+
+            Platmake platmake = new Platmake(pbMainImg.Image);
             platmake.Show();
             this.Hide();
         }
@@ -893,18 +903,7 @@ namespace pcbaoi
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
-            PictureBox p = pictureBox2;
-            Pen pp = new Pen(Color.Blue);
-            using (Graphics gc = p.CreateGraphics())
-            {
-                Rectangle rect = new Rectangle();
-                rect.Location = new Point(0, 0);
-                rect.Size = new Size(pictureBox2.Width - 3, pictureBox2.Height - 3);
-                gc.DrawRectangle(pp, rect);
 
-            }
-            pictureBox1.Image = p.Image;
-            textBox3.Text = "正面";
 
         }
 
@@ -914,7 +913,7 @@ namespace pcbaoi
             DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
             for (int i=0;i<dataTable.Rows.Count;i++) {
                 string name = dataTable.Rows[i]["zijiname"].ToString();
-                foreach (Control control in pictureBox1.Controls) {
+                foreach (Control control in pbMainImg.Controls) {
                     if (control.Name == name) {
                         string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'",control.Location.X,control.Location.Y,control.Width,control.Height,name);
                         SQLiteHelper.ExecuteSql(updatesql);
@@ -929,10 +928,10 @@ namespace pcbaoi
 
         }
         public void addpicturebox() {
-            oldlastheight = pictureBox1.Height;
-            oldlastwidth = pictureBox1.Width;
-            pictureBox1.Height = pictureBox1.Image.Height;
-            pictureBox1.Width = pictureBox1.Image.Width;                     
+            oldlastheight = pbMainImg.Height;
+            oldlastwidth = pbMainImg.Width;
+            pbMainImg.Height = pbMainImg.Image.Height;
+            pbMainImg.Width = pbMainImg.Image.Width;                     
             string insertsql = string.Format("INSERT INTO zijiban( zijiname, startx, starty, width, height, isuse,frontorside ,createtime) VALUES ( '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}','{7}')", controlnew.Name, controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height, 0,Settings.Default.frontorside,DateTime.Now);
             SQLiteHelper.ExecuteSql(insertsql);
             //pbMainImg.Height = oldlastheight;
@@ -966,10 +965,10 @@ namespace pcbaoi
             this.Hide();
         }
         private void drawpicboxall() {
-            oldlastheight = pictureBox1.Height;
-            oldlastwidth = pictureBox1.Width;
-            pictureBox1.Height = pictureBox1.Image.Height;
-            pictureBox1.Width = pictureBox1.Image.Width;
+            oldlastheight = pbMainImg.Height;
+            oldlastwidth = pbMainImg.Width;
+            pbMainImg.Height = pbMainImg.Image.Height;
+            pbMainImg.Width = pbMainImg.Image.Width;
             string selectopsql = string.Format("select * from operato where frontorside = '{0}'",Settings.Default.frontorside);
             DataTable dataTable = SQLiteHelper.GetDataTable(selectopsql);
             for (int i=0;i< dataTable.Rows.Count;i++) {
@@ -980,10 +979,10 @@ namespace pcbaoi
                 pictureBox.Height = Convert.ToInt32(dataTable.Rows[i]["outheight"].ToString()); ;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.BackColor = Color.Transparent;
-                pictureBox.Parent = pictureBox1;
-                this.pictureBox1.Controls.Add(pictureBox);
+                pictureBox.Parent = pbMainImg;
+                this.pbMainImg.Controls.Add(pictureBox);
                 //MessageBox.Show(pictureBox.Parent.Name);
-                foreach (Control c in this.pictureBox1.Controls)
+                foreach (Control c in this.pbMainImg.Controls)
                 {
                     if (c.Name == pictureBox.Name)
                     {
@@ -1024,10 +1023,10 @@ namespace pcbaoi
                 pictureBox.Height = Convert.ToInt32(dataTable2.Rows[i]["height"].ToString()); ;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.BackColor = Color.Transparent;
-                pictureBox.Parent = pictureBox1;
-                this.pictureBox1.Controls.Add(pictureBox);
+                pictureBox.Parent = pbMainImg;
+                this.pbMainImg.Controls.Add(pictureBox);
                 //MessageBox.Show(pictureBox.Parent.Name);
-                foreach (Control c in this.pictureBox1.Controls)
+                foreach (Control c in this.pbMainImg.Controls)
                 {
                     if (c.Name == pictureBox.Name)
                     {
@@ -1048,7 +1047,7 @@ namespace pcbaoi
 
         private void button11_Click_1(object sender, EventArgs e)
         {
-            Testform testform = new Testform(pictureBox1.Image);
+            Testform testform = new Testform(pbMainImg.Image);
             testform.Show();
             this.Hide();
         }
