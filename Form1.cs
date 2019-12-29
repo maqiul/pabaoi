@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -85,17 +85,13 @@ namespace pcbaoi
             lastwidth = pictureBox1.Width;
             //pictureBox2_Click(pictureBox2, null);
             asc.RenewControlRect(pictureBox1);
-            if (Settings.Default.dbpath != null) {
-                string selectsql = "select * from bad";
-                DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
-                if (dataTable.Rows.Count > 0)
-                {
-                    textBox1.Text = dataTable.Rows[0]["badname"].ToString();
-                    textBox2.Text = dataTable.Rows[0]["badwidth"].ToString();
-                    textBox3.Text = dataTable.Rows[0]["badheight"].ToString();
-                }
+            string selectsql = "select * from bad";
+            DataTable dataTable =SQLiteHelper.GetDataTable(selectsql);
+            if (dataTable.Rows.Count > 0) {
+                textBox1.Text = dataTable.Rows[0]["badname"].ToString();
+                textBox2.Text = dataTable.Rows[0]["badwidth"].ToString();
+                textBox3.Text = dataTable.Rows[0]["badheight"].ToString();                        
             }
-
 
 
 
@@ -703,8 +699,7 @@ namespace pcbaoi
             pictureBox.Width = 70;
             pictureBox.Height = 40;
             pictureBox.BorderStyle = BorderStyle.FixedSingle;
-            //pictureBox.Image = CropImage(bitmap, rectangle);
-            ////pictureBox.Image = Image.FromFile("e:\\123.jpg");
+
             //pictureBox.DoubleClick += new EventHandler(pictureboxshow);
             pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
             pictureBox.Move += new EventHandler(pictureboxmove);
@@ -759,7 +754,8 @@ namespace pcbaoi
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
             drawlineact();
-            update();
+
+
         }
         private void pictureboxsizechange(object sender, EventArgs e)
         {
@@ -772,7 +768,7 @@ namespace pcbaoi
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
             drawlineact();
-            update();
+
         }
         public void showzijibannum() {
 
@@ -928,11 +924,10 @@ namespace pcbaoi
             oldlastwidth = pictureBox1.Width;
             pictureBox1.Height = pictureBox1.Image.Height;
             pictureBox1.Width = pictureBox1.Image.Width;
-            string updatesql = string.Format("update zijiban set startx = '{0}',starty='{1}',width = '{3}',height = '{4}' where zijiname = '{5}'",controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height,controlnew.Name);
+            string updatesql = string.Format("update zijiban set startx = '{0}',starty='{1}',width = '{2}',height = '{3}' where zijiname = '{4}'",controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height,controlnew.Name);
             SQLiteHelper.ExecuteSql(updatesql);
             pictureBox1.Height = oldlastheight;
             pictureBox1.Width = oldlastwidth;
-
 
         }
     }
