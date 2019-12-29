@@ -90,7 +90,7 @@ namespace pcbaoi
             if (dataTable.Rows.Count > 0) {
                 textBox1.Text = dataTable.Rows[0]["badname"].ToString();
                 textBox2.Text = dataTable.Rows[0]["badwidth"].ToString();
-                textBox3.Text = dataTable.Rows[0]["badheight"].ToString();                        
+                textBox4.Text = dataTable.Rows[0]["badheight"].ToString();                        
             }
 
 
@@ -110,9 +110,6 @@ namespace pcbaoi
                 this.Height = this.formStartY;
                 fc.Reset(this, fc);
             }
-
-
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
