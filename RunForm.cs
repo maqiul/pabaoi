@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using pcbaoi.Properties;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ namespace pcbaoi
     {
         Snowflake snowflake = new Snowflake(2);
         string path;
+        FileInfo fileInfonew;
         public RunForm()
         {
             InitializeComponent();
@@ -159,7 +162,38 @@ namespace pcbaoi
                 }
 
                 path = dialog.SelectedPath + "\\";
-                textBox1.Text = path;
+                DirectoryInfo folder = new DirectoryInfo(path);
+                
+                foreach (FileInfo file in folder.GetFiles("*.db"))
+                {
+                    fileInfonew = file;
+                    
+                }
+                if (fileInfonew == null)
+                {
+                    MessageBox.Show("请选择正确文件,保证文件夹下包含 .db文件");
+                    return;
+                }
+                else {
+                    textBox1.Text = path;
+                    Settings.Default.dbpath = fileInfonew.FullName;
+                    string selectsql = "select * from bad";
+                    DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
+                    if (dataTable.Rows.Count > 0)
+                    {
+                        label6.Text = "pcb名称:"+dataTable.Rows[0]["badname"].ToString();
+                        label7.Text = "pcb板宽:"+dataTable.Rows[0]["badwidth"].ToString();
+                        label10.Text = "pcb板长:" + dataTable.Rows[0]["badheight"].ToString();
+                    }
+                    string zijibansql = "select *  from zijiban";
+                    DataTable dataTable2 = SQLiteHelper.GetDataTable(zijibansql);
+                    label9.Text = "子基板数:" + dataTable2.Rows.Count;
+
+                    string zijibanfrontsql = "select *  from zijiban group by frontorside";
+                    DataTable dataTable3 = SQLiteHelper.GetDataTable(zijibanfrontsql);
+                    label8.Text = "子基板数:" + dataTable3.Rows.Count;
+                }
+
 
 
             }

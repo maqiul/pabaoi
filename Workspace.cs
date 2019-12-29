@@ -29,6 +29,7 @@ namespace pcbaoi
         public const int SC_MOVE = 0xF010;
         public const int HTCAPTION = 0x0002;
 
+        FileInfo FileInfonew;
         public Workspace()
         {
             InitializeComponent();
@@ -76,6 +77,20 @@ namespace pcbaoi
                 }
 
                 path = dialog.SelectedPath +"\\";
+                DirectoryInfo folder = new DirectoryInfo(path);
+
+                foreach (FileInfo file in folder.GetFiles("*.db"))
+                {
+                    FileInfonew = file;
+
+                }
+                if (FileInfonew != null)
+                {
+                    Settings.Default.dbpath = FileInfonew.FullName;
+                }
+                else {
+                    MessageBox.Show("请选择正确文件夹");
+                }
                 filehandler.AddRecentFile(path);
                 Settings.Default.path = path;
                 this.DialogResult = DialogResult.OK;
@@ -127,6 +142,21 @@ namespace pcbaoi
         void workhistor(object sender, EventArgs e) {
 
             Settings.Default.path = sender.ToString();
+            DirectoryInfo folder = new DirectoryInfo(sender.ToString());
+
+            foreach (FileInfo file in folder.GetFiles("*.db"))
+            {
+                FileInfonew = file;
+
+            }
+            if (FileInfonew != null)
+            {
+                Settings.Default.dbpath = FileInfonew.FullName;
+            }
+            else
+            {
+                MessageBox.Show("文件夹信息已损坏，请新建项目");
+            }
             this.DialogResult = DialogResult.OK;
             isclose = false;
             this.Close();

@@ -338,6 +338,7 @@
             this.button12.Size = new System.Drawing.Size(46, 46);
             this.button12.TabIndex = 16;
             this.button12.UseVisualStyleBackColor = false;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button11
             // 
@@ -353,6 +354,7 @@
             this.button11.Size = new System.Drawing.Size(46, 46);
             this.button11.TabIndex = 15;
             this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click_1);
             // 
             // tableLayoutPanel3
             // 

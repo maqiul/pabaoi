@@ -1,4 +1,4 @@
-using pcbaoi.Properties;
+﻿using pcbaoi.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +31,7 @@ namespace pcbaoi
             pictureBox1.Image = image;
             pictureBox1.MouseWheel += pictureBox1_MouseWheel;
             asc.RenewControlRect(pictureBox1);
+            addnum();
             //picturestart();
         }
 
@@ -391,10 +392,10 @@ namespace pcbaoi
                         foreach (Control control1 in control.Controls) {
                             if (control1 is PictureBox) {
                                 inpicturename = control1.Name;
-                                instartx = control.Location.X;
-                                instarty = control.Location.Y;
-                                inheight = control.Height;
-                                inwidth = control.Width;
+                                instartx = control1.Location.X;
+                                instarty = control1.Location.Y;
+                                inheight = control1.Height;
+                                inwidth = control1.Width;
                             }                                                                     
                         }
 
@@ -415,6 +416,16 @@ namespace pcbaoi
             }
             pictureBox1.Height = oldlastheight;
             pictureBox1.Width = oldlastwidth;
+        }
+        private void addnum() {
+            string selectsql = "select id from operato order by id desc";
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
+            if (dataTable.Rows.Count > 0) {
+                addpicturebox = Convert.ToInt32(dataTable.Rows[0]["id"].ToString());
+           
+            }
+
+
         }
     }
 }

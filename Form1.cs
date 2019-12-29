@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -45,6 +45,7 @@ namespace pcbaoi
         int oldlastheight = 0;
         AutoSizeFormClass asc = new AutoSizeFormClass();
         Control controlnew;
+
         public Form1(int i)
         {
 
@@ -80,23 +81,15 @@ namespace pcbaoi
             pPcbInfoTitle.Show();
             pMain.Show();
             drawlineact();
-            pbMainImg.MouseWheel += PbMainImg_MouseWheel;
-            this.MouseWheel += PbMainImg_MouseWheel;
-
-
-            
-            //pbMainImg.MouseWheel += pictureBox1_MouseWheel;
-            lastheight = pbMainImg.Height;
-            lastwidth = pbMainImg.Width;
-            //pictureBox2_Click(pictureBox2, null);
-            asc.RenewControlRect(pbMainImg);
+            lastwidth = pictureBox1.Width;
             string selectsql = "select * from bad";
             DataTable dataTable =SQLiteHelper.GetDataTable(selectsql);
             if (dataTable.Rows.Count > 0) {
-                tbPcbName.Text = dataTable.Rows[0]["badname"].ToString();
-                tbPcbWidth.Text = dataTable.Rows[0]["badwidth"].ToString();
-                tbPcbLength.Text = dataTable.Rows[0]["badheight"].ToString();                        
+                textBox2.Text = dataTable.Rows[0]["badwidth"].ToString();
             }
+            pictureBox1.Height = oldlastheight;
+            pictureBox1.Width = oldlastwidth;
+
 
 
 
@@ -535,6 +528,8 @@ namespace pcbaoi
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            string deletesql = "delete from zijiban where isuse = 0";
+            SQLiteHelper.ExecuteSql(deletesql);
             Application.Exit();
         }
 
@@ -692,7 +687,14 @@ namespace pcbaoi
             pbMainImg.Image = p.Image;
             tbFrontOrBack.Text = "正面";
             Settings.Default.frontorside = "front";
-                
+            foreach (Control control in pictureBox1.Controls) {
+                if (control is PictureBox) {
+                    pictureBox1.Controls.Remove(control);                
+                }
+            }
+            
+            drawpicboxall();
+
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -711,6 +713,7 @@ namespace pcbaoi
             pbMainImg.Image = p.Image;
             tbFrontOrBack.Text = "反面";
             Settings.Default.frontorside = "side";
+            drawpicboxall();
 
         }
 
@@ -738,9 +741,10 @@ namespace pcbaoi
             this.pbMainImg.Controls.Add(pictureBox);
 
             pb.WireControl(pictureBox);
+            controlnew = pictureBox;
             zijibannum++;
             showzijibannum();
-            controlnew = pictureBox;
+
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pbMainImg);
             addpicturebox();
@@ -876,10 +880,8 @@ namespace pcbaoi
             {
                 MessageBox.Show("请先采集");
                 return;
-
-
             }
-            Platmake platmake = new Platmake(pbMainImg.Image);
+                MessageBox.Show("请先保存数据");
             platmake.Show();
             this.Hide();
         }
@@ -891,30 +893,46 @@ namespace pcbaoi
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
-            PictureBox p = pbFrontImg;
+            PictureBox p = pictureBox2;
             Pen pp = new Pen(Color.Blue);
             using (Graphics gc = p.CreateGraphics())
             {
                 Rectangle rect = new Rectangle();
                 rect.Location = new Point(0, 0);
-                rect.Size = new Size(pbFrontImg.Width - 3, pbFrontImg.Height - 3);
+                rect.Size = new Size(pictureBox2.Width - 3, pictureBox2.Height - 3);
                 gc.DrawRectangle(pp, rect);
 
             }
-            pbMainImg.Image = p.Image;
-            tbFrontOrBack.Text = "正面";
+            pictureBox1.Image = p.Image;
+            textBox3.Text = "正面";
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            string selectall = "select zijiname from zijiban ";
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
+            for (int i=0;i<dataTable.Rows.Count;i++) {
+                string name = dataTable.Rows[i]["zijiname"].ToString();
+                foreach (Control control in pictureBox1.Controls) {
+                    if (control.Name == name) {
+                        string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'",control.Location.X,control.Location.Y,control.Width,control.Height,name);
+                        SQLiteHelper.ExecuteSql(updatesql);
+
+                    }
+                
+                }
+
+            
+            }
+
 
         }
         public void addpicturebox() {
-            //oldlastheight = pbMainImg.Height;
-            //oldlastwidth = pbMainImg.Width;
-            //pbMainImg.Height = pbMainImg.Image.Height;
-            //pbMainImg.Width = pbMainImg.Image.Width;                     
+            oldlastheight = pictureBox1.Height;
+            oldlastwidth = pictureBox1.Width;
+            pictureBox1.Height = pictureBox1.Image.Height;
+            pictureBox1.Width = pictureBox1.Image.Width;                     
             string insertsql = string.Format("INSERT INTO zijiban( zijiname, startx, starty, width, height, isuse,frontorside ,createtime) VALUES ( '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}','{7}')", controlnew.Name, controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height, 0,Settings.Default.frontorside,DateTime.Now);
             SQLiteHelper.ExecuteSql(insertsql);
             //pbMainImg.Height = oldlastheight;
@@ -939,6 +957,100 @@ namespace pcbaoi
             pbMainImg.Height = oldlastheight;
             pbMainImg.Width = oldlastwidth;
 
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            RunForm runForm = new RunForm();
+            runForm.Show();
+            this.Hide();
+        }
+        private void drawpicboxall() {
+            oldlastheight = pictureBox1.Height;
+            oldlastwidth = pictureBox1.Width;
+            pictureBox1.Height = pictureBox1.Image.Height;
+            pictureBox1.Width = pictureBox1.Image.Width;
+            string selectopsql = string.Format("select * from operato where frontorside = '{0}'",Settings.Default.frontorside);
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectopsql);
+            for (int i=0;i< dataTable.Rows.Count;i++) {
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Name = dataTable.Rows[i]["outpicturename"].ToString();
+                pictureBox.Location = new Point(Convert.ToInt32(dataTable.Rows[i]["outstartx"].ToString()), Convert.ToInt32(dataTable.Rows[i]["outstarty"].ToString()));
+                pictureBox.Width = Convert.ToInt32(dataTable.Rows[i]["outwidth"].ToString());
+                pictureBox.Height = Convert.ToInt32(dataTable.Rows[i]["outheight"].ToString()); ;
+                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                pictureBox.BackColor = Color.Transparent;
+                pictureBox.Parent = pictureBox1;
+                this.pictureBox1.Controls.Add(pictureBox);
+                //MessageBox.Show(pictureBox.Parent.Name);
+                foreach (Control c in this.pictureBox1.Controls)
+                {
+                    if (c.Name == pictureBox.Name)
+                    {
+                        c.BringToFront();
+                    }
+
+                }
+                if (dataTable.Rows[i]["intpicturename"].ToString() != "") {
+                    PictureBox pictureBox2 = new PictureBox();
+                    pictureBox2.Name = dataTable.Rows[i]["intpicturename"].ToString();
+                    pictureBox2.Location = new Point(Convert.ToInt32(dataTable.Rows[i]["instartx"].ToString()), Convert.ToInt32(dataTable.Rows[i]["instarty"].ToString()));
+                    pictureBox2.Width =Convert.ToInt32(dataTable.Rows[i]["inwidth"].ToString());
+                    pictureBox2.Height =Convert.ToInt32(dataTable.Rows[i]["inheight"].ToString()); ;
+                    pictureBox2.BorderStyle = BorderStyle.FixedSingle;
+                    pictureBox2.BackColor = Color.Transparent;
+                    pictureBox2.Parent = pictureBox;
+                    pictureBox.Controls.Add(pictureBox2);
+                    //MessageBox.Show(pictureBox.Parent.Name);
+                    foreach (Control c in pictureBox.Controls)
+                    {
+                        if (c.Name == pictureBox2.Name)
+                        {
+                            c.BringToFront();
+                        }
+
+                    }
+                }
+
+            }
+            string selectopsql2 = string.Format("select * from zijiban where frontorside = '{0}'", Settings.Default.frontorside);
+            DataTable dataTable2 = SQLiteHelper.GetDataTable(selectopsql2);
+            for (int i = 0; i < dataTable2.Rows.Count; i++)
+            {
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Name = dataTable2.Rows[i]["zijiname"].ToString();
+                pictureBox.Location = new Point(Convert.ToInt32(dataTable2.Rows[i]["startx"].ToString()), Convert.ToInt32(dataTable2.Rows[i]["starty"].ToString()));
+                pictureBox.Width = Convert.ToInt32(dataTable2.Rows[i]["width"].ToString());
+                pictureBox.Height = Convert.ToInt32(dataTable2.Rows[i]["height"].ToString()); ;
+                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                pictureBox.BackColor = Color.Transparent;
+                pictureBox.Parent = pictureBox1;
+                this.pictureBox1.Controls.Add(pictureBox);
+                //MessageBox.Show(pictureBox.Parent.Name);
+                foreach (Control c in this.pictureBox1.Controls)
+                {
+                    if (c.Name == pictureBox.Name)
+                    {
+                        c.BringToFront();
+                    }
+
+                }
+                pb.WireControl(pictureBox);
+                controlnew = pictureBox;
+                zijibannum = Convert.ToInt32(dataTable2.Rows[i]["id"].ToString());
+
+
+            }
+
+
+
+        }
+
+        private void button11_Click_1(object sender, EventArgs e)
+        {
+            Testform testform = new Testform(pictureBox1.Image);
+            testform.Show();
+            this.Hide();
         }
     }
 }
