@@ -720,8 +720,6 @@ namespace pcbaoi
             if (pbMainImg.Image==null) {
                 MessageBox.Show("请先采集");
                 return;
-            
-            
             }
             PictureBox pictureBox = new PictureBox();
             pictureBox.Name = "zijiban"+ zijibannum.ToString();
@@ -730,30 +728,15 @@ namespace pcbaoi
             pictureBox.Height = 40;
             pictureBox.BorderStyle = BorderStyle.FixedSingle;
 
-            //pictureBox.DoubleClick += new EventHandler(pictureboxshow);
             pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
             pictureBox.Move += new EventHandler(pictureboxmove);
             pictureBox.BackColor = Color.Transparent;
             pictureBox.Parent = pbMainImg;
             pictureBox.MouseClick += pictureboxclick;
             pictureBox.PreviewKeyDown += picboxkey;
-            //pictureBox1.Hide();
+            pictureBox.BringToFront();
             this.pbMainImg.Controls.Add(pictureBox);
-            //MessageBox.Show(pictureBox.Parent.Name);
-            foreach (Control c in this.Controls)
-            {
-                if (c.Name == pictureBox.Name)
-                {
-                    c.BringToFront();
-                }
-                else {
-                    c.SendToBack();
-                
-                
-                }
 
-            }
-            //Form1_Load(null,null);
             pb.WireControl(pictureBox);
             zijibannum++;
             showzijibannum();
@@ -761,9 +744,6 @@ namespace pcbaoi
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pbMainImg);
             addpicturebox();
-
-
-
         }
 
         private void PictureBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -931,14 +911,14 @@ namespace pcbaoi
 
         }
         public void addpicturebox() {
-            oldlastheight = pbMainImg.Height;
-            oldlastwidth = pbMainImg.Width;
-            pbMainImg.Height = pbMainImg.Image.Height;
-            pbMainImg.Width = pbMainImg.Image.Width;                     
+            //oldlastheight = pbMainImg.Height;
+            //oldlastwidth = pbMainImg.Width;
+            //pbMainImg.Height = pbMainImg.Image.Height;
+            //pbMainImg.Width = pbMainImg.Image.Width;                     
             string insertsql = string.Format("INSERT INTO zijiban( zijiname, startx, starty, width, height, isuse,frontorside ,createtime) VALUES ( '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}','{7}')", controlnew.Name, controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height, 0,Settings.Default.frontorside,DateTime.Now);
             SQLiteHelper.ExecuteSql(insertsql);
-            pbMainImg.Height = oldlastheight;
-            pbMainImg.Width = oldlastwidth;
+            //pbMainImg.Height = oldlastheight;
+            //pbMainImg.Width = oldlastwidth;
 
         }
         public void drawpicbox() {
