@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,30 +18,42 @@ namespace pcbaoi
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        void startLogin()
         {
             string username = textBox1.Text;
             string password = textBox2.Text;
-            string haveusersql = string.Format("select count(*) as count from users where username = '{0}' and password = '{1}'",username, GenerateMD5(password));
+            string haveusersql = string.Format("select count(*) as count from users where username = '{0}' and password = '{1}'", username, GenerateMD5(password));
             int usernum = MySqlHelper.GetCount(haveusersql);
             if (usernum == 1)
             {
-                Form1 form1 = new Form1(1);
-                form1.Show();
-                //Platmake platmake = new Platmake();
-                //platmake.Show();
-                //RunForm runForm = new RunForm();
-                //runForm.Show();
-                this.Hide();
-                
-
-
+                this.DialogResult = DialogResult.OK;
+                //this.Close();
             }
-            else {
+            else
+            {
                 MessageBox.Show("用户名 密码错误");
-            
-            
+
             }
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // if it is a hotkey, return true; otherwise, return false
+            switch (keyData)
+            {
+                case Keys.Enter:
+                    button1.Focus();
+                    button1.PerformClick();
+                    return true;
+                //......
+                default:
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            startLogin();
         }
         public static string GenerateMD5(string txt)
         {
@@ -57,11 +69,6 @@ namespace pcbaoi
                 }
                 return sb.ToString();
             }
-        }
-
-        private void Login_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.Exit();
         }
     }
 }

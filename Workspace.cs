@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using pcbaoi.Properties;
 using pcbaoi.usercontrol;
+using System.Runtime.InteropServices;
 
 namespace pcbaoi
 {
@@ -18,11 +19,29 @@ namespace pcbaoi
         string path;
         bool isclose = true;
         FileHandler filehandler;
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        public const int WM_SYSCOMMAND = 0x0112;
+        public const int SC_MOVE = 0xF010;
+        public const int HTCAPTION = 0x0002;
+
         public Workspace()
         {
             InitializeComponent();
             filehandler = new FileHandler();
             loadsetting();
+            this.MouseDown += Workspace_MouseDown;
+            panel2.MouseDown += Workspace_MouseDown;
+        }
+
+        private void Workspace_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
         }
 
         private void textBox3_Click(object sender, EventArgs e)

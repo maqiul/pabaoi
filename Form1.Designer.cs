@@ -51,7 +51,7 @@
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pLeftToolbox = new System.Windows.Forms.Panel();
             this.button12 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -60,14 +60,14 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnBox = new System.Windows.Forms.Button();
+            this.btnCad = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnOpen = new System.Windows.Forms.Button();
+            this.btnCamera = new System.Windows.Forms.Button();
+            this.pBottomToolbox = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.button13 = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
@@ -80,10 +80,10 @@
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pCenterXY = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.pPcbInfo = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -96,33 +96,33 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.tbChildPcbNum = new System.Windows.Forms.TextBox();
+            this.tbFrontOrBack = new System.Windows.Forms.TextBox();
+            this.tbPcbLength = new System.Windows.Forms.TextBox();
+            this.tbPcbWidth = new System.Windows.Forms.TextBox();
+            this.tbPcbName = new System.Windows.Forms.TextBox();
+            this.pPcbInfoTitle = new System.Windows.Forms.Panel();
+            this.pbMainImg = new System.Windows.Forms.PictureBox();
+            this.pFrontInfo = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.panel7 = new System.Windows.Forms.Panel();
+            this.pbBackImg = new System.Windows.Forms.PictureBox();
+            this.pbFrontImg = new System.Windows.Forms.PictureBox();
+            this.pMain = new System.Windows.Forms.Panel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.pLeftToolbox.SuspendLayout();
+            this.pBottomToolbox.SuspendLayout();
+            this.pCenterXY.SuspendLayout();
+            this.pPcbInfo.SuspendLayout();
             this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMainImg)).BeginInit();
+            this.pFrontInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBackImg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFrontImg)).BeginInit();
+            this.pMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -301,28 +301,28 @@
             this.toolStripMenuItem19.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem19.Text = "操作文档";
             // 
-            // panel1
+            // pLeftToolbox
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.MenuText;
-            this.panel1.Controls.Add(this.button12);
-            this.panel1.Controls.Add(this.button11);
-            this.panel1.Controls.Add(this.tableLayoutPanel3);
-            this.panel1.Controls.Add(this.button10);
-            this.panel1.Controls.Add(this.button9);
-            this.panel1.Controls.Add(this.button8);
-            this.panel1.Controls.Add(this.button7);
-            this.panel1.Controls.Add(this.tableLayoutPanel2);
-            this.panel1.Controls.Add(this.button6);
-            this.panel1.Controls.Add(this.button5);
-            this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(0, 28);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(106, 851);
-            this.panel1.TabIndex = 1;
+            this.pLeftToolbox.BackColor = System.Drawing.SystemColors.MenuText;
+            this.pLeftToolbox.Controls.Add(this.button12);
+            this.pLeftToolbox.Controls.Add(this.button11);
+            this.pLeftToolbox.Controls.Add(this.tableLayoutPanel3);
+            this.pLeftToolbox.Controls.Add(this.button10);
+            this.pLeftToolbox.Controls.Add(this.button9);
+            this.pLeftToolbox.Controls.Add(this.button8);
+            this.pLeftToolbox.Controls.Add(this.button7);
+            this.pLeftToolbox.Controls.Add(this.tableLayoutPanel2);
+            this.pLeftToolbox.Controls.Add(this.btnBox);
+            this.pLeftToolbox.Controls.Add(this.btnCad);
+            this.pLeftToolbox.Controls.Add(this.btnSearch);
+            this.pLeftToolbox.Controls.Add(this.tableLayoutPanel1);
+            this.pLeftToolbox.Controls.Add(this.btnSave);
+            this.pLeftToolbox.Controls.Add(this.btnOpen);
+            this.pLeftToolbox.Controls.Add(this.btnCamera);
+            this.pLeftToolbox.Location = new System.Drawing.Point(0, 28);
+            this.pLeftToolbox.Name = "pLeftToolbox";
+            this.pLeftToolbox.Size = new System.Drawing.Size(106, 851);
+            this.pLeftToolbox.TabIndex = 1;
             // 
             // button12
             // 
@@ -440,51 +440,51 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(50, 1);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
-            // button6
+            // btnBox
             // 
-            this.button6.BackColor = System.Drawing.Color.Transparent;
-            this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
-            this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button6.FlatAppearance.BorderSize = 0;
-            this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(30, 343);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(46, 46);
-            this.button6.TabIndex = 8;
-            this.button6.UseVisualStyleBackColor = false;
+            this.btnBox.BackColor = System.Drawing.Color.Transparent;
+            this.btnBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBox.BackgroundImage")));
+            this.btnBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnBox.FlatAppearance.BorderSize = 0;
+            this.btnBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnBox.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBox.Location = new System.Drawing.Point(30, 343);
+            this.btnBox.Name = "btnBox";
+            this.btnBox.Size = new System.Drawing.Size(46, 46);
+            this.btnBox.TabIndex = 8;
+            this.btnBox.UseVisualStyleBackColor = false;
             // 
-            // button5
+            // btnCad
             // 
-            this.button5.BackColor = System.Drawing.Color.Transparent;
-            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
-            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(30, 286);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(46, 46);
-            this.button5.TabIndex = 7;
-            this.button5.UseVisualStyleBackColor = false;
+            this.btnCad.BackColor = System.Drawing.Color.Transparent;
+            this.btnCad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCad.BackgroundImage")));
+            this.btnCad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnCad.FlatAppearance.BorderSize = 0;
+            this.btnCad.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnCad.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnCad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCad.Location = new System.Drawing.Point(30, 286);
+            this.btnCad.Name = "btnCad";
+            this.btnCad.Size = new System.Drawing.Size(46, 46);
+            this.btnCad.TabIndex = 7;
+            this.btnCad.UseVisualStyleBackColor = false;
             // 
-            // button4
+            // btnSearch
             // 
-            this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
-            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(30, 223);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(46, 46);
-            this.button4.TabIndex = 6;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSearch.BackgroundImage")));
+            this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Location = new System.Drawing.Point(30, 223);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(46, 46);
+            this.btnSearch.TabIndex = 6;
+            this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // tableLayoutPanel1
             // 
@@ -498,74 +498,74 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(50, 1);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
-            // button3
+            // btnSave
             // 
-            this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(30, 133);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(46, 46);
-            this.button3.TabIndex = 4;
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnSave.BackColor = System.Drawing.Color.Transparent;
+            this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
+            this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Location = new System.Drawing.Point(30, 133);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(46, 46);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // btnOpen
             // 
-            this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(30, 71);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(46, 46);
-            this.button2.TabIndex = 3;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnOpen.BackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpen.BackgroundImage")));
+            this.btnOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnOpen.FlatAppearance.BorderSize = 0;
+            this.btnOpen.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpen.Location = new System.Drawing.Point(30, 71);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(46, 46);
+            this.btnOpen.TabIndex = 3;
+            this.btnOpen.UseVisualStyleBackColor = false;
+            this.btnOpen.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // btnCamera
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(30, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(46, 46);
-            this.button1.TabIndex = 2;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.btnCamera.BackColor = System.Drawing.Color.Transparent;
+            this.btnCamera.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCamera.BackgroundImage")));
+            this.btnCamera.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnCamera.FlatAppearance.BorderSize = 0;
+            this.btnCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCamera.Location = new System.Drawing.Point(30, 17);
+            this.btnCamera.Name = "btnCamera";
+            this.btnCamera.Size = new System.Drawing.Size(46, 46);
+            this.btnCamera.TabIndex = 2;
+            this.btnCamera.UseVisualStyleBackColor = false;
+            this.btnCamera.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // panel2
+            // pBottomToolbox
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlText;
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.button13);
-            this.panel2.Controls.Add(this.label18);
-            this.panel2.Controls.Add(this.label17);
-            this.panel2.Controls.Add(this.label16);
-            this.panel2.Controls.Add(this.label15);
-            this.panel2.Controls.Add(this.label14);
-            this.panel2.Controls.Add(this.button18);
-            this.panel2.Controls.Add(this.button17);
-            this.panel2.Controls.Add(this.button16);
-            this.panel2.Controls.Add(this.button15);
-            this.panel2.Controls.Add(this.button14);
-            this.panel2.Location = new System.Drawing.Point(0, 882);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1424, 104);
-            this.panel2.TabIndex = 2;
+            this.pBottomToolbox.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pBottomToolbox.Controls.Add(this.label1);
+            this.pBottomToolbox.Controls.Add(this.button13);
+            this.pBottomToolbox.Controls.Add(this.label18);
+            this.pBottomToolbox.Controls.Add(this.label17);
+            this.pBottomToolbox.Controls.Add(this.label16);
+            this.pBottomToolbox.Controls.Add(this.label15);
+            this.pBottomToolbox.Controls.Add(this.label14);
+            this.pBottomToolbox.Controls.Add(this.button18);
+            this.pBottomToolbox.Controls.Add(this.button17);
+            this.pBottomToolbox.Controls.Add(this.button16);
+            this.pBottomToolbox.Controls.Add(this.button15);
+            this.pBottomToolbox.Controls.Add(this.button14);
+            this.pBottomToolbox.Location = new System.Drawing.Point(0, 882);
+            this.pBottomToolbox.Margin = new System.Windows.Forms.Padding(0);
+            this.pBottomToolbox.Name = "pBottomToolbox";
+            this.pBottomToolbox.Size = new System.Drawing.Size(1424, 104);
+            this.pBottomToolbox.TabIndex = 2;
             // 
             // label1
             // 
@@ -728,15 +728,15 @@
             this.button14.TabIndex = 0;
             this.button14.UseVisualStyleBackColor = false;
             // 
-            // panel3
+            // pCenterXY
             // 
-            this.panel3.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel3.Controls.Add(this.label13);
-            this.panel3.Controls.Add(this.label12);
-            this.panel3.Location = new System.Drawing.Point(109, 827);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(980, 52);
-            this.panel3.TabIndex = 3;
+            this.pCenterXY.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.pCenterXY.Controls.Add(this.label13);
+            this.pCenterXY.Controls.Add(this.label12);
+            this.pCenterXY.Location = new System.Drawing.Point(109, 827);
+            this.pCenterXY.Name = "pCenterXY";
+            this.pCenterXY.Size = new System.Drawing.Size(980, 52);
+            this.pCenterXY.TabIndex = 3;
             // 
             // label13
             // 
@@ -756,30 +756,30 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "X:";
             // 
-            // panel4
+            // pPcbInfo
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.ControlText;
-            this.panel4.Controls.Add(this.tableLayoutPanel9);
-            this.panel4.Controls.Add(this.tableLayoutPanel7);
-            this.panel4.Controls.Add(this.tableLayoutPanel6);
-            this.panel4.Controls.Add(this.tableLayoutPanel5);
-            this.panel4.Controls.Add(this.tableLayoutPanel4);
-            this.panel4.Controls.Add(this.panel8);
-            this.panel4.Controls.Add(this.label9);
-            this.panel4.Controls.Add(this.label5);
-            this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.label3);
-            this.panel4.Controls.Add(this.label2);
-            this.panel4.Controls.Add(this.textBox8);
-            this.panel4.Controls.Add(this.textBox3);
-            this.panel4.Controls.Add(this.textBox4);
-            this.panel4.Controls.Add(this.textBox2);
-            this.panel4.Controls.Add(this.textBox1);
-            this.panel4.Controls.Add(this.panel6);
-            this.panel4.Location = new System.Drawing.Point(1093, 28);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(328, 416);
-            this.panel4.TabIndex = 4;
+            this.pPcbInfo.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pPcbInfo.Controls.Add(this.tableLayoutPanel9);
+            this.pPcbInfo.Controls.Add(this.tableLayoutPanel7);
+            this.pPcbInfo.Controls.Add(this.tableLayoutPanel6);
+            this.pPcbInfo.Controls.Add(this.tableLayoutPanel5);
+            this.pPcbInfo.Controls.Add(this.tableLayoutPanel4);
+            this.pPcbInfo.Controls.Add(this.panel8);
+            this.pPcbInfo.Controls.Add(this.label9);
+            this.pPcbInfo.Controls.Add(this.label5);
+            this.pPcbInfo.Controls.Add(this.label4);
+            this.pPcbInfo.Controls.Add(this.label3);
+            this.pPcbInfo.Controls.Add(this.label2);
+            this.pPcbInfo.Controls.Add(this.tbChildPcbNum);
+            this.pPcbInfo.Controls.Add(this.tbFrontOrBack);
+            this.pPcbInfo.Controls.Add(this.tbPcbLength);
+            this.pPcbInfo.Controls.Add(this.tbPcbWidth);
+            this.pPcbInfo.Controls.Add(this.tbPcbName);
+            this.pPcbInfo.Controls.Add(this.pPcbInfoTitle);
+            this.pPcbInfo.Location = new System.Drawing.Point(1093, 28);
+            this.pPcbInfo.Name = "pPcbInfo";
+            this.pPcbInfo.Size = new System.Drawing.Size(328, 416);
+            this.pPcbInfo.TabIndex = 4;
             // 
             // tableLayoutPanel9
             // 
@@ -917,96 +917,96 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "PCB板名称";
             // 
-            // textBox8
+            // tbChildPcbNum
             // 
-            this.textBox8.Enabled = false;
-            this.textBox8.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox8.Location = new System.Drawing.Point(142, 337);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(149, 26);
-            this.textBox8.TabIndex = 5;
-            this.textBox8.Text = "0";
+            this.tbChildPcbNum.Enabled = false;
+            this.tbChildPcbNum.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.tbChildPcbNum.Location = new System.Drawing.Point(142, 337);
+            this.tbChildPcbNum.Name = "tbChildPcbNum";
+            this.tbChildPcbNum.Size = new System.Drawing.Size(149, 26);
+            this.tbChildPcbNum.TabIndex = 5;
+            this.tbChildPcbNum.Text = "0";
             // 
-            // textBox3
+            // tbFrontOrBack
             // 
-            this.textBox3.Enabled = false;
-            this.textBox3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox3.Location = new System.Drawing.Point(142, 285);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(149, 26);
-            this.textBox3.TabIndex = 4;
-            this.textBox3.Text = "正面";
+            this.tbFrontOrBack.Enabled = false;
+            this.tbFrontOrBack.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.tbFrontOrBack.Location = new System.Drawing.Point(142, 285);
+            this.tbFrontOrBack.Name = "tbFrontOrBack";
+            this.tbFrontOrBack.ReadOnly = true;
+            this.tbFrontOrBack.Size = new System.Drawing.Size(149, 26);
+            this.tbFrontOrBack.TabIndex = 4;
+            this.tbFrontOrBack.Text = "正面";
             // 
-            // textBox4
+            // tbPcbLength
             // 
-            this.textBox4.Enabled = false;
-            this.textBox4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox4.Location = new System.Drawing.Point(142, 234);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(149, 26);
-            this.textBox4.TabIndex = 3;
-            this.textBox4.Text = "3000";
+            this.tbPcbLength.Enabled = false;
+            this.tbPcbLength.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.tbPcbLength.Location = new System.Drawing.Point(142, 234);
+            this.tbPcbLength.Name = "tbPcbLength";
+            this.tbPcbLength.Size = new System.Drawing.Size(149, 26);
+            this.tbPcbLength.TabIndex = 3;
+            this.tbPcbLength.Text = "3000";
             // 
-            // textBox2
+            // tbPcbWidth
             // 
-            this.textBox2.Enabled = false;
-            this.textBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox2.Location = new System.Drawing.Point(142, 180);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(149, 26);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.Text = "2000";
+            this.tbPcbWidth.Enabled = false;
+            this.tbPcbWidth.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.tbPcbWidth.Location = new System.Drawing.Point(142, 180);
+            this.tbPcbWidth.Name = "tbPcbWidth";
+            this.tbPcbWidth.Size = new System.Drawing.Size(149, 26);
+            this.tbPcbWidth.TabIndex = 2;
+            this.tbPcbWidth.Text = "2000";
             // 
-            // textBox1
+            // tbPcbName
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox1.Location = new System.Drawing.Point(142, 128);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(149, 26);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "默认";
+            this.tbPcbName.Enabled = false;
+            this.tbPcbName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
+            this.tbPcbName.Location = new System.Drawing.Point(142, 128);
+            this.tbPcbName.Name = "tbPcbName";
+            this.tbPcbName.Size = new System.Drawing.Size(149, 26);
+            this.tbPcbName.TabIndex = 1;
+            this.tbPcbName.Text = "默认";
             // 
-            // panel6
+            // pPcbInfoTitle
             // 
-            this.panel6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Location = new System.Drawing.Point(0, 0);
-            this.panel6.Margin = new System.Windows.Forms.Padding(0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(328, 52);
-            this.panel6.TabIndex = 0;
+            this.pPcbInfoTitle.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.pPcbInfoTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pPcbInfoTitle.Location = new System.Drawing.Point(0, 0);
+            this.pPcbInfoTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.pPcbInfoTitle.Name = "pPcbInfoTitle";
+            this.pPcbInfoTitle.Size = new System.Drawing.Size(328, 52);
+            this.pPcbInfoTitle.TabIndex = 0;
             // 
-            // pictureBox1
+            // pbMainImg
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(980, 795);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            this.pbMainImg.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.pbMainImg.Image = ((System.Drawing.Image)(resources.GetObject("pbMainImg.Image")));
+            this.pbMainImg.Location = new System.Drawing.Point(0, 0);
+            this.pbMainImg.Margin = new System.Windows.Forms.Padding(0);
+            this.pbMainImg.Name = "pbMainImg";
+            this.pbMainImg.Size = new System.Drawing.Size(980, 795);
+            this.pbMainImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbMainImg.TabIndex = 0;
+            this.pbMainImg.TabStop = false;
+            this.pbMainImg.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
+            this.pbMainImg.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pbMainImg.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            this.pbMainImg.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pbMainImg.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pbMainImg.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
-            // panel5
+            // pFrontInfo
             // 
-            this.panel5.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.panel5.Controls.Add(this.label11);
-            this.panel5.Controls.Add(this.label10);
-            this.panel5.Controls.Add(this.pictureBox3);
-            this.panel5.Controls.Add(this.pictureBox2);
-            this.panel5.Location = new System.Drawing.Point(1093, 451);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(328, 428);
-            this.panel5.TabIndex = 6;
+            this.pFrontInfo.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.pFrontInfo.Controls.Add(this.label11);
+            this.pFrontInfo.Controls.Add(this.label10);
+            this.pFrontInfo.Controls.Add(this.pbBackImg);
+            this.pFrontInfo.Controls.Add(this.pbFrontImg);
+            this.pFrontInfo.Location = new System.Drawing.Point(1093, 451);
+            this.pFrontInfo.Name = "pFrontInfo";
+            this.pFrontInfo.Size = new System.Drawing.Size(328, 428);
+            this.pFrontInfo.TabIndex = 6;
             // 
             // label11
             // 
@@ -1026,44 +1026,44 @@
             this.label10.TabIndex = 2;
             this.label10.Text = "正面";
             // 
-            // pictureBox3
+            // pbBackImg
             // 
-            this.pictureBox3.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Location = new System.Drawing.Point(4, 217);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(321, 207);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.pbBackImg.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.pbBackImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbBackImg.Location = new System.Drawing.Point(4, 217);
+            this.pbBackImg.Name = "pbBackImg";
+            this.pbBackImg.Size = new System.Drawing.Size(321, 207);
+            this.pbBackImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBackImg.TabIndex = 1;
+            this.pbBackImg.TabStop = false;
+            this.pbBackImg.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
-            // pictureBox2
+            // pbFrontImg
             // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(4, 4);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(321, 207);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
-            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
+            this.pbFrontImg.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.pbFrontImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbFrontImg.Image = ((System.Drawing.Image)(resources.GetObject("pbFrontImg.Image")));
+            this.pbFrontImg.Location = new System.Drawing.Point(4, 4);
+            this.pbFrontImg.Margin = new System.Windows.Forms.Padding(0);
+            this.pbFrontImg.Name = "pbFrontImg";
+            this.pbFrontImg.Size = new System.Drawing.Size(321, 207);
+            this.pbFrontImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFrontImg.TabIndex = 0;
+            this.pbFrontImg.TabStop = false;
+            this.pbFrontImg.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.pbFrontImg.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
             // 
-            // panel7
+            // pMain
             // 
-            this.panel7.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel7.Controls.Add(this.tableLayoutPanel11);
-            this.panel7.Controls.Add(this.tableLayoutPanel10);
-            this.panel7.Controls.Add(this.pictureBox1);
-            this.panel7.Location = new System.Drawing.Point(110, 28);
-            this.panel7.Margin = new System.Windows.Forms.Padding(0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(980, 795);
-            this.panel7.TabIndex = 7;
+            this.pMain.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.pMain.Controls.Add(this.tableLayoutPanel11);
+            this.pMain.Controls.Add(this.tableLayoutPanel10);
+            this.pMain.Controls.Add(this.pbMainImg);
+            this.pMain.Location = new System.Drawing.Point(110, 28);
+            this.pMain.Margin = new System.Windows.Forms.Padding(0);
+            this.pMain.Name = "pMain";
+            this.pMain.Size = new System.Drawing.Size(980, 795);
+            this.pMain.TabIndex = 7;
             // 
             // tableLayoutPanel11
             // 
@@ -1111,13 +1111,13 @@
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1424, 990);
             this.Controls.Add(this.tableLayoutPanel8);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pFrontInfo);
+            this.Controls.Add(this.pPcbInfo);
+            this.Controls.Add(this.pCenterXY);
+            this.Controls.Add(this.pBottomToolbox);
+            this.Controls.Add(this.pLeftToolbox);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.panel7);
+            this.Controls.Add(this.pMain);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -1129,21 +1129,21 @@
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.pLeftToolbox.ResumeLayout(false);
+            this.pBottomToolbox.ResumeLayout(false);
+            this.pBottomToolbox.PerformLayout();
+            this.pCenterXY.ResumeLayout(false);
+            this.pCenterXY.PerformLayout();
+            this.pPcbInfo.ResumeLayout(false);
+            this.pPcbInfo.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.panel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbMainImg)).EndInit();
+            this.pFrontInfo.ResumeLayout(false);
+            this.pFrontInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBackImg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFrontImg)).EndInit();
+            this.pMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1160,26 +1160,26 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Panel pLeftToolbox;
+        private System.Windows.Forms.Button btnCamera;
+        private System.Windows.Forms.Panel pBottomToolbox;
+        private System.Windows.Forms.Panel pCenterXY;
+        private System.Windows.Forms.Panel pPcbInfo;
+        private System.Windows.Forms.Panel pPcbInfoTitle;
+        private System.Windows.Forms.PictureBox pbMainImg;
+        private System.Windows.Forms.Panel pFrontInfo;
+        private System.Windows.Forms.PictureBox pbBackImg;
+        private System.Windows.Forms.PictureBox pbFrontImg;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbChildPcbNum;
+        private System.Windows.Forms.TextBox tbFrontOrBack;
+        private System.Windows.Forms.TextBox tbPcbLength;
+        private System.Windows.Forms.TextBox tbPcbWidth;
+        private System.Windows.Forms.TextBox tbPcbName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label13;
@@ -1194,13 +1194,13 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel pMain;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnBox;
+        private System.Windows.Forms.Button btnCad;
+        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button11;
