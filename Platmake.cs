@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pcbaoi.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,11 +17,13 @@ namespace pcbaoi
         private PickBox pb = new PickBox();
         int addpicturebox = 0;
         Control thiscontrol;
-                bool isSelected = false;
+        bool isSelected = false;
         Point mouseDownPoint;
         AutoSizeFormClass asc = new AutoSizeFormClass();
         Operatorselect operatorselect1;
         Operatorselect useroperatoe = new Operatorselect();
+        int oldlastwidth = 0;
+        int oldlastheight = 0;
 
         public Platmake(Image image)
         {
@@ -59,8 +62,8 @@ namespace pcbaoi
                 pictureBox.Height = 70;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 //pictureBox.DoubleClick += new EventHandler(pictureboxshow);
-                //pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
-                //pictureBox.Move += new EventHandler(pictureboxmove);
+                pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
+                pictureBox.Move += new EventHandler(pictureboxmove);
                 pictureBox.BackColor = Color.Transparent;
                 pictureBox.Parent = pictureBox1;
                 //pictureBox1.Hide();
@@ -91,8 +94,8 @@ namespace pcbaoi
                     littlepicturebox.Height = 40;
                     littlepicturebox.BorderStyle = BorderStyle.FixedSingle;
                     //pictureBox.DoubleClick += new EventHandler(pictureboxshow);
-                    //pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
-                    //pictureBox.Move += new EventHandler(pictureboxmove);
+                    pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
+                    pictureBox.Move += new EventHandler(pictureboxmove);
                     littlepicturebox.BackColor = Color.Transparent;
                     littlepicturebox.Parent = pictureBox;
                     //pictureBox1.Hide();
@@ -360,6 +363,10 @@ namespace pcbaoi
 
         private void button16_Click(object sender, EventArgs e)
         {
+            oldlastheight = pictureBox1.Height;
+            oldlastwidth = pictureBox1.Width;
+            pictureBox1.Height = pictureBox1.Image.Height;
+            pictureBox1.Width = pictureBox1.Image.Width;
             for (int i = 0; i < dataGridView1.Rows.Count; i++) {
                 string operatonameall = dataGridView1.Rows[i].Cells[0].Value.ToString();
                 string outpicturename = dataGridView1.Rows[i].Cells[1].Value.ToString();
@@ -395,15 +402,21 @@ namespace pcbaoi
                 }
                 string selectsql = string.Format("select* from operato where operatonameall = '{0}'", operatonameall);
                 DataTable selectnum = SQLiteHelper.GetDataTable(selectsql);
-                if (selectnum.Rows.Count == 0) {
-                    string insertsql = string.Format("INSERT INTO operato (operatonameall,outpicturename,outstartx,outstarty,outheight,outwidth,intpicturename,instartx,instarty,inheight,inwidth,parent,algorithm,operatorname,confidence,percentageup,percentagedown,codetype,luminanceon,luminancedown,rednumon,rednumdown,greennumon,greennumdown,bluenumon,bluenumdown )VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}' )", operatonameall, outpicturename, outstartx, outstarty, outheight, outwidth, inpicturename, instartx, instarty, inheight, inwidth, parent, insertoperatorselect.Algorithm, insertoperatorselect.Operatorname, insertoperatorselect.Confidence, insertoperatorselect.Percentageup, insertoperatorselect.Rednumdown, insertoperatorselect.Codetype, insertoperatorselect.Luminanceon, insertoperatorselect.Luminancedown, insertoperatorselect.Rednumon, insertoperatorselect.Rednumdown, insertoperatorselect.Greennumon, insertoperatorselect.Greennumdown, insertoperatorselect.Bluenumon, insertoperatorselect.Bluenumdown);
+                if (selectnum.Rows.Count == 0)
+                {
+                    string insertsql = string.Format("INSERT INTO operato (operatonameall,outpicturename,outstartx,outstarty,outheight,outwidth,intpicturename,instartx,instarty,inheight,inwidth,parent,algorithm,operatorname,confidence,percentageup,percentagedown,codetype,luminanceon,luminancedown,rednumon,rednumdown,greennumon,greennumdown,bluenumon,bluenumdown,frontorside )VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}' ,'{26}')", operatonameall, outpicturename, outstartx, outstarty, outheight, outwidth, inpicturename, instartx, instarty, inheight, inwidth, parent, insertoperatorselect.Algorithm, insertoperatorselect.Operatorname, insertoperatorselect.Confidence, insertoperatorselect.Percentageup, insertoperatorselect.Rednumdown, insertoperatorselect.Codetype, insertoperatorselect.Luminanceon, insertoperatorselect.Luminancedown, insertoperatorselect.Rednumon, insertoperatorselect.Rednumdown, insertoperatorselect.Greennumon, insertoperatorselect.Greennumdown, insertoperatorselect.Bluenumon, insertoperatorselect.Bluenumdown, Settings.Default.frontorside);
                     int num = SQLiteHelper.ExecuteSql(insertsql);
 
                 }
-
+                else {
+                    string updatesql = string.Format("update operato set outpicturename,outstartx,outstarty,outheight,outwidth,intpicturename,instartx,instarty,inheight,inwidth,parent,algorithm,operatorname,confidence,percentageup,percentagedown,codetype,luminanceon,luminancedown,rednumon,rednumdown,greennumon,greennumdown,bluenumon,bluenumdown,frontorside");
                 
-
+                
+                
+                }                
             }
+            pictureBox1.Height = oldlastheight;
+            pictureBox1.Width = oldlastwidth;
         }
     }
 }
