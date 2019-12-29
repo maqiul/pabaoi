@@ -671,6 +671,7 @@ namespace pcbaoi
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string file = dialog.FileName;
+                pbMainImg.Image = Image.FromFile(file);
             }
         }
 
