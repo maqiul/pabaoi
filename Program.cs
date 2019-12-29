@@ -16,7 +16,13 @@ namespace pcbaoi
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            Login login = new Login();
+            DialogResult dialogResult = login.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                login.Close();
+                Application.Run(new Form1(1));
+            }
         }
     }
 }
