@@ -42,5 +42,10 @@ namespace pcbaoi
             }
 
         }
+
+        private void Canelbt_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

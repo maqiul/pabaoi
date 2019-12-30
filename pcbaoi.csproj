@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -223,6 +223,12 @@
     <Compile Include="RunForm.Designer.cs">
       <DependentUpon>RunForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SaveFileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveFileForm.Designer.cs">
+      <DependentUpon>SaveFileForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Setting.cs" />
     <Compile Include="Snowflake.cs" />
     <Compile Include="SqlLiteHeper.cs" />
@@ -231,6 +237,12 @@
     </Compile>
     <Compile Include="Testform.Designer.cs">
       <DependentUpon>Testform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrackForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrackForm.Designer.cs">
+      <DependentUpon>TrackForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl1.cs">
       <SubType>UserControl</SubType>
@@ -342,8 +354,14 @@
     <EmbeddedResource Include="RunForm.resx">
       <DependentUpon>RunForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SaveFileForm.resx">
+      <DependentUpon>SaveFileForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Testform.resx">
       <DependentUpon>Testform.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrackForm.resx">
+      <DependentUpon>TrackForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>

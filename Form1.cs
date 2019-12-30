@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -1073,6 +1073,12 @@ namespace pcbaoi
         {
             TrackForm trackForm = new TrackForm();
             trackForm.ShowDialog();
+        }
+
+        private void toolStripMenuItem16_Click(object sender, EventArgs e)
+        {
+            SaveFileForm saveFileForm = new SaveFileForm();
+            saveFileForm.ShowDialog();
         }
     }
 }

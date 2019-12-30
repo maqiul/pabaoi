@@ -134,6 +134,7 @@
             this.Canelbt.TabIndex = 8;
             this.Canelbt.Text = "取消";
             this.Canelbt.UseVisualStyleBackColor = true;
+            this.Canelbt.Click += new System.EventHandler(this.Canelbt_Click);
             // 
             // TrackForm
             // 
