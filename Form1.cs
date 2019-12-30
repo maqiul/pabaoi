@@ -81,7 +81,11 @@ namespace pcbaoi
             pPcbInfoTitle.Show();
             pMain.Show();
             drawlineact();
+            
             lastwidth = pbMainImg.Width;
+            asc.RenewControlRect(pbMainImg);
+            pictureBox2_Click(pbFrontImg, null);
+            asc.RenewControlRect(pbMainImg);
             string selectsql = "select * from bad";
             DataTable dataTable =SQLiteHelper.GetDataTable(selectsql);
             if (dataTable.Rows.Count > 0) {
@@ -924,6 +928,7 @@ namespace pcbaoi
 
             
             }
+            MessageBox.Show("保存成功");
 
 
         }
@@ -932,10 +937,10 @@ namespace pcbaoi
             oldlastwidth = pbMainImg.Width;
             pbMainImg.Height = pbMainImg.Image.Height;
             pbMainImg.Width = pbMainImg.Image.Width;                     
-            string insertsql = string.Format("INSERT INTO zijiban( zijiname, startx, starty, width, height, isuse,frontorside ,createtime) VALUES ( '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}','{7}')", controlnew.Name, controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height, 0,Settings.Default.frontorside,DateTime.Now);
+            string insertsql = string.Format("INSERT INTO zijiban( zijiname, startx, starty, width, height, isuse,frontorside ) VALUES ( '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", controlnew.Name, controlnew.Location.X, controlnew.Location.Y, controlnew.Width, controlnew.Height, 0,Settings.Default.frontorside);
             SQLiteHelper.ExecuteSql(insertsql);
-            //pbMainImg.Height = oldlastheight;
-            //pbMainImg.Width = oldlastwidth;
+            pbMainImg.Height = oldlastheight;
+            pbMainImg.Width = oldlastwidth;
 
         }
         public void drawpicbox() {
@@ -1050,6 +1055,24 @@ namespace pcbaoi
             Testform testform = new Testform(pbMainImg.Image);
             testform.Show();
             this.Hide();
+        }
+
+        private void toolStripMenuItem13_Click(object sender, EventArgs e)
+        {
+            LightsourceForm lightsourceForm = new LightsourceForm();
+            lightsourceForm.ShowDialog();
+        }
+
+        private void toolStripMenuItem14_Click_1(object sender, EventArgs e)
+        {
+            Motioncontrol motioncontrol = new Motioncontrol();
+            motioncontrol.ShowDialog();
+        }
+
+        private void toolStripMenuItem15_Click(object sender, EventArgs e)
+        {
+            TrackForm trackForm = new TrackForm();
+            trackForm.ShowDialog();
         }
     }
 }

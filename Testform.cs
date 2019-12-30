@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,10 +19,11 @@ namespace pcbaoi
         AutoSizeFormClass asc = new AutoSizeFormClass();
         int oldlastwidth = 0;
         int oldlastheight = 0;
+        Image bigimage;
         public Testform(Image image)
         {
             InitializeComponent();
-            pictureBox1.Image = image;
+            bigimage = image;
 
             
 
@@ -32,6 +34,7 @@ namespace pcbaoi
         private void panel6_Click(object sender, EventArgs e)
         {
             frontandside = "front";
+            pictureBox1.Image = bigimage;
             addpic();
 
 
@@ -41,6 +44,14 @@ namespace pcbaoi
         private void panel7_Click(object sender, EventArgs e)
         {
             frontandside = "side";
+            pictureBox1.Image = bigimage;
+            foreach (Control control in pictureBox1.Controls)
+            {
+                if (control is PictureBox)
+                {
+                    pictureBox1.Controls.Remove(control);
+                }
+            }
             addpic();
 
         }
@@ -107,27 +118,30 @@ namespace pcbaoi
                 }
 
             }
-
-
-
+            asc.RenewControlRect(pictureBox1);
+            pictureBox1.Height = oldlastheight;
+            pictureBox1.Width = oldlastwidth;
 
         }
         private void click(object sender,EventArgs e) {
             Rectangle rectangle = new Rectangle();
             PictureBox pp = (PictureBox)sender;
+            
             foreach (DataGridViewRow each in dataGridView1.Rows) {
                 if (each.Cells[4].Value.ToString() == pp.Name) {
                     each.DefaultCellStyle.BackColor = Color.Gray;
                     dataGridView1.FirstDisplayedScrollingRowIndex =Convert.ToInt32(each.Cells[4].Value.ToString())-1;
-                    rectangle.Location = new Point(Convert.ToInt32(each.Cells[5].Value.ToString()), Convert.ToInt32(each.Cells[6].Value.ToString()));
-                    rectangle.Width = Convert.ToInt32(each.Cells[7].Value.ToString());
-                    rectangle.Height = Convert.ToInt32(each.Cells[8].Value.ToString());
+                    rectangle.Location = new Point(Convert.ToInt32(each.Cells[5].Value.ToString())-40, Convert.ToInt32(each.Cells[6].Value.ToString())-40);
+                    rectangle.Width = Convert.ToInt32(each.Cells[7].Value.ToString())+80;
+                    rectangle.Height = Convert.ToInt32(each.Cells[8].Value.ToString())+80;
                 }
             
             }
 
 
-            pictureBox2.Image = AcquireRectangleImage(pictureBox1.Image,rectangle);
+            Image Image = AcquireRectangleImage(pictureBox1.Image,rectangle);
+            Bitmap bitmap = DrawRectangleInPicture((Bitmap)Image,new Point(40,40),new Point(rectangle.Width-40, rectangle.Height - 40));
+            pictureBox2.Image = bitmap;
 
         }
 
@@ -146,7 +160,8 @@ namespace pcbaoi
         {
             asc.RenewControlRect(pictureBox1);
             panel6_Click(null, null);
-            asc.RenewControlRect(pictureBox1);
+
+
 
         }
 
@@ -167,5 +182,23 @@ namespace pcbaoi
             }
             return bmSmall;
         }
+        public static Bitmap DrawRectangleInPicture(Bitmap bmp, Point p0, Point p1)
+        {
+            if (bmp == null) return null;
+
+
+            Graphics g = Graphics.FromImage(bmp);
+
+            Brush brush = new SolidBrush(Color.Red);
+            Pen pen = new Pen(brush, 2);
+            pen.DashStyle = DashStyle.Solid;
+
+            g.DrawRectangle(pen, new Rectangle(p0.X, p0.Y, Math.Abs(p0.X - p1.X), Math.Abs(p0.Y - p1.Y)));
+
+            g.Dispose();
+
+            return bmp;
+        }
+
     }
 }

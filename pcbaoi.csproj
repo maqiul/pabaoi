@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -178,11 +178,23 @@
     <Compile Include="Ftp.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="JsonData.cs" />
+    <Compile Include="LightsourceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LightsourceForm.Designer.cs">
+      <DependentUpon>LightsourceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Motioncontrol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Motioncontrol.Designer.cs">
+      <DependentUpon>Motioncontrol.cs</DependentUpon>
     </Compile>
     <Compile Include="MysqlHelper.cs" />
     <Compile Include="Operatorselect.cs" />
@@ -301,8 +313,14 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LightsourceForm.resx">
+      <DependentUpon>LightsourceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Motioncontrol.resx">
+      <DependentUpon>Motioncontrol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Platmake.resx">
       <DependentUpon>Platmake.cs</DependentUpon>
