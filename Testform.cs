@@ -35,7 +35,18 @@ namespace pcbaoi
         {
             frontandside = "front";
             pictureBox1.Image = bigimage;
+            foreach (Control control in pictureBox1.Controls)
+            {
+                if (control is PictureBox)
+                {
+                    pictureBox1.Controls.Remove(control);
+                }
+            }            
             addpic();
+            asc.RenewControlRect(pictureBox1);
+            pictureBox1.Height = oldlastheight;
+
+            pictureBox1.Width = oldlastwidth;
 
 
 
@@ -53,25 +64,30 @@ namespace pcbaoi
                 }
             }
             addpic();
+            asc.RenewControlRect(pictureBox1);
+            pictureBox1.Height = oldlastheight;
+            pictureBox1.Width = oldlastwidth;
 
         }
         public void addpic() {
             oldlastheight = pictureBox1.Height;
             oldlastwidth = pictureBox1.Width;
-            pictureBox1.Height = pictureBox1.Image.Height;
-            pictureBox1.Width = pictureBox1.Image.Width;
+            float newx = (float)oldlastwidth / pictureBox1.Image.Width; //窗体宽度缩放比例
+            float newy = (float)oldlastheight / pictureBox1.Image.Height;//窗体高度缩放比例
             string selectall = string.Format("select * from operato where frontorside = '{0}'", frontandside);
             DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 PictureBox pictureBox = new PictureBox();
                 pictureBox.Name = dataTable.Rows[i]["outpicturename"].ToString();
-                pictureBox.Location = new Point(Convert.ToInt32(dataTable.Rows[i]["outstartx"].ToString()), Convert.ToInt32(dataTable.Rows[i]["outstarty"].ToString()));
-                pictureBox.Width = Convert.ToInt32(dataTable.Rows[i]["outwidth"].ToString());
-                pictureBox.Height = Convert.ToInt32(dataTable.Rows[i]["outheight"].ToString()); ;
+                pictureBox.Location = new Point((int)((int)dataTable.Rows[i]["outstartx"]* newx), (int)((int)dataTable.Rows[i]["outstarty"]*newy));
+                pictureBox.Width = (int)((int)dataTable.Rows[i]["outwidth"]*newx);
+                pictureBox.Height = (int)((int)dataTable.Rows[i]["outheight"] * newy); ;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.BackColor = Color.Transparent;
+                pictureBox.Anchor = AnchorStyles.Right;
                 pictureBox.Parent = pictureBox1;
+                pictureBox.Paint += picbox_Panit;
                 pictureBox.Click += click;
                 this.pictureBox1.Controls.Add(pictureBox);
                 int inum = dataGridView1.Rows.Count;
@@ -81,10 +97,10 @@ namespace pcbaoi
                 dataGridView1["Column3", inum].Value = "其他";
                 dataGridView1["Column4", inum].Value = "未判定";
                 dataGridView1["Column5", inum].Value = dataTable.Rows[i]["outpicturename"].ToString();
-                dataGridView1["Column6", inum].Value = dataTable.Rows[i]["outstartx"].ToString();
-                dataGridView1["Column7", inum].Value = dataTable.Rows[i]["outstarty"].ToString();
-                dataGridView1["Column8", inum].Value = dataTable.Rows[i]["outwidth"].ToString();
-                dataGridView1["Column9", inum].Value = dataTable.Rows[i]["outheight"].ToString();
+                dataGridView1["Column6", inum].Value = (int)((int)dataTable.Rows[i]["outstartx"] );
+                dataGridView1["Column7", inum].Value = (int)((int)dataTable.Rows[i]["outstarty"] );
+                dataGridView1["Column8", inum].Value = (int)((int)dataTable.Rows[i]["outwidth"] );
+                dataGridView1["Column9", inum].Value = (int)((int)dataTable.Rows[i]["outheight"] );
 
                 //MessageBox.Show(pictureBox.Parent.Name);
                 foreach (Control c in this.pictureBox1.Controls)
@@ -99,12 +115,14 @@ namespace pcbaoi
                 {
                     PictureBox pictureBox2 = new PictureBox();
                     pictureBox2.Name = dataTable.Rows[i]["intpicturename"].ToString();
-                    pictureBox2.Location = new Point(Convert.ToInt32(dataTable.Rows[i]["instartx"].ToString()), Convert.ToInt32(dataTable.Rows[i]["instarty"].ToString()));
-                    pictureBox2.Width = Convert.ToInt32(dataTable.Rows[i]["inwidth"].ToString());
-                    pictureBox2.Height = Convert.ToInt32(dataTable.Rows[i]["inheight"].ToString()); ;
+                    pictureBox2.Location = new Point((int)((int)dataTable.Rows[i]["instartx"]*newx), (int)((int)dataTable.Rows[i]["instarty"]*newy));
+                    pictureBox2.Width = (int)((int)dataTable.Rows[i]["inwidth"]*newx);
+                    pictureBox2.Height = (int)((int)dataTable.Rows[i]["inheight"]*newy) ;
                     pictureBox2.BorderStyle = BorderStyle.FixedSingle;
                     pictureBox2.BackColor = Color.Transparent;
+                    pictureBox2.Anchor = AnchorStyles.Right;
                     pictureBox2.Parent = pictureBox;
+                    pictureBox2.Paint += picbox_Panit;
                     pictureBox.Controls.Add(pictureBox2);
                     //MessageBox.Show(pictureBox.Parent.Name);
                     foreach (Control c in pictureBox.Controls)
@@ -118,9 +136,7 @@ namespace pcbaoi
                 }
 
             }
-            asc.RenewControlRect(pictureBox1);
-            pictureBox1.Height = oldlastheight;
-            pictureBox1.Width = oldlastwidth;
+
 
         }
         private void click(object sender,EventArgs e) {
@@ -131,7 +147,7 @@ namespace pcbaoi
                 if (each.Cells[4].Value.ToString() == pp.Name) {
                     each.DefaultCellStyle.BackColor = Color.Gray;
                     dataGridView1.FirstDisplayedScrollingRowIndex =Convert.ToInt32(each.Cells[4].Value.ToString())-1;
-                    rectangle.Location = new Point(Convert.ToInt32(each.Cells[5].Value.ToString())-40, Convert.ToInt32(each.Cells[6].Value.ToString())-40);
+                    rectangle.Location = new Point((int)each.Cells[5].Value-40, (int)each.Cells[6].Value-40);
                     rectangle.Width = Convert.ToInt32(each.Cells[7].Value.ToString())+80;
                     rectangle.Height = Convert.ToInt32(each.Cells[8].Value.ToString())+80;
                 }
@@ -148,6 +164,8 @@ namespace pcbaoi
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
         {
             asc.ControlAutoSize(pictureBox1);
+            PictureBox p = (PictureBox)sender;
+            p.Refresh();
 
         }
 
@@ -160,13 +178,6 @@ namespace pcbaoi
         {
             asc.RenewControlRect(pictureBox1);
             panel6_Click(null, null);
-
-
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
 
         }
         public static Image AcquireRectangleImage(Image source, Rectangle rect)
@@ -200,5 +211,19 @@ namespace pcbaoi
             return bmp;
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1(2);
+            form1.Show();
+            this.Hide();
+        }
+        private void picbox_Panit(object sender, PaintEventArgs e)
+        {
+            PictureBox p = (PictureBox)sender;
+            Pen pp = new Pen(Color.Yellow);
+            e.Graphics.DrawRectangle(pp, e.ClipRectangle.X, e.ClipRectangle.Y,
+ e.ClipRectangle.X + e.ClipRectangle.Width - 1,
+e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
+        }
     }
 }

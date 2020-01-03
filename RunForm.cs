@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using pcbaoi.Properties;
+using QTing.PLC;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,9 @@ namespace pcbaoi
         Snowflake snowflake = new Snowflake(2);
         string path;
         FileInfo fileInfonew;
+        string width;
+        string height;
+
         public RunForm()
         {
             InitializeComponent();
@@ -27,65 +31,64 @@ namespace pcbaoi
 
         private void button1_Click(object sender, EventArgs e)
         {
-            long i = snowflake.nextId();
-            CopyDir(@"f:\ftp\",@"f:\"+ i+"\\");
-            
-            
-            //本机要上传的目录的父目录
-            string localPath = @"F:\";
-            //要上传的目录名
-            string fileName = @i.ToString();
+            #region
+            //long i = snowflake.nextId();
+            //CopyDir(@"f:\ftp\",@"f:\"+ i+"\\");                       
+            ////本机要上传的目录的父目录
+            //string localPath = @"F:\";
+            ////要上传的目录名
+            //string fileName = @i.ToString();
+            //Ftp.UploadDirectory(localPath, fileName);
+            //JsonData<Pcb> jsonData = new JsonData<Pcb>();
+            //List<Result> results = new List<Result>();
+            //Snowflake snowflake2 = new Snowflake(3);
+            //Result result = new Result();
+            //result.Id =snowflake2.nextId().ToString() ;
+            //result.IsBack = 0;
+            //result.PcbId = i.ToString();
+            //result.Area = "";
+            //result.Region = "1855";
+            //result.NgType = "缺陷1";
+            //result.PartImagePath = "front.jpg";
+            //result.CreateTime = DateTime.Now;
+            //results.Add(result);
+            //Pcb pcb = new Pcb();
+            //pcb.Id = i.ToString();
+            //pcb.PcbNumber = "4";
+            //pcb.PcbName = "testpcb";
+            //pcb.PcbWidth = 123;
+            //pcb.PcbHeight = 123;
+            //pcb.PcbChildenNumber = 8;
+            //pcb.SurfaceNumber = 1;
+            //pcb.PcbPath = i.ToString();
+            //pcb.IsError = 1;
+            //pcb.CreateTime = DateTime.Now;
+            //pcb.results = results;
+            //jsonData.data = pcb;
+            //string jo = JsonConvert.SerializeObject(jsonData);
+            //var factory = new ConnectionFactory();
+            //factory.AutomaticRecoveryEnabled = true;
+            //factory.HostName = "192.168.31.157"; // RabbitMQ服务在本地运行
+            //factory.UserName = "admin"; // 用户名
+            //factory.Password = "admin"; // 密码
+            //factory.VirtualHost = "my_vhost";
 
-            Ftp.UploadDirectory(localPath, fileName);
-            JsonData<Pcb> jsonData = new JsonData<Pcb>();
-            List<Result> results = new List<Result>();
-            Snowflake snowflake2 = new Snowflake(3);
-            Result result = new Result();
-            result.Id =snowflake2.nextId().ToString() ;
-            result.IsBack = 0;
-            result.PcbId = i.ToString();
-            result.Area = "";
-            result.Region = "1855";
-            result.NgType = "缺陷1";
-            result.PartImagePath = "front.jpg";
-            result.CreateTime = DateTime.Now;
-            results.Add(result);
-            Pcb pcb = new Pcb();
-            pcb.Id = i.ToString();
-            pcb.PcbNumber = "4";
-            pcb.PcbName = "testpcb";
-            pcb.PcbWidth = 123;
-            pcb.PcbHeight = 123;
-            pcb.PcbChildenNumber = 8;
-            pcb.SurfaceNumber = 1;
-            pcb.PcbPath = i.ToString();
-            pcb.IsError = 1;
-            pcb.CreateTime = DateTime.Now;
-            pcb.results = results;
-            jsonData.data = pcb;
-            string jo = JsonConvert.SerializeObject(jsonData);
-            var factory = new ConnectionFactory();
-            factory.AutomaticRecoveryEnabled = true;
-            factory.HostName = "192.168.31.157"; // RabbitMQ服务在本地运行
-            factory.UserName = "admin"; // 用户名
-            factory.Password = "admin"; // 密码
-            factory.VirtualHost = "my_vhost";
+            //using (var connection = factory.CreateConnection())
+            //{
+            //    using (var channel = connection.CreateModel())
+            //    {
+            //        // 将消息标记为持久性。
+            //        var properties = channel.CreateBasicProperties();
+            //        properties.Persistent = true;
+            //        channel.QueueDeclare("work", true, false, false, null); // 创建一个名称为hello的消息队列
+            //        string message = jo; // 传递的消息内容
+            //        var body = Encoding.UTF8.GetBytes(message);
 
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    // 将消息标记为持久性。
-                    var properties = channel.CreateBasicProperties();
-                    properties.Persistent = true;
-                    channel.QueueDeclare("work", true, false, false, null); // 创建一个名称为hello的消息队列
-                    string message = jo; // 传递的消息内容
-                    var body = Encoding.UTF8.GetBytes(message);
-
-                    channel.BasicPublish("", "work", properties, body); // 开始传递
-                    //MessageBox.Show("已发送： {0}", message);
-                }
-            }
+            //        channel.BasicPublish("", "work", properties, body); // 开始传递
+            //        //MessageBox.Show("已发送： {0}", message);
+            //    }
+            //}
+            #endregion
 
 
         }
@@ -193,10 +196,78 @@ namespace pcbaoi
                     DataTable dataTable3 = SQLiteHelper.GetDataTable(zijibanfrontsql);
                     label8.Text = "子基板数:" + dataTable3.Rows.Count;
                 }
+            }
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1(2);
+            form1.Show();
+            this.Hide();
+        }
+        //plc发送拍摄张数
+        private void run(Point startpoint,int width,int height,string frontorside) {
+            //A面
+            if (frontorside == "side")
+            {
+                int startx = startpoint.X;
+                send(startx,2116);
+                int starty = startpoint.Y;
+                send(startx, 2118);
+                send(4,2134);
+                send(4,2135);
 
 
             }
+            //B面
+            else {
+                int startx = startpoint.X;
+                send(startx, 2120);
+                int starty = startpoint.Y;
+                send(startx, 2122);
+                send(4, 2136);
+                send(4, 2137);
+
+            }
+            
+
+             
+        }
+        private void send(int intvalue,int address) {
+            double value = Convert.ToDouble(intvalue.ToString());
+            int registerAddress = address;
+            byte[] receiveData = new byte[255];
+            if (registerAddress < 2133)
+            {
+                if (value > 0xffffffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+                byte[] writeValue = new byte[4];
+                value = value * 1000;
+                writeValue[0] = (byte)((value % Math.Pow(256, 2)) / 256);
+                writeValue[1] = (byte)((value % Math.Pow(256, 2)) % 256);
+                writeValue[2] = (byte)(value / Math.Pow(256, 3));
+                writeValue[3] = (byte)((value / Math.Pow(256, 2)) % 256);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
+            }
+            else
+            {
+                if (value > 0xffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+                byte[] writeValue = new byte[2];
+                writeValue[0] = (byte)(value / Math.Pow(256, 1));
+                writeValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
+            }
+
+
         }
     }
 }

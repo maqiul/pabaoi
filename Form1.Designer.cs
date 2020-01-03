@@ -334,8 +334,8 @@
             this.button12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button12.BackgroundImage")));
             this.button12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button12.FlatAppearance.BorderSize = 0;
-            this.button12.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button12.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button12.Location = new System.Drawing.Point(30, 778);
             this.button12.Name = "button12";
@@ -350,8 +350,8 @@
             this.button11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button11.BackgroundImage")));
             this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button11.FlatAppearance.BorderSize = 0;
-            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button11.Location = new System.Drawing.Point(30, 718);
             this.button11.Name = "button11";
@@ -378,8 +378,8 @@
             this.button10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button10.BackgroundImage")));
             this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button10.FlatAppearance.BorderSize = 0;
-            this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button10.Location = new System.Drawing.Point(30, 633);
             this.button10.Name = "button10";
@@ -393,8 +393,8 @@
             this.button9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button9.BackgroundImage")));
             this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button9.FlatAppearance.BorderSize = 0;
-            this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button9.Location = new System.Drawing.Point(30, 565);
             this.button9.Name = "button9";
@@ -408,8 +408,8 @@
             this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
             this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button8.FlatAppearance.BorderSize = 0;
-            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button8.Location = new System.Drawing.Point(30, 497);
             this.button8.Name = "button8";
@@ -424,8 +424,8 @@
             this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
             this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Location = new System.Drawing.Point(30, 433);
             this.button7.Name = "button7";
@@ -483,7 +483,7 @@
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.btnSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.btnSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Location = new System.Drawing.Point(30, 223);
             this.btnSearch.Name = "btnSearch";
@@ -987,11 +987,11 @@
             // pbMainImg
             // 
             this.pbMainImg.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.pbMainImg.Image = ((System.Drawing.Image)(resources.GetObject("pbMainImg.Image")));
+            this.pbMainImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbMainImg.Location = new System.Drawing.Point(0, 0);
             this.pbMainImg.Margin = new System.Windows.Forms.Padding(0);
             this.pbMainImg.Name = "pbMainImg";
-            this.pbMainImg.Size = new System.Drawing.Size(980, 795);
+            this.pbMainImg.Size = new System.Drawing.Size(979, 795);
             this.pbMainImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMainImg.TabIndex = 0;
             this.pbMainImg.TabStop = false;

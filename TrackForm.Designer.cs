@@ -35,7 +35,7 @@
             this.Widthtextbox = new System.Windows.Forms.TextBox();
             this.Speedtextbox = new System.Windows.Forms.TextBox();
             this.Widthtest = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.speedbt = new System.Windows.Forms.Button();
             this.Savebt = new System.Windows.Forms.Button();
             this.Canelbt = new System.Windows.Forms.Button();
             this.Titlepanel.SuspendLayout();
@@ -107,15 +107,17 @@
             this.Widthtest.TabIndex = 5;
             this.Widthtest.Text = "轨道宽度调整";
             this.Widthtest.UseVisualStyleBackColor = true;
+            this.Widthtest.Click += new System.EventHandler(this.Widthtest_Click);
             // 
-            // button1
+            // speedbt
             // 
-            this.button1.Location = new System.Drawing.Point(281, 203);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(88, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "皮带运动测试";
-            this.button1.UseVisualStyleBackColor = true;
+            this.speedbt.Location = new System.Drawing.Point(281, 203);
+            this.speedbt.Name = "speedbt";
+            this.speedbt.Size = new System.Drawing.Size(88, 23);
+            this.speedbt.TabIndex = 6;
+            this.speedbt.Text = "皮带运动测试";
+            this.speedbt.UseVisualStyleBackColor = true;
+            this.speedbt.Click += new System.EventHandler(this.button1_Click);
             // 
             // Savebt
             // 
@@ -144,7 +146,7 @@
             this.ClientSize = new System.Drawing.Size(500, 350);
             this.Controls.Add(this.Canelbt);
             this.Controls.Add(this.Savebt);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.speedbt);
             this.Controls.Add(this.Widthtest);
             this.Controls.Add(this.Speedtextbox);
             this.Controls.Add(this.Widthtextbox);
@@ -171,7 +173,7 @@
         private System.Windows.Forms.TextBox Widthtextbox;
         private System.Windows.Forms.TextBox Speedtextbox;
         private System.Windows.Forms.Button Widthtest;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button speedbt;
         private System.Windows.Forms.Button Savebt;
         private System.Windows.Forms.Button Canelbt;
     }

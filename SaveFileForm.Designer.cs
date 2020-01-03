@@ -113,6 +113,7 @@
             this.allpicpath.Size = new System.Drawing.Size(198, 21);
             this.allpicpath.TabIndex = 5;
             this.allpicpath.Click += new System.EventHandler(this.allpicpath_Click);
+            this.allpicpath.TextChanged += new System.EventHandler(this.allpicpath_TextChanged);
             this.allpicpath.MouseHover += new System.EventHandler(this.allpicpath_MouseHover);
             // 
             // fillpicpath
@@ -152,6 +153,7 @@
             this.Savebt.TabIndex = 9;
             this.Savebt.Text = "保存";
             this.Savebt.UseVisualStyleBackColor = true;
+            this.Savebt.Click += new System.EventHandler(this.Savebt_Click);
             // 
             // SaveFileForm
             // 

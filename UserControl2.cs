@@ -35,10 +35,13 @@ namespace pcbaoi
             {
                 e.Handled = true;
             }
-            else
-            {
-
+            if (textBox1.Text!=""&& Convert.ToInt32(textBox1.Text) > 100) {
+                textBox1.Text = "100";
+                textBox1.Select(textBox1.Text.Length,0);
+            
+            
             }
+
         }
 
 
@@ -57,6 +60,13 @@ namespace pcbaoi
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             if (textBox1.Text!="") {
+                if ( Convert.ToInt32(textBox1.Text) > 100)
+                {
+                    textBox1.Text = "100";
+                    textBox1.Select(textBox1.Text.Length, 0);
+
+
+                }
                 operatorselect.Percentageup = Convert.ToInt32(textBox1.Text);
                 operatorselect.Percentagedown = Convert.ToInt32(textBox2.Text);
                 if (MyEvent != null)

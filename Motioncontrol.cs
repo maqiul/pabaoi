@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QTing.PLC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -48,7 +49,27 @@ namespace pcbaoi
 
         private void canelbt_Click(object sender, EventArgs e)
         {
+            PLCController.Instance.CloseConnection();
             this.Close();
+        }
+
+        private void Restbt_Click(object sender, EventArgs e)
+        {
+
+
+        }
+        private void rest(){ 
+        
+        }
+
+        private void conn()
+        {
+
+            if (PLCController.Instance.Connection(IniFile.iniRead("PLC", "ip"), Convert.ToInt32(IniFile.iniRead("PLC", "port"))))
+                Console.WriteLine("连接成功");
+            else
+                MessageBox.Show("连接失败");
+
         }
     }
 }

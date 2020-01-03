@@ -11,6 +11,7 @@ using System.Threading;
 using pcbaoi.Properties;
 using pcbaoi.Tools;
 using Basler.Pylon;
+using QTing.PLC;
 
 namespace pcbaoi
 {
@@ -30,16 +31,10 @@ namespace pcbaoi
         Point centerpoint;
         int bignum = 0;
         int smallnum = 0;
-        bool issave = false;
-        int elementnum = 0;
-        //int marknum = 0;
         private PickBox pb = new PickBox();
         FileHandler filehandler;
         bool isSelected = false;
         Point mouseDownPoint;
-        PictureBox pictureBoxnew;
-        int lastwidth = 0;
-        int lastheight=0;
         int zijibannum = 0;
         List<PictureBox> pictureBoxes = new List<PictureBox>();
         int from;
@@ -94,7 +89,6 @@ namespace pcbaoi
             pMain.Show();
             drawlineact();
             
-            lastwidth = pbMainImg.Width;
             asc.RenewControlRect(pbMainImg);
             pictureBox2_Click(pbFrontImg, null);
             asc.RenewControlRect(pbMainImg);
@@ -105,8 +99,9 @@ namespace pcbaoi
                 tbPcbWidth.Text = dataTable.Rows[0]["badwidth"].ToString();
                 tbPcbLength.Text = dataTable.Rows[0]["badheight"].ToString();
             }
-            pbMainImg.Height = oldlastheight;
-            pbMainImg.Width = oldlastwidth;
+            //pbMainImg.Height = oldlastheight;
+            //pbMainImg.Width = oldlastwidth;
+            this.MouseWheel += PbMainImg_MouseWheel;
 
             pbMainImg.MouseWheel += PbMainImg_MouseWheel;
             this.MouseWheel += PbMainImg_MouseWheel;
@@ -117,27 +112,30 @@ namespace pcbaoi
         private void PbMainImg_MouseWheel(object sender, MouseEventArgs e)
         {
             int i = e.Delta * SystemInformation.MouseWheelScrollLines / 5;
-            //double num = 1.1;
-            //Console.WriteLine(i);
-            //foreach (Control control in pictureBox1.Controls)
-            //{
-            //    control.Location = new Point(Convert.ToInt32(control.Location.X * num), Convert.ToInt32(control.Location.Y * num));
-            //    control.Width = Convert.ToInt32(control.Width * num);
-            //    control.Height = Convert.ToInt32(control.Height * num);
-            //}
-            //foreach (Control control in pictureBox1.Controls)
-            //{
-            //    control.Location = new Point(Location.X +i/2, Location.Y +i/2);
-            //    control.Width = control.Width +i;
-            //    control.Height = control.Height +i;
-            //}
-            pbMainImg.Width = pbMainImg.Width + i;//增加picturebox的宽度
-            pbMainImg.Height = pbMainImg.Height + i;
-            // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
-            pbMainImg.Left = pbMainImg.Left - i / 2;//使picturebox的中心位于窗体的中心
-            pbMainImg.Top = pbMainImg.Top - i / 2;//进而缩放时图片也位于窗体的中心
-            oldlastheight = pbMainImg.Height;
-            oldlastwidth = pbMainImg.Width;
+            if (pbMainImg.Height + i > 0)
+            {
+                pbMainImg.Width = pbMainImg.Width + i;//增加picturebox的宽度
+                pbMainImg.Height = pbMainImg.Height + i;
+                // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
+                pbMainImg.Left = pbMainImg.Left - i / 2;//使picturebox的中心位于窗体的中心
+                pbMainImg.Top = pbMainImg.Top - i / 2;//进而缩放时图片也位于窗体的中心
+                oldlastheight = pbMainImg.Height;
+                oldlastwidth = pbMainImg.Width;
+            }
+            //           if (pbMainImg.Height + i > 0)
+            //           {
+            //               //pbMainImg.Width =(int)(pbMainImg.Width *1.25);//增加picturebox的宽度
+            //               //pbMainImg.Height = (int)(pbMainImg.Height *1.25);
+            //               pbMainImg.Width += i;
+            //               pbMainImg.Height += i;
+            //               PropertyInfo pInfo = pbMainImg.GetType().GetProperty("ImageRectangle", BindingFlags.Instance |
+            //BindingFlags.NonPublic);
+            //               Rectangle rect = (Rectangle)pInfo.GetValue(pbMainImg, null);
+            //               pbMainImg.Width = rect.Width;
+            //               pbMainImg.Height = rect.Height;
+
+            //           }
+
 
         }
 
@@ -206,46 +204,6 @@ namespace pcbaoi
 
             }
             else {
-                //using (Graphics gc = pictureBox1.CreateGraphics())
-                //using (Pen pen = new Pen(Color.Green))
-                //{
-                //    //设置画笔的宽度
-                //    pen.Width = 1;
-                //    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-                //    RectangleF rect = new RectangleF();
-                //    rect.Location = pictureBox1.Location;
-                //    rect.Size = pictureBox1.Size;
-                //    //确保在画图区域
-                //    pictureBox1.Refresh();
-                //    //画竖线
-                //    gc.DrawLine(pen, 0, 0, 0, 0);
-                //    //画横线
-                //    gc.DrawLine(pen, 0, 0, 0, 0);
-                //}
-                ////this.pictureBox1.Location = new Point(pictureBox1.Location.X + 0, pictureBox1.Location.Y - 200);
-                //using (Graphics gc = pictureBox1.CreateGraphics())
-                //using (Pen pen = new Pen(Color.Green))
-                //{
-                //    //设置画笔的宽度
-                //    pen.Width = 1;
-                //    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-                //    RectangleF rect = new RectangleF();
-                //    rect.Location = pictureBox1.Location;
-                //    rect.Size = pictureBox1.Size;
-                //    //确保在画图区域
-                //    if (rect.Contains(pictureBox1.Location))
-                //    {
-                //        pictureBox1.Refresh();
-                //        //画竖线
-                //        gc.DrawLine(pen, e.X, 0, e.X, rect.Bottom);
-                //        //画横线
-                //        gc.DrawLine(pen, 0, e.Y, rect.Right, e.Y);
-
-
-                //    }
-                //}
-                //showponit(e.X, e.Y);
-                //centerpoint = new Point(e.X, e.Y);
                 drawlineact();
 
             }
@@ -277,6 +235,8 @@ namespace pcbaoi
         {
             if (isSelected && IsMouseInPanel())
             {
+                PictureBox p = (PictureBox)sender;
+                p.Refresh();
                 this.pbMainImg.Left = this.pbMainImg.Left + (Cursor.Position.X - mouseDownPoint.X);
                 this.pbMainImg.Top = this.pbMainImg.Top + (Cursor.Position.Y - mouseDownPoint.Y);
                 mouseDownPoint.X = Cursor.Position.X;
@@ -536,7 +496,7 @@ namespace pcbaoi
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            issave = true;
+            //issave = true;
         }
 
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
@@ -712,7 +672,8 @@ namespace pcbaoi
             }
             
             drawpicboxall();
-
+            pbMainImg.Height = oldlastheight;
+            pbMainImg.Width = oldlastwidth;
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
@@ -732,6 +693,8 @@ namespace pcbaoi
             tbFrontOrBack.Text = "反面";
             Settings.Default.frontorside = "side";
             drawpicboxall();
+            pbMainImg.Height = oldlastheight;
+            pbMainImg.Width = oldlastwidth;
 
         }
 
@@ -755,6 +718,7 @@ namespace pcbaoi
             pictureBox.Parent = pbMainImg;
             pictureBox.MouseClick += pictureboxclick;
             pictureBox.PreviewKeyDown += picboxkey;
+            pictureBox.Paint += picbox_Panit;
             pictureBox.BringToFront();
             this.pbMainImg.Controls.Add(pictureBox);
 
@@ -783,6 +747,7 @@ namespace pcbaoi
             //rectangle.Width = pictureBoxnew.Width;
             //rectangle.Height = pictureBoxnew.Height;
             //Console.WriteLine(pictureBoxnew.Location);
+            pbMainImg.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pbMainImg);
             drawlineact();
@@ -797,6 +762,8 @@ namespace pcbaoi
             //rectangle.Location = pictureBoxnew.Location;
             //rectangle.Width = pictureBoxnew.Width;
             //rectangle.Height = pictureBoxnew.Height;
+            
+            pbMainImg.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pbMainImg);
             drawlineact();
@@ -827,6 +794,14 @@ namespace pcbaoi
             }
             else
             {
+                using (Graphics gc = p.CreateGraphics())
+                {
+                    Rectangle rect = new Rectangle();
+                    rect.Location = new Point(0, 0);
+                    rect.Size = new Size(p.Width - 3, p.Height - 3);
+                    gc.DrawRectangle(pp, rect);
+
+                }
                 if (pictureBoxes.Count > 0)
                 {
                     foreach (PictureBox pictureBox in pictureBoxes)
@@ -834,7 +809,12 @@ namespace pcbaoi
                         pictureBox.Refresh();
                     }
                     pictureBoxes.Clear();
+
+
                 }
+
+                pictureBoxes.Add(p);
+                p.Focus();
                 controlnew = p;
 
 
@@ -876,6 +856,7 @@ namespace pcbaoi
                                 c.Dispose();
                                 GC.Collect();
                                 string sql = string.Format("delete from zijiban where zijiname = '{0}'",c.Name);
+
                             }
 
 
@@ -925,6 +906,10 @@ namespace pcbaoi
 
         private void button3_Click(object sender, EventArgs e)
         {
+            oldlastheight = pbMainImg.Height;
+            oldlastwidth = pbMainImg.Width;
+            pbMainImg.Height = pbMainImg.Image.Height;
+            pbMainImg.Width = pbMainImg.Image.Width;
             string selectall = "select zijiname from zijiban ";
             DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
             for (int i=0;i<dataTable.Rows.Count;i++) {
@@ -940,6 +925,8 @@ namespace pcbaoi
 
             
             }
+            pbMainImg.Height = oldlastheight;
+            pbMainImg.Width = oldlastwidth;
             MessageBox.Show("保存成功");
 
 
@@ -982,6 +969,11 @@ namespace pcbaoi
             this.Hide();
         }
         private void drawpicboxall() {
+//            PropertyInfo pInfo = pbMainImg.GetType().GetProperty("ImageRectangle", BindingFlags.Instance |
+//BindingFlags.NonPublic);
+//            Rectangle rect = (Rectangle)pInfo.GetValue(pbMainImg, null);
+//            pbMainImg.Width = rect.Width;
+//            pbMainImg.Height = rect.Height;
             oldlastheight = pbMainImg.Height;
             oldlastwidth = pbMainImg.Width;
             pbMainImg.Height = pbMainImg.Image.Height;
@@ -997,6 +989,7 @@ namespace pcbaoi
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.BackColor = Color.Transparent;
                 pictureBox.Parent = pbMainImg;
+                pictureBox.Paint += otherpicbox_Panit;
                 this.pbMainImg.Controls.Add(pictureBox);
                 //MessageBox.Show(pictureBox.Parent.Name);
                 foreach (Control c in this.pbMainImg.Controls)
@@ -1016,7 +1009,9 @@ namespace pcbaoi
                     pictureBox2.BorderStyle = BorderStyle.FixedSingle;
                     pictureBox2.BackColor = Color.Transparent;
                     pictureBox2.Parent = pictureBox;
+                    pictureBox2.Paint += otherpicbox_Panit;
                     pictureBox.Controls.Add(pictureBox2);
+
                     //MessageBox.Show(pictureBox.Parent.Name);
                     foreach (Control c in pictureBox.Controls)
                     {
@@ -1040,26 +1035,19 @@ namespace pcbaoi
                 pictureBox.Height = Convert.ToInt32(dataTable2.Rows[i]["height"].ToString()); ;
                 pictureBox.BorderStyle = BorderStyle.FixedSingle;
                 pictureBox.BackColor = Color.Transparent;
+                pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
+                pictureBox.Move += new EventHandler(pictureboxmove);
+                pictureBox.MouseClick += pictureboxclick;
+                pictureBox.PreviewKeyDown += picboxkey;
+                pictureBox.Paint += picbox_Panit;
                 pictureBox.Parent = pbMainImg;
                 this.pbMainImg.Controls.Add(pictureBox);
                 //MessageBox.Show(pictureBox.Parent.Name);
-                foreach (Control c in this.pbMainImg.Controls)
-                {
-                    if (c.Name == pictureBox.Name)
-                    {
-                        c.BringToFront();
-                    }
 
-                }
                 pb.WireControl(pictureBox);
                 controlnew = pictureBox;
                 zijibannum = Convert.ToInt32(dataTable2.Rows[i]["id"].ToString());
-
-
             }
-
-
-
         }
 
         private void button11_Click_1(object sender, EventArgs e)
@@ -1091,6 +1079,31 @@ namespace pcbaoi
         {
             SaveFileForm saveFileForm = new SaveFileForm();
             saveFileForm.ShowDialog();
+        }
+        private void picbox_Panit(object sender, PaintEventArgs e) {
+            PictureBox p = (PictureBox)sender;
+            Pen pp = new Pen(Color.Yellow);
+            e.Graphics.DrawRectangle(pp, e.ClipRectangle.X, e.ClipRectangle.Y,
+ e.ClipRectangle.X + e.ClipRectangle.Width - 1,
+e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
+        }
+        private void otherpicbox_Panit(object sender, PaintEventArgs e)
+        {
+            PictureBox p = (PictureBox)sender;
+            Pen pp = new Pen(Color.FromArgb(0, 235, 6));
+            e.Graphics.DrawRectangle(pp, e.ClipRectangle.X, e.ClipRectangle.Y,
+ e.ClipRectangle.X + e.ClipRectangle.Width - 1,
+e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
+        }
+
+        private void conn()
+        {
+
+            if (PLCController.Instance.Connection(IniFile.iniRead("PLC", "ip"), Convert.ToInt32(IniFile.iniRead("PLC", "port"))))
+                Console.WriteLine("连接成功");
+            else
+                MessageBox.Show("连接失败");
+
         }
     }
 }

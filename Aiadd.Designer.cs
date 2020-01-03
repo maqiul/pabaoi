@@ -31,6 +31,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.configbt = new System.Windows.Forms.Button();
+            this.weightbt = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,6 +46,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.textBox2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.configbt, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.weightbt, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -78,6 +82,26 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "置信度";
             // 
+            // configbt
+            // 
+            this.configbt.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.configbt.Location = new System.Drawing.Point(19, 12);
+            this.configbt.Name = "configbt";
+            this.configbt.Size = new System.Drawing.Size(86, 23);
+            this.configbt.TabIndex = 5;
+            this.configbt.Text = "调用配置文件";
+            this.configbt.UseVisualStyleBackColor = true;
+            // 
+            // weightbt
+            // 
+            this.weightbt.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.weightbt.Location = new System.Drawing.Point(140, 12);
+            this.weightbt.Name = "weightbt";
+            this.weightbt.Size = new System.Drawing.Size(88, 23);
+            this.weightbt.TabIndex = 6;
+            this.weightbt.Text = "调用权重文件";
+            this.weightbt.UseVisualStyleBackColor = true;
+            // 
             // Aiadd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -97,5 +121,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button configbt;
+        private System.Windows.Forms.Button weightbt;
     }
 }
