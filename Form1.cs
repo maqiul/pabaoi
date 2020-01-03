@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using pcbaoi.Properties;
+using pcbaoi.Tools;
+using Basler.Pylon;
 
 namespace pcbaoi
 {
@@ -46,6 +48,12 @@ namespace pcbaoi
         AutoSizeFormClass asc = new AutoSizeFormClass();
         Control controlnew;
 
+        void OnImageGrabbed(Object sender, ImageGrabbedEventArgs e)
+        {
+      
+        }
+
+
         public Form1(int i)
         {
 
@@ -60,6 +68,10 @@ namespace pcbaoi
             from = i;
             //hidebutton();
             //asc.Initialize(this);
+            BaslerCamera aa = new BaslerCamera();
+            if (aa.RunCamera("正面", OnImageGrabbed) == 0) {
+                MessageBox.Show("打开相机失败");
+            }
 
         }
 
@@ -96,8 +108,8 @@ namespace pcbaoi
             pbMainImg.Height = oldlastheight;
             pbMainImg.Width = oldlastwidth;
 
-
-
+            pbMainImg.MouseWheel += PbMainImg_MouseWheel;
+            this.MouseWheel += PbMainImg_MouseWheel;
 
 
         }
