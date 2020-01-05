@@ -141,17 +141,14 @@ namespace pcbaoi
         public void drawpic() {
             using (Graphics gc = pictureBox1.CreateGraphics()) {
                 Pen pen1 = new Pen(Color.Red);
-
                 //设置画笔的宽度
                 pen1.Width = 2;
                 pen1.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                 Pen pen2 = new Pen(Color.Green);
-
                 //设置画笔的宽度
                 pen2.Width = 2;
                 pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                 Pen pen3 = new Pen(Color.Blue);
-
                 //设置画笔的宽度
                 pen3.Width = 2;
                 pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
@@ -201,9 +198,7 @@ namespace pcbaoi
         public float getnum( int value) {
             float d = (float)value / 255;
             return 1 - d * d;
-        
-        
-        
+                      
         }
 
         private void rangeTrackBarControl1_MouseHover(object sender, EventArgs e)

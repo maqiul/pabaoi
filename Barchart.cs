@@ -88,7 +88,12 @@ namespace pcbaoi
 
         private void Barchart_Paint(object sender, PaintEventArgs e)
         {
-            
+            //draw();
+        }
+
+        private void Barchart_Load(object sender, EventArgs e)
+        {
+            draw();
         }
     }
 }

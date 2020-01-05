@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,12 +25,14 @@ namespace pcbaoi
         Operatorselect useroperatoe = new Operatorselect();
         int oldlastwidth = 0;
         int oldlastheight = 0;
+        private bool pulleyStop = false;
+        private bool pulleySearchStop = true;
 
         public Platmake(Image image)
         {
             InitializeComponent();
             pictureBox1.Image = image;
-            pictureBox1.MouseWheel += pictureBox1_MouseWheel;
+            this.MouseWheel += pictureBox1_MouseWheel;
             asc.RenewControlRect(pictureBox1);
             addnum();
             //picturestart();
@@ -40,19 +43,22 @@ namespace pcbaoi
             operatorselect1 = new Operatorselect();
             AlgorithmSelect algorithmSelect = new AlgorithmSelect();
             algorithmSelect.ShowDialog();
-            if (algorithmSelect.DialogResult == DialogResult.OK) {
+            if (algorithmSelect.DialogResult == DialogResult.OK)
+            {
                 Algorithmtype algorithmtype = algorithmSelect.Tag as Algorithmtype;
                 //userControl1.MyEvent += usercontroler1_Myevent;
                 //panel7.Controls.Add(userControl1);
-                foreach (Control control in panel7.Controls) {
-                    if (control is UserControl1) {
-                        panel7.Controls.Remove(control);                                   
+                foreach (Control control in panel7.Controls)
+                {
+                    if (control is UserControl1)
+                    {
+                        panel7.Controls.Remove(control);
                     }
-                               
+
                 }
                 int i = dataGridView1.Rows.Count;
                 dataGridView1.Rows.Add();
-                dataGridView1["Column1", i].Value = algorithmtype.Typename+addpicturebox;
+                dataGridView1["Column1", i].Value = algorithmtype.Typename + addpicturebox;
                 dataGridView1["Column2", i].Value = (addpicturebox + 1).ToString();
                 dataGridView1["Column3", i].Value = algorithmtype.Owmername;
 
@@ -88,9 +94,10 @@ namespace pcbaoi
                 pb.WireControl(pictureBox);
                 pb.m_control = pictureBox;
                 thiscontrol = pictureBox;
-                if (algorithmtype.Typename == "BAD MARK" || algorithmtype.Typename == "MARK") {
+                if (algorithmtype.Typename == "BAD MARK" || algorithmtype.Typename == "MARK")
+                {
                     PictureBox littlepicturebox = new PictureBox();
-                    littlepicturebox.Name = pictureBox.Name+"littlebox"+addpicturebox;
+                    littlepicturebox.Name = pictureBox.Name + "littlebox" + addpicturebox;
                     littlepicturebox.Location = new Point(15, 15);
                     littlepicturebox.Width = 40;
                     littlepicturebox.Height = 40;
@@ -129,7 +136,7 @@ namespace pcbaoi
                 dataGridView1["Column4", i].Value = operatorselect1;
                 panel7.Controls.Add(userControl1);
                 dataGridView1.CurrentCell = dataGridView1[0, i];
-                
+
 
 
             }
@@ -213,12 +220,14 @@ namespace pcbaoi
 
 
                     }
-                    foreach (Control control1 in panel7.Controls) {
-                        if (control1 is UserControl1) {
+                    foreach (Control control1 in panel7.Controls)
+                    {
+                        if (control1 is UserControl1)
+                        {
                             panel7.Controls.Remove(control1);
-                        
+
                         }
-                                       
+
                     }
                     UserControl1 userControl1 = new UserControl1(dataGridView1.CurrentRow.Cells[3].Value);
                     userControl1.MyEvent += updatedatagrade;
@@ -228,9 +237,10 @@ namespace pcbaoi
                 }
 
             }
-            catch(Exception ex) { 
-            
-            
+            catch (Exception ex)
+            {
+
+
             }
 
 
@@ -260,7 +270,7 @@ namespace pcbaoi
             Form1 form1 = new Form1(2);
             form1.Show();
             this.Hide();
-            
+
         }
 
         private bool IsMouseInPanel()
@@ -277,25 +287,62 @@ namespace pcbaoi
                 return false;
             }
         }
-        /// <summary>
-        /// 放大，缩小图片
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            int i = e.Delta * SystemInformation.MouseWheelScrollLines / 5;
-            if (pictureBox1.Height + i > 0) {
+
+            //让滑轮标识变成滚动
+            pulleyStop = true;
+            //如果是
+            if (pulleySearchStop)
+            {
+                //让滑轮停止搜索
+                pulleySearchStop = false;
+                //触发方法
+                PulleyPaging(e.Delta);
+            }
+
+
+        }
+
+        private async void PulleyPaging(int i)
+        {
+            await Task.Run(() =>
+            {
+                //循环判断pulleyStop，
+                while (pulleyStop)
+                {
+                    //让滑轮标识变得不在滚动，然后隔一段时间再检测
+                    pulleyStop = false;
+                    //暂停设置的时间，然后重新检测滑轮是否停止滚动
+                    Thread.Sleep(100);
+                }
+            });
+
+
+            //这里可以写你要执行的代码
+            if (i > 0)
+            {
+                i = 72;
+            }
+            else
+            {
+                i = -72;
+            }
+
+            if (pictureBox1.Height + i > 300)
+            {
                 pictureBox1.Width = pictureBox1.Width + i;//增加picturebox的宽度
                 pictureBox1.Height = pictureBox1.Height + i;
                 // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
                 pictureBox1.Left = pictureBox1.Left - i / 2;//使picturebox的中心位于窗体的中心
                 pictureBox1.Top = pictureBox1.Top - i / 2;//进而缩放时图片也位于窗体的中心
+                //pbMainImg.Location = new Point(pbMainImg.Location.X- i / 2, pbMainImg.Location.Y - i / 2);
+                oldlastheight = pictureBox1.Height;
+                oldlastwidth = pictureBox1.Width;
             }
 
-
-
-
+            //让滑轮变得可以触发方法
+            pulleySearchStop = true;
 
         }
 
@@ -340,16 +387,17 @@ namespace pcbaoi
             pictureBox1.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
-            
+
         }
         private void pictureboxsizechange(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
-            
+
         }
-        void updatedatagrade(object sender,EventArgs e) {
+        void updatedatagrade(object sender, EventArgs e)
+        {
             Operatorselect operatorselect = (Operatorselect)sender;
             //operatorselect1 = operatorselect;
             dataGridView1.CurrentRow.Cells[3].Value = operatorselect;
@@ -363,38 +411,43 @@ namespace pcbaoi
             oldlastwidth = pictureBox1.Width;
             pictureBox1.Height = pictureBox1.Image.Height;
             pictureBox1.Width = pictureBox1.Image.Width;
-            for (int i = 0; i < dataGridView1.Rows.Count; i++) {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
                 string operatonameall = dataGridView1.Rows[i].Cells[0].Value.ToString();
                 string outpicturename = dataGridView1.Rows[i].Cells[1].Value.ToString();
                 string parent = dataGridView1.Rows[i].Cells[2].Value.ToString();
                 Operatorselect insertoperatorselect = (Operatorselect)dataGridView1.Rows[i].Cells[3].Value;
-                int outstartx=0;
-                int outstarty=0;
-                int outheight=0;
-                int outwidth=0;
-                string inpicturename ="";
-                int instartx =0;
-                int instarty =0;
-                int inheight =0;
-                int inwidth =0;
-                foreach (Control control in pictureBox1.Controls) {
+                int outstartx = 0;
+                int outstarty = 0;
+                int outheight = 0;
+                int outwidth = 0;
+                string inpicturename = "";
+                int instartx = 0;
+                int instarty = 0;
+                int inheight = 0;
+                int inwidth = 0;
+                foreach (Control control in pictureBox1.Controls)
+                {
 
-                    if (control.Name == outpicturename) {
+                    if (control.Name == outpicturename)
+                    {
                         outstartx = control.Location.X;
                         outstarty = control.Location.Y;
                         outheight = control.Height;
                         outwidth = control.Width;
-                        foreach (Control control1 in control.Controls) {
-                            if (control1 is PictureBox) {
+                        foreach (Control control1 in control.Controls)
+                        {
+                            if (control1 is PictureBox)
+                            {
                                 inpicturename = control1.Name;
                                 instartx = control1.Location.X;
                                 instarty = control1.Location.Y;
                                 inheight = control1.Height;
                                 inwidth = control1.Width;
-                            }                                                                     
+                            }
                         }
 
-                    }                               
+                    }
                 }
                 string selectsql = string.Format("select* from operato where operatonameall = '{0}'", operatonameall);
                 DataTable selectnum = SQLiteHelper.GetDataTable(selectsql);
@@ -404,20 +457,23 @@ namespace pcbaoi
                     int num = SQLiteHelper.ExecuteSql(insertsql);
 
                 }
-                else {
+                else
+                {
                     string updatesql = string.Format("update operato set outpicturename='{0}',outstartx='{1}',outstarty='{2}',outheight='{3}',outwidth='{4}',intpicturename='{5}',instartx='{6}',instarty='{7}',inheight='{8}',inwidth='{9}',parent='{10}',algorithm='{11}',operatorname='{12}',confidence='{13}',percentageup='{14}',percentagedown='{15}',codetype='{16}',luminanceon='{17}',luminancedown='{18}',rednumon='{19}',rednumdown='{20}',greennumon='{21}',greennumdown='{22}',bluenumon='{23}',bluenumdown='{24}',frontorside='{25}' where operatonameall = '{26}'", outpicturename, outstartx, outstarty, outheight, outwidth, inpicturename, instartx, instarty, inheight, inwidth, parent, insertoperatorselect.Algorithm, insertoperatorselect.Operatorname, insertoperatorselect.Confidence, insertoperatorselect.Percentageup, insertoperatorselect.Rednumdown, insertoperatorselect.Codetype, insertoperatorselect.Luminanceon, insertoperatorselect.Luminancedown, insertoperatorselect.Rednumon, insertoperatorselect.Rednumdown, insertoperatorselect.Greennumon, insertoperatorselect.Greennumdown, insertoperatorselect.Bluenumon, insertoperatorselect.Bluenumdown, Settings.Default.frontorside, operatonameall);
                     SQLiteHelper.ExecuteSql(updatesql);
-                }                
+                }
             }
             pictureBox1.Height = oldlastheight;
             pictureBox1.Width = oldlastwidth;
         }
-        private void addnum() {
+        private void addnum()
+        {
             string selectsql = "select id from operato order by id desc";
             DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
-            if (dataTable.Rows.Count > 0) {
+            if (dataTable.Rows.Count > 0)
+            {
                 addpicturebox = Convert.ToInt32(dataTable.Rows[0]["id"].ToString());
-           
+
             }
 
 

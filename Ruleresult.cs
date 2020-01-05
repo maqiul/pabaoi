@@ -12,13 +12,14 @@ namespace pcbaoi
 {
     public partial class Ruleresult : Form
     {
-        public Ruleresult(Point startpoint,Point endpoint)
+        public Ruleresult(Point startpoint,Point endpoint, float newx,float newy)
         {
             InitializeComponent();
             textBox1.Text = "X " + startpoint.X + " ; " + "Y " + startpoint.Y;
             textBox2.Text = "X " + endpoint.X + " ; " + "Y " + endpoint.Y;
-            label4.Text = "长度 "+(endpoint.Y - startpoint.Y).ToString();
-            label5.Text = "宽度 "+ (endpoint.X - startpoint.X).ToString();
+            
+            label4.Text = "长度 "+(Math.Abs(endpoint.Y - startpoint.Y)*newy).ToString();
+            label5.Text = "宽度 "+ (Math.Abs(endpoint.X - startpoint.X)*newx).ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)

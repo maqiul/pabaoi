@@ -42,7 +42,8 @@ namespace pcbaoi
         int oldlastheight = 0;
         AutoSizeFormClass asc = new AutoSizeFormClass();
         Control controlnew;
-
+        bool pulleyStop =false;
+        bool pulleySearchStop = true;
         void OnImageGrabbed(Object sender, ImageGrabbedEventArgs e)
         {
       
@@ -111,35 +112,62 @@ namespace pcbaoi
 
         private void PbMainImg_MouseWheel(object sender, MouseEventArgs e)
         {
-            int i = e.Delta * SystemInformation.MouseWheelScrollLines / 5;
-            if (pbMainImg.Height + i > 0)
+
+            //让滑轮标识变成滚动
+            pulleyStop = true;
+            //如果是
+            if (pulleySearchStop)
+            {
+                //让滑轮停止搜索
+                pulleySearchStop = false;
+                //触发方法
+                PulleyPaging(e.Delta);
+            }
+
+
+        }
+
+        private async void PulleyPaging( int i)
+        {
+            await Task.Run(() =>
+            {
+                //循环判断pulleyStop，
+                while (pulleyStop)
+                {
+                    //让滑轮标识变得不在滚动，然后隔一段时间再检测
+                    pulleyStop = false;
+                    //暂停设置的时间，然后重新检测滑轮是否停止滚动
+                    Thread.Sleep(100);
+                }
+            });
+
+
+            //这里可以写你要执行的代码
+            if (i > 0) {
+                i = 72;
+            }
+            else {
+                i = -72;            
+            }
+
+            if (pbMainImg.Height + i > 300)
             {
                 pbMainImg.Width = pbMainImg.Width + i;//增加picturebox的宽度
                 pbMainImg.Height = pbMainImg.Height + i;
                 // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
                 pbMainImg.Left = pbMainImg.Left - i / 2;//使picturebox的中心位于窗体的中心
                 pbMainImg.Top = pbMainImg.Top - i / 2;//进而缩放时图片也位于窗体的中心
+                //pbMainImg.Location = new Point(pbMainImg.Location.X- i / 2, pbMainImg.Location.Y - i / 2);
                 oldlastheight = pbMainImg.Height;
                 oldlastwidth = pbMainImg.Width;
             }
-            //           if (pbMainImg.Height + i > 0)
-            //           {
-            //               //pbMainImg.Width =(int)(pbMainImg.Width *1.25);//增加picturebox的宽度
-            //               //pbMainImg.Height = (int)(pbMainImg.Height *1.25);
-            //               pbMainImg.Width += i;
-            //               pbMainImg.Height += i;
-            //               PropertyInfo pInfo = pbMainImg.GetType().GetProperty("ImageRectangle", BindingFlags.Instance |
-            //BindingFlags.NonPublic);
-            //               Rectangle rect = (Rectangle)pInfo.GetValue(pbMainImg, null);
-            //               pbMainImg.Width = rect.Width;
-            //               pbMainImg.Height = rect.Height;
 
-            //           }
-
+            //让滑轮变得可以触发方法
+            pulleySearchStop = true;
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+            private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(Settings.Default.path);
         }
@@ -175,7 +203,9 @@ namespace pcbaoi
                 else {
                     endpoint = e.Location;
                     //MessageBox.Show("x:"+(endpoint.X - startpoint.X).ToString()+ "  y:" + (endpoint.Y - startpoint.Y).ToString());
-                    Ruleresult ruleresult = new Ruleresult(startpoint,endpoint);
+                    float newx =  (float)pbMainImg.Image.Width/ (float)pbMainImg.Width;
+                    float newy = (float)pbMainImg.Image.Height / (float)pbMainImg.Height;
+                    Ruleresult ruleresult = new Ruleresult(startpoint,endpoint,newx,newy);
                     ruleresult.ShowDialog();
                     checknum = 0;
                     drawline = false;
@@ -241,7 +271,7 @@ namespace pcbaoi
                 this.pbMainImg.Top = this.pbMainImg.Top + (Cursor.Position.Y - mouseDownPoint.Y);
                 mouseDownPoint.X = Cursor.Position.X;
                 mouseDownPoint.Y = Cursor.Position.Y;
-                //drawlineact();
+                drawlineact();
             }
             if (isrule && drawline) {
                 using (Graphics gc = pbMainImg.CreateGraphics())
@@ -547,39 +577,7 @@ namespace pcbaoi
                 return false;
             }
         }
-        /// <summary>
-        /// 放大，缩小图片
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
-        {
-            int i = e.Delta * SystemInformation.MouseWheelScrollLines / 5;
-            //double num = 1.1;
-            //Console.WriteLine(i);
-            //foreach (Control control in pictureBox1.Controls)
-            //{
-            //    control.Location = new Point(Convert.ToInt32(control.Location.X * num), Convert.ToInt32(control.Location.Y * num));
-            //    control.Width = Convert.ToInt32(control.Width * num);
-            //    control.Height = Convert.ToInt32(control.Height * num);
-            //}
-            //foreach (Control control in pictureBox1.Controls)
-            //{
-            //    control.Location = new Point(Location.X +i/2, Location.Y +i/2);
-            //    control.Width = control.Width +i;
-            //    control.Height = control.Height +i;
-            //}
-            pbMainImg.Width = pbMainImg.Width +i;//增加picturebox的宽度
-            pbMainImg.Height = pbMainImg.Height+i;
-            // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
-            pbMainImg.Left = pbMainImg.Left - i/2;//使picturebox的中心位于窗体的中心
-            pbMainImg.Top = pbMainImg.Top -i / 2;//进而缩放时图片也位于窗体的中心
-            oldlastheight = pbMainImg.Height;
-            oldlastwidth = pbMainImg.Width;
 
-
-
-        }
         private void drawlineact() {
             //using (Graphics gc = panel7.CreateGraphics())
             //using (Pen pen = new Pen(Color.Green))
@@ -602,8 +600,7 @@ namespace pcbaoi
 
             //    }
             //}
-            Console.WriteLine(pbMainImg.Location);
-            showponit((pbMainImg.Width- pbMainImg.Location.X*2) /2 , (pbMainImg.Height - pbMainImg.Location.Y*2) / 2);
+            showponit((pbMainImg.Width- pbMainImg.Left*2) /2, (pbMainImg.Height - pbMainImg.Top*2) / 2 );
             //centerpoint = new Point((pictureBox1.Width) / 2, (pictureBox1.Height) / 2);
 
 
@@ -896,6 +893,7 @@ namespace pcbaoi
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
         {
             asc.ControlAutoSize(pbMainImg);
+            
         }
 
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
