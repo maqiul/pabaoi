@@ -101,5 +101,26 @@ namespace pcbaoi
             toolTip.SetToolTip(fillpicpath, fillpicpath.Text);
 
         }
+
+        private void Savebt_Click(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+
+
+
+            }
+            else { 
+            
+            
+            
+            }
+        }
+
+        private void allpicpath_TextChanged(object sender, EventArgs e)
+        {
+            checkBox1.Enabled = true;
+
+        }
     }
 }

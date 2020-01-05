@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using pcbaoi;
 
 namespace pcbaoi
 {
@@ -93,7 +94,7 @@ namespace pcbaoi
                 bigoperatorselect = barchart.Tag as Operatorselect;
                 operatorselect.Luminanceon = bigoperatorselect.Luminanceon;
                 operatorselect.Luminancedown = bigoperatorselect.Luminancedown;
-                barchart.MyEvent += Barchartevent;
+                barchart.MyEvent += Bevent;
                 panel7.Controls.Add(barchart);
                 UserControl6 userControl6 = new UserControl6(operatorselect);
                 bigoperatorselect = userControl6.Tag as Operatorselect;
@@ -127,7 +128,7 @@ namespace pcbaoi
                 bigoperatorselect = barchart.Tag as Operatorselect;
                 operatorselect.Luminanceon = bigoperatorselect.Luminanceon;
                 operatorselect.Luminancedown = bigoperatorselect.Luminancedown;
-                barchart.MyEvent += Barchartevent;
+                barchart.MyEvent += Bevent;
                 panel7.Controls.Add(barchart);
                 UserControl6 userControl6 = new UserControl6(operatorselect);
                 bigoperatorselect = userControl6.Tag as Operatorselect;
@@ -154,8 +155,8 @@ namespace pcbaoi
             }
 
         }
-        void usercontrl2envent(object sender, EventArgs e)
-        {
+        private void usercontrl2envent(object sender, EventArgs e)
+       {
             Operatorselect newoperatorselect = (Operatorselect)sender;
             operatorselect.Percentageup = newoperatorselect.Percentageup;
             operatorselect.Percentagedown = newoperatorselect.Percentagedown;
@@ -165,7 +166,7 @@ namespace pcbaoi
             }
 
         }
-        void usercontrl3envent(object sender, EventArgs e)
+        private void usercontrl3envent(object sender, EventArgs e)
         {
             Operatorselect newoperatorselect = (Operatorselect)sender;
             operatorselect.Percentageup = newoperatorselect.Percentageup;
@@ -178,7 +179,7 @@ namespace pcbaoi
             }
 
         }
-        void Barchartevent(object sender, EventArgs e) {
+        private void Bevent(object sender, EventArgs e) {
             Operatorselect newoperatorselect = (Operatorselect)sender;
             operatorselect.Luminanceon = newoperatorselect.Luminanceon;
             operatorselect.Luminancedown = newoperatorselect.Luminancedown;
@@ -190,7 +191,7 @@ namespace pcbaoi
 
 
         }
-        void usercontrl6event(object sender, EventArgs e)
+        private void usercontrl6event(object sender, EventArgs e)
         {
             Operatorselect newoperatorselect = (Operatorselect)sender;
             operatorselect.Rednumon = newoperatorselect.Rednumon;

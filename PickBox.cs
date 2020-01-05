@@ -86,6 +86,7 @@ namespace pcbaoi
 
 		//Add sizing handles to Control's container (Form or PictureBox)
 		for (int i = 0; i<8; i++) {
+				lbl[i].BackColor = Color.Green;
 			m_control.Parent.Controls.Add(lbl[i]);
 			lbl[i].BringToFront();
 		}

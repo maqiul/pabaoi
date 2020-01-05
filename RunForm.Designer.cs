@@ -77,10 +77,10 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -548,6 +548,7 @@
             this.button3.TabIndex = 7;
             this.button3.Text = "退出运行模式";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -590,6 +591,15 @@
             this.panel5.Size = new System.Drawing.Size(281, 32);
             this.panel5.TabIndex = 12;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(124, 10);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "正面";
+            // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -600,6 +610,15 @@
             this.panel6.Size = new System.Drawing.Size(281, 32);
             this.panel6.TabIndex = 14;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(120, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "反面";
+            // 
             // pictureBox3
             // 
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -609,24 +628,6 @@
             this.pictureBox3.Size = new System.Drawing.Size(281, 155);
             this.pictureBox3.TabIndex = 13;
             this.pictureBox3.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(124, 10);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(29, 12);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "正面";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(120, 10);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 12);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "反面";
             // 
             // textBox1
             // 

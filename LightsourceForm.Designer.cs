@@ -181,6 +181,7 @@
             this.blowbt.TabIndex = 10;
             this.blowbt.Text = "吹气测试";
             this.blowbt.UseVisualStyleBackColor = true;
+            this.blowbt.Click += new System.EventHandler(this.blowbt_Click);
             // 
             // canelbt
             // 

@@ -66,6 +66,7 @@ namespace pcbaoi
                 pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
                 pictureBox.Move += new EventHandler(pictureboxmove);
                 pictureBox.BackColor = Color.Transparent;
+                pictureBox.Paint += otherpicbox_Panit;
                 pictureBox.Parent = pictureBox1;
                 //pictureBox1.Hide();
                 this.pictureBox1.Controls.Add(pictureBox);
@@ -98,6 +99,7 @@ namespace pcbaoi
                     pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
                     pictureBox.Move += new EventHandler(pictureboxmove);
                     littlepicturebox.BackColor = Color.Transparent;
+                    littlepicturebox.Paint += otherpicbox_Panit;
                     littlepicturebox.Parent = pictureBox;
                     //pictureBox1.Hide();
                     pictureBox.Controls.Add(littlepicturebox);
@@ -283,11 +285,14 @@ namespace pcbaoi
         void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
             int i = e.Delta * SystemInformation.MouseWheelScrollLines / 5;
-            pictureBox1.Width = pictureBox1.Width + i;//增加picturebox的宽度
-            pictureBox1.Height = pictureBox1.Height + i;
-            // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
-            pictureBox1.Left = pictureBox1.Left - i / 2;//使picturebox的中心位于窗体的中心
-            pictureBox1.Top = pictureBox1.Top - i / 2;//进而缩放时图片也位于窗体的中心
+            if (pictureBox1.Height + i > 0) {
+                pictureBox1.Width = pictureBox1.Width + i;//增加picturebox的宽度
+                pictureBox1.Height = pictureBox1.Height + i;
+                // Console.WriteLine(pictureBox1.Width.ToString() + pictureBox1.Height.ToString());
+                pictureBox1.Left = pictureBox1.Left - i / 2;//使picturebox的中心位于窗体的中心
+                pictureBox1.Top = pictureBox1.Top - i / 2;//进而缩放时图片也位于窗体的中心
+            }
+
 
 
 
@@ -311,6 +316,8 @@ namespace pcbaoi
         {
             if (isSelected && IsMouseInPanel())
             {
+                PictureBox p = (PictureBox)sender;
+                p.Refresh();
                 this.pictureBox1.Left = this.pictureBox1.Left + (Cursor.Position.X - mouseDownPoint.X);
                 this.pictureBox1.Top = this.pictureBox1.Top + (Cursor.Position.Y - mouseDownPoint.Y);
                 mouseDownPoint.X = Cursor.Position.X;
@@ -330,26 +337,14 @@ namespace pcbaoi
         }
         private void pictureboxmove(object sender, EventArgs e)
         {
-            //pictureBoxnew is Control;
-            //pictureBoxnew = (PictureBox)sender;
-            ////this.control.Location = pictureBoxnew.Location;
-            //Rectangle rectangle = new Rectangle();
-            //rectangle.Location = pictureBoxnew.Location;
-            //rectangle.Width = pictureBoxnew.Width;
-            //rectangle.Height = pictureBoxnew.Height;
-            //Console.WriteLine(pictureBoxnew.Location);
+            pictureBox1.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
             
         }
         private void pictureboxsizechange(object sender, EventArgs e)
         {
-            //pictureBoxnew is Control;
-            //pictureBoxnew = (PictureBox)sender;
-            //Rectangle rectangle = new Rectangle();
-            //rectangle.Location = pictureBoxnew.Location;
-            //rectangle.Width = pictureBoxnew.Width;
-            //rectangle.Height = pictureBoxnew.Height;
+            pictureBox1.Refresh();
             asc = new AutoSizeFormClass();
             asc.RenewControlRect(pictureBox1);
             
@@ -426,6 +421,16 @@ namespace pcbaoi
             }
 
 
+        }
+        private void otherpicbox_Panit(object sender, PaintEventArgs e)
+        {
+            PictureBox p = (PictureBox)sender;
+
+            //p.Refresh();
+            Pen pp = new Pen(Color.FromArgb(0, 235, 6));
+            e.Graphics.DrawRectangle(pp, e.ClipRectangle.X, e.ClipRectangle.Y,
+ e.ClipRectangle.X + e.ClipRectangle.Width - 1,
+e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         }
     }
 }

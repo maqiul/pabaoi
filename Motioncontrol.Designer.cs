@@ -32,6 +32,15 @@
             this.Titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
             this.leftpanel = new System.Windows.Forms.Panel();
+            this.Checkbt = new System.Windows.Forms.Button();
+            this.Restbt = new System.Windows.Forms.Button();
+            this.XYspeed = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Xup = new System.Windows.Forms.Button();
+            this.Ydown = new System.Windows.Forms.Button();
+            this.Xdown = new System.Windows.Forms.Button();
+            this.Yup = new System.Windows.Forms.Button();
             this.canelbt = new System.Windows.Forms.Button();
             this.savebt = new System.Windows.Forms.Button();
             this.righttitlebt = new System.Windows.Forms.Panel();
@@ -40,15 +49,6 @@
             this.frontlabel = new System.Windows.Forms.Label();
             this.lightpicbox = new System.Windows.Forms.PictureBox();
             this.Mainpicbox = new System.Windows.Forms.PictureBox();
-            this.Yup = new System.Windows.Forms.Button();
-            this.Xdown = new System.Windows.Forms.Button();
-            this.Ydown = new System.Windows.Forms.Button();
-            this.Xup = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.XYspeed = new System.Windows.Forms.TextBox();
-            this.Restbt = new System.Windows.Forms.Button();
-            this.Checkbt = new System.Windows.Forms.Button();
             this.Titlepanel.SuspendLayout();
             this.leftpanel.SuspendLayout();
             this.righttitlebt.SuspendLayout();
@@ -98,6 +98,92 @@
             this.leftpanel.Name = "leftpanel";
             this.leftpanel.Size = new System.Drawing.Size(275, 500);
             this.leftpanel.TabIndex = 4;
+            // 
+            // Checkbt
+            // 
+            this.Checkbt.Location = new System.Drawing.Point(151, 271);
+            this.Checkbt.Name = "Checkbt";
+            this.Checkbt.Size = new System.Drawing.Size(75, 23);
+            this.Checkbt.TabIndex = 18;
+            this.Checkbt.Text = "运动自检";
+            this.Checkbt.UseVisualStyleBackColor = true;
+            // 
+            // Restbt
+            // 
+            this.Restbt.Location = new System.Drawing.Point(39, 271);
+            this.Restbt.Name = "Restbt";
+            this.Restbt.Size = new System.Drawing.Size(100, 23);
+            this.Restbt.TabIndex = 17;
+            this.Restbt.Text = "相机运动到原点";
+            this.Restbt.UseVisualStyleBackColor = true;
+            this.Restbt.Click += new System.EventHandler(this.Restbt_Click);
+            // 
+            // XYspeed
+            // 
+            this.XYspeed.Location = new System.Drawing.Point(138, 204);
+            this.XYspeed.Name = "XYspeed";
+            this.XYspeed.Size = new System.Drawing.Size(87, 21);
+            this.XYspeed.TabIndex = 16;
+            this.XYspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.XYspeed_KeyPress);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.Location = new System.Drawing.Point(55, 209);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "XY运动速度";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(34, 209);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "label1";
+            // 
+            // Xup
+            // 
+            this.Xup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xup.BackgroundImage")));
+            this.Xup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Xup.Location = new System.Drawing.Point(161, 100);
+            this.Xup.Name = "Xup";
+            this.Xup.Size = new System.Drawing.Size(38, 38);
+            this.Xup.TabIndex = 13;
+            this.Xup.UseVisualStyleBackColor = true;
+            // 
+            // Ydown
+            // 
+            this.Ydown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ydown.BackgroundImage")));
+            this.Ydown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Ydown.Location = new System.Drawing.Point(118, 149);
+            this.Ydown.Name = "Ydown";
+            this.Ydown.Size = new System.Drawing.Size(38, 38);
+            this.Ydown.TabIndex = 12;
+            this.Ydown.UseVisualStyleBackColor = true;
+            // 
+            // Xdown
+            // 
+            this.Xdown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xdown.BackgroundImage")));
+            this.Xdown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Xdown.Location = new System.Drawing.Point(72, 100);
+            this.Xdown.Name = "Xdown";
+            this.Xdown.Size = new System.Drawing.Size(38, 38);
+            this.Xdown.TabIndex = 11;
+            this.Xdown.UseVisualStyleBackColor = true;
+            // 
+            // Yup
+            // 
+            this.Yup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Yup.BackgroundImage")));
+            this.Yup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Yup.Location = new System.Drawing.Point(118, 51);
+            this.Yup.Name = "Yup";
+            this.Yup.Size = new System.Drawing.Size(38, 38);
+            this.Yup.TabIndex = 10;
+            this.Yup.UseVisualStyleBackColor = true;
             // 
             // canelbt
             // 
@@ -177,91 +263,6 @@
             this.Mainpicbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Mainpicbox.TabIndex = 3;
             this.Mainpicbox.TabStop = false;
-            // 
-            // Yup
-            // 
-            this.Yup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Yup.BackgroundImage")));
-            this.Yup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Yup.Location = new System.Drawing.Point(118, 51);
-            this.Yup.Name = "Yup";
-            this.Yup.Size = new System.Drawing.Size(38, 38);
-            this.Yup.TabIndex = 10;
-            this.Yup.UseVisualStyleBackColor = true;
-            // 
-            // Xdown
-            // 
-            this.Xdown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xdown.BackgroundImage")));
-            this.Xdown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Xdown.Location = new System.Drawing.Point(72, 100);
-            this.Xdown.Name = "Xdown";
-            this.Xdown.Size = new System.Drawing.Size(38, 38);
-            this.Xdown.TabIndex = 11;
-            this.Xdown.UseVisualStyleBackColor = true;
-            // 
-            // Ydown
-            // 
-            this.Ydown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ydown.BackgroundImage")));
-            this.Ydown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Ydown.Location = new System.Drawing.Point(118, 149);
-            this.Ydown.Name = "Ydown";
-            this.Ydown.Size = new System.Drawing.Size(38, 38);
-            this.Ydown.TabIndex = 12;
-            this.Ydown.UseVisualStyleBackColor = true;
-            // 
-            // Xup
-            // 
-            this.Xup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xup.BackgroundImage")));
-            this.Xup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Xup.Location = new System.Drawing.Point(161, 100);
-            this.Xup.Name = "Xup";
-            this.Xup.Size = new System.Drawing.Size(38, 38);
-            this.Xup.TabIndex = 13;
-            this.Xup.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 209);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(55, 209);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "XY运动速度";
-            // 
-            // XYspeed
-            // 
-            this.XYspeed.Location = new System.Drawing.Point(138, 204);
-            this.XYspeed.Name = "XYspeed";
-            this.XYspeed.Size = new System.Drawing.Size(87, 21);
-            this.XYspeed.TabIndex = 16;
-            this.XYspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.XYspeed_KeyPress);
-            // 
-            // Restbt
-            // 
-            this.Restbt.Location = new System.Drawing.Point(39, 271);
-            this.Restbt.Name = "Restbt";
-            this.Restbt.Size = new System.Drawing.Size(100, 23);
-            this.Restbt.TabIndex = 17;
-            this.Restbt.Text = "相机运动到原点";
-            this.Restbt.UseVisualStyleBackColor = true;
-            // 
-            // Checkbt
-            // 
-            this.Checkbt.Location = new System.Drawing.Point(151, 271);
-            this.Checkbt.Name = "Checkbt";
-            this.Checkbt.Size = new System.Drawing.Size(75, 23);
-            this.Checkbt.TabIndex = 18;
-            this.Checkbt.Text = "运动自检";
-            this.Checkbt.UseVisualStyleBackColor = true;
             // 
             // Motioncontrol
             // 

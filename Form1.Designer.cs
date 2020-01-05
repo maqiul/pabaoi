@@ -217,21 +217,21 @@
             // toolStripMenuItem13
             // 
             this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem13.Text = "光源管理";
             this.toolStripMenuItem13.Click += new System.EventHandler(this.toolStripMenuItem13_Click);
             // 
             // toolStripMenuItem14
             // 
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem14.Text = "运动调试";
             this.toolStripMenuItem14.Click += new System.EventHandler(this.toolStripMenuItem14_Click_1);
             // 
             // toolStripMenuItem15
             // 
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem15.Text = "轨道调试";
             this.toolStripMenuItem15.Click += new System.EventHandler(this.toolStripMenuItem15_Click);
             // 
@@ -250,7 +250,7 @@
             // toolStripMenuItem16
             // 
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItem16.Text = "文件保存管理";
             this.toolStripMenuItem16.Click += new System.EventHandler(this.toolStripMenuItem16_Click);
             // 
@@ -482,7 +482,7 @@
             this.btnSearch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSearch.BackgroundImage")));
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSearch.FlatAppearance.BorderSize = 0;
-            this.btnSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
             this.btnSearch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Location = new System.Drawing.Point(30, 223);
@@ -510,8 +510,8 @@
             this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Location = new System.Drawing.Point(30, 133);
             this.btnSave.Name = "btnSave";
@@ -526,8 +526,8 @@
             this.btnOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpen.BackgroundImage")));
             this.btnOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnOpen.FlatAppearance.BorderSize = 0;
-            this.btnOpen.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btnOpen.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnOpen.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.btnOpen.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
             this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpen.Location = new System.Drawing.Point(30, 71);
             this.btnOpen.Name = "btnOpen";
@@ -542,8 +542,8 @@
             this.btnCamera.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCamera.BackgroundImage")));
             this.btnCamera.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnCamera.FlatAppearance.BorderSize = 0;
-            this.btnCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btnCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.btnCamera.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
             this.btnCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCamera.Location = new System.Drawing.Point(30, 17);
             this.btnCamera.Name = "btnCamera";
@@ -987,11 +987,11 @@
             // pbMainImg
             // 
             this.pbMainImg.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.pbMainImg.Image = ((System.Drawing.Image)(resources.GetObject("pbMainImg.Image")));
+            this.pbMainImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbMainImg.Location = new System.Drawing.Point(0, 0);
             this.pbMainImg.Margin = new System.Windows.Forms.Padding(0);
             this.pbMainImg.Name = "pbMainImg";
-            this.pbMainImg.Size = new System.Drawing.Size(980, 795);
+            this.pbMainImg.Size = new System.Drawing.Size(979, 795);
             this.pbMainImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMainImg.TabIndex = 0;
             this.pbMainImg.TabStop = false;
