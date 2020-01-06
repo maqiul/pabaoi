@@ -44,15 +44,17 @@ namespace pcbaoi
         Control controlnew;
         bool pulleyStop =false;
         bool pulleySearchStop = true;
-        void OnImageGrabbed(Object sender, ImageGrabbedEventArgs e)
-        {
-      
-        }
 
+        public BaslerCamera.OnlyGetBitmapCallback cameraBitmapCallback = new BaslerCamera.OnlyGetBitmapCallback(MyCameraCallback);
+
+
+        public static void MyCameraCallback(string cameraId, Bitmap bitmap)
+        {
+            //这里处理图片两个相机可以传入同一个函数，根据cameraId来区分正反面
+        }
 
         public Form1(int i)
         {
-
             InitializeComponent();
             pLeftToolbox.Hide();
             pBottomToolbox.Hide();
@@ -64,11 +66,13 @@ namespace pcbaoi
             from = i;
             //hidebutton();
             //asc.Initialize(this);
+
             BaslerCamera aa = new BaslerCamera();
-            if (aa.RunCamera("正面", OnImageGrabbed) == 0) {
+            if (aa.RunCamera("正面", cameraBitmapCallback) == 0)
+            {
                 MessageBox.Show("打开相机失败");
             }
-
+            //aa.Dispose(); // 如果不使用相机一定需要主动调用Dispose来释放，否则等待系统回收可能要很久
         }
 
         private void Form1_Shown(object sender, EventArgs e)
