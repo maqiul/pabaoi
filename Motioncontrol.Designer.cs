@@ -34,7 +34,7 @@
             this.leftpanel = new System.Windows.Forms.Panel();
             this.Checkbt = new System.Windows.Forms.Button();
             this.Restbt = new System.Windows.Forms.Button();
-            this.XYspeed = new System.Windows.Forms.TextBox();
+            this.Xspeed = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.Xup = new System.Windows.Forms.Button();
@@ -49,6 +49,9 @@
             this.frontlabel = new System.Windows.Forms.Label();
             this.lightpicbox = new System.Windows.Forms.PictureBox();
             this.Mainpicbox = new System.Windows.Forms.PictureBox();
+            this.Yspeed = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.Titlepanel.SuspendLayout();
             this.leftpanel.SuspendLayout();
             this.righttitlebt.SuspendLayout();
@@ -79,9 +82,12 @@
             // 
             // leftpanel
             // 
+            this.leftpanel.Controls.Add(this.Yspeed);
+            this.leftpanel.Controls.Add(this.label3);
+            this.leftpanel.Controls.Add(this.label4);
             this.leftpanel.Controls.Add(this.Checkbt);
             this.leftpanel.Controls.Add(this.Restbt);
-            this.leftpanel.Controls.Add(this.XYspeed);
+            this.leftpanel.Controls.Add(this.Xspeed);
             this.leftpanel.Controls.Add(this.label2);
             this.leftpanel.Controls.Add(this.label1);
             this.leftpanel.Controls.Add(this.Xup);
@@ -118,13 +124,14 @@
             this.Restbt.UseVisualStyleBackColor = true;
             this.Restbt.Click += new System.EventHandler(this.Restbt_Click);
             // 
-            // XYspeed
+            // Xspeed
             // 
-            this.XYspeed.Location = new System.Drawing.Point(138, 204);
-            this.XYspeed.Name = "XYspeed";
-            this.XYspeed.Size = new System.Drawing.Size(87, 21);
-            this.XYspeed.TabIndex = 16;
-            this.XYspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.XYspeed_KeyPress);
+            this.Xspeed.Location = new System.Drawing.Point(138, 204);
+            this.Xspeed.Name = "Xspeed";
+            this.Xspeed.Size = new System.Drawing.Size(87, 21);
+            this.Xspeed.TabIndex = 16;
+            this.Xspeed.TextChanged += new System.EventHandler(this.Xspeed_TextChanged);
+            this.Xspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Xspeed_KeyPress);
             // 
             // label2
             // 
@@ -132,9 +139,9 @@
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label2.Location = new System.Drawing.Point(55, 209);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(59, 12);
             this.label2.TabIndex = 15;
-            this.label2.Text = "XY运动速度";
+            this.label2.Text = "X运动速度";
             // 
             // label1
             // 
@@ -154,6 +161,7 @@
             this.Xup.Size = new System.Drawing.Size(38, 38);
             this.Xup.TabIndex = 13;
             this.Xup.UseVisualStyleBackColor = true;
+            this.Xup.Click += new System.EventHandler(this.Xup_Click);
             // 
             // Ydown
             // 
@@ -164,6 +172,7 @@
             this.Ydown.Size = new System.Drawing.Size(38, 38);
             this.Ydown.TabIndex = 12;
             this.Ydown.UseVisualStyleBackColor = true;
+            this.Ydown.Click += new System.EventHandler(this.Ydown_Click);
             // 
             // Xdown
             // 
@@ -174,6 +183,7 @@
             this.Xdown.Size = new System.Drawing.Size(38, 38);
             this.Xdown.TabIndex = 11;
             this.Xdown.UseVisualStyleBackColor = true;
+            this.Xdown.Click += new System.EventHandler(this.Xdown_Click);
             // 
             // Yup
             // 
@@ -184,6 +194,7 @@
             this.Yup.Size = new System.Drawing.Size(38, 38);
             this.Yup.TabIndex = 10;
             this.Yup.UseVisualStyleBackColor = true;
+            this.Yup.Click += new System.EventHandler(this.Yup_Click);
             // 
             // canelbt
             // 
@@ -264,6 +275,34 @@
             this.Mainpicbox.TabIndex = 3;
             this.Mainpicbox.TabStop = false;
             // 
+            // Yspeed
+            // 
+            this.Yspeed.Location = new System.Drawing.Point(137, 240);
+            this.Yspeed.Name = "Yspeed";
+            this.Yspeed.Size = new System.Drawing.Size(87, 21);
+            this.Yspeed.TabIndex = 21;
+            this.Yspeed.TextChanged += new System.EventHandler(this.Yspeed_TextChanged);
+            this.Yspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Yspeed_KeyPress);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(54, 245);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Y运动速度";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(33, 245);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "label4";
+            // 
             // Motioncontrol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -275,6 +314,7 @@
             this.Controls.Add(this.Titlepanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Motioncontrol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Motioncontrol";
             this.Titlepanel.ResumeLayout(false);
             this.Titlepanel.PerformLayout();
@@ -308,9 +348,12 @@
         private System.Windows.Forms.Button Ydown;
         private System.Windows.Forms.Button Xdown;
         private System.Windows.Forms.Button Yup;
-        private System.Windows.Forms.TextBox XYspeed;
+        private System.Windows.Forms.TextBox Xspeed;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Checkbt;
         private System.Windows.Forms.Button Restbt;
+        private System.Windows.Forms.TextBox Yspeed;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

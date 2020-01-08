@@ -62,9 +62,9 @@ namespace pcbaoi
         }
 
         public void controlstart() {
-            if (newtypename == "金手指" || newtypename == "线路")
+            if (newtypename == "金手指" )
             {
-                string[] combox = { "AI检测", "边缘查找" };
+                string[] combox = {  "边缘查找" };
                 comboBox1.Items.AddRange(combox);
                 Aiadd aiadd = new Aiadd(operatorselect);
                 operatorselect.Confidence = float.Parse(aiadd.Tag.ToString());
@@ -72,12 +72,43 @@ namespace pcbaoi
                 panel6.Controls.Add(aiadd);
 
                 comboBox1.SelectedIndex = 0;
-                if (operatorselect.Operatorname != Operatorname&&Operatorname!=null)
+                if (operatorselect.Operatorname != Operatorname && Operatorname != null)
                 {
                     comboBox1.SelectedItem = Operatorname;
                 }
 
                 operatorselect.Operatorname = comboBox1.SelectedItem.ToString();
+
+            }
+            else if (newtypename == "线路") {
+                string[] combox = {  "边缘查找" };
+                comboBox1.Items.AddRange(combox);
+                UserControl2 aiadd = new UserControl2(operatorselect);
+                Operatorselect bigoperatorselect = aiadd.Tag as Operatorselect;
+                operatorselect.Percentageup = bigoperatorselect.Percentageup;
+                operatorselect.Percentagedown = bigoperatorselect.Percentagedown;
+                aiadd.MyEvent += usercontrl2envent;
+                panel6.Controls.Add(aiadd);
+                Barchart barchart = new Barchart(operatorselect);
+                bigoperatorselect = barchart.Tag as Operatorselect;
+                operatorselect.Luminanceon = bigoperatorselect.Luminanceon;
+                operatorselect.Luminancedown = bigoperatorselect.Luminancedown;
+                barchart.MyEvent += Bevent;
+                panel7.Controls.Add(barchart);
+                UserControl6 userControl6 = new UserControl6(operatorselect);
+                bigoperatorselect = userControl6.Tag as Operatorselect;
+                operatorselect.Rednumon = bigoperatorselect.Rednumon;
+                operatorselect.Rednumdown = bigoperatorselect.Rednumdown;
+                operatorselect.Greennumon = bigoperatorselect.Greennumon;
+                operatorselect.Greennumdown = bigoperatorselect.Greennumdown;
+                operatorselect.Bluenumon = bigoperatorselect.Bluenumon;
+                operatorselect.Bluenumdown = bigoperatorselect.Bluenumdown;
+                userControl6.MyEvent += usercontrl6event;
+                panel8.Controls.Add(userControl6);
+
+                comboBox1.SelectedIndex = 0;
+                operatorselect.Operatorname = comboBox1.SelectedItem.ToString();
+
 
             }
             else if (newtypename == "BAD MARK" || newtypename == "MARK")
