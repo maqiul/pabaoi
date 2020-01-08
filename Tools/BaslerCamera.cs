@@ -1,6 +1,7 @@
 ﻿using Basler.Pylon;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -12,7 +13,18 @@ namespace pcbaoi.Tools
 {
     public class BaslerCamera
     {
+        private Stopwatch stopWatch = new Stopwatch();
+        Camera camera;
+        string cameraId;
+        private PixelDataConverter converter = new PixelDataConverter();
+
+        // 实现自定义相机回调的方法
         public delegate void OnCameraGrabbedCallback(Object sender, ImageGrabbedEventArgs e);
+
+        // 只获取图片
+        public delegate void OnlyGetBitmapCallback(string cameraId, Bitmap bitmap);
+
+        public OnlyGetBitmapCallback onlyGetBitmapCallback;
 
         private int cameraReconnectTimeOut = 1000 * 300,
             heartbeatTimeout=1000;
@@ -126,50 +138,42 @@ namespace pcbaoi.Tools
             //    return;
             //}
 
-            //try
-            //{
-            //    // Acquire the image from the camera. Only show the latest image. The camera may acquire images faster than the images can be displayed.
+            try
+            {
+                // Acquire the image from the camera. Only show the latest image. The camera may acquire images faster than the images can be displayed.
 
-            //    // Get the grab result.
-            //    IGrabResult grabResult = e.GrabResult;
-            //    // Check if the image can be displayed.
-            //    if (grabResult.IsValid)
-            //    {
-            //        // Reduce the number of displayed images to a reasonable amount if the camera is acquiring images very fast.
-            //        if (!stopWatch.IsRunning || stopWatch.ElapsedMilliseconds > 33)
-            //        {
-            //            stopWatch.Restart();
+                // Get the grab result.
+                IGrabResult grabResult = e.GrabResult;
+                // Check if the image can be displayed.
+                if (grabResult.IsValid)
+                {
+                    // Reduce the number of displayed images to a reasonable amount if the camera is acquiring images very fast.
+                    if (!stopWatch.IsRunning || stopWatch.ElapsedMilliseconds > 33)
+                    {
+                        stopWatch.Restart();
 
-            //            Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppRgb);
-            //            // Lock the bits of the bitmap.
-            //            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
-            //            // Place the pointer to the buffer of the bitmap.
-            //            converter.OutputPixelFormat = PixelType.BGRA8packed;
-            //            IntPtr ptrBmp = bmpData.Scan0;
-            //            converter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
-            //            bitmap.UnlockBits(bmpData);
+                        Bitmap bitmap = new Bitmap(grabResult.Width, grabResult.Height, PixelFormat.Format32bppRgb);
+                        // Lock the bits of the bitmap.
+                        BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+                        // Place the pointer to the buffer of the bitmap.
+                        converter.OutputPixelFormat = PixelType.BGRA8packed;
+                        IntPtr ptrBmp = bmpData.Scan0;
+                        converter.Convert(ptrBmp, bmpData.Stride * bitmap.Height, grabResult);
+                        bitmap.UnlockBits(bmpData);
 
-            //            // Assign a temporary variable to dispose the bitmap after assigning the new bitmap to the display control.
-            //            Bitmap bitmapOld = pictureBox.Image as Bitmap;
-            //            // Provide the display control with the new bitmap. This action automatically updates the display.
-            //            pictureBox.Image = bitmap;
-            //            if (bitmapOld != null)
-            //            {
-            //                // Dispose the bitmap.
-            //                bitmapOld.Dispose();
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception exception)
-            //{
-            //    ShowException(exception);
-            //}
-            //finally
-            //{
-            //    // Dispose the grab result if needed for returning it to the grab loop.
-            //    e.DisposeGrabResultIfClone();
-            //}
+                        onlyGetBitmapCallback(cameraId, bitmap);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                onlyGetBitmapCallback(cameraId, null);
+            }
+            finally
+            {
+                // Dispose the grab result if needed for returning it to the grab loop.
+                e.DisposeGrabResultIfClone();
+            }
         }
 
         public ICameraInfo GetDevice(string camId)
@@ -196,9 +200,50 @@ namespace pcbaoi.Tools
             }
         }
 
+        /// <summary>
+        /// 打开相机
+        /// </summary>
+        /// <param name="cameraId">相机的用户id，使用前一定要设置相机{正面，反面}</param>
+        /// <param name="onlyGetBitmapCallback">只回调图片，更加稳定</param>
+        /// <returns></returns>
+        public int RunCamera(string cameraId, OnlyGetBitmapCallback myCallback)
+        {
+            this.cameraId = cameraId;
+            onlyGetBitmapCallback = myCallback;
+            ICameraInfo ca = GetDevice(cameraId);
+            if (ca != null)
+            {
+                Func<ICameraInfo, int> doS = (cameraInfo) =>
+                {
+                    try
+                    {
+                        camera = new Camera(cameraInfo);
+                        camera.CameraOpened += Line1Trigger;
+                        camera.ConnectionLost += OnConnectionLost;
+                        camera.StreamGrabber.ImageGrabbed += OnImageGrabbed;
+                        camera.Open();
+                        camera.Parameters[PLTransportLayer.HeartbeatTimeout].TrySetValue(heartbeatTimeout, IntegerValueCorrection.Nearest);  // 1000 ms timeout
+                        return 1;
+                    }
+                    catch (Exception er)
+                    {
+                        return 0;
+                    }
+                };
+                return MySmartThreadPool.Instance().QueueWorkItem(doS, ca).GetResult();
+            }
+            return 0;
+        }
 
+        /// <summary>
+        /// 打开相机
+        /// </summary>
+        /// <param name="cameraId">相机的用户id，使用前一定要设置相机{正面，反面}</param>
+        /// <param name="onCameraGrabbedCallback">重写整个相机回调</param>
+        /// <returns></returns>
         public int RunCamera(string cameraId, EventHandler<ImageGrabbedEventArgs> onCameraGrabbedCallback)
         {
+            this.cameraId = cameraId;
             ICameraInfo ca = GetDevice(cameraId);
             if (ca != null)
             {
@@ -206,7 +251,7 @@ namespace pcbaoi.Tools
                 {
                     try
                     {
-                        Camera camera = new Camera(cameraInfo);
+                        camera = new Camera(cameraInfo);
                         camera.CameraOpened += Line1Trigger;
                         camera.ConnectionLost += OnConnectionLost;
                         camera.StreamGrabber.ImageGrabbed += onCalBack;
@@ -222,5 +267,37 @@ namespace pcbaoi.Tools
             }
             return 0;
         }
+
+
+
+        public void Dispose()
+        {
+            try
+            {
+                if (camera != null)
+                {
+                    camera.Close();
+                    camera.Dispose();
+                    camera = null;
+                }
+                // Destroy the converter object.
+                if (converter != null)
+                {
+                    converter.Dispose();
+                    converter = null;
+                }
+            }
+            catch (Exception exception)
+            {
+
+            }
+        }
+
+        ~BaslerCamera()
+        {
+            Dispose();
+        }
+
+
     }
 }
