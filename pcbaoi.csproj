@@ -94,6 +94,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
     </Reference>
@@ -102,6 +105,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PylonC.NET, Version=4.1.0.0, Culture=neutral, PublicKeyToken=a77e8471c5919d5a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Basler\pylon 5\Development\Assemblies\PylonC.Net\PylonC.NET.dll</HintPath>
     </Reference>
     <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>packages\RabbitMQ.Client.5.1.2\lib\net451\RabbitMQ.Client.dll</HintPath>
@@ -160,6 +167,7 @@
     </Compile>
     <Compile Include="Algorithmtype.cs" />
     <Compile Include="AutoSizeFormClass.cs" />
+    <Compile Include="class_Broad.cs" />
     <Compile Include="FormControlnew.cs" />
     <Compile Include="Autosize.cs" />
     <Compile Include="Barchart.cs">
@@ -192,6 +200,7 @@
     <Compile Include="LightsourceForm.Designer.cs">
       <DependentUpon>LightsourceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Loghelper.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +256,8 @@
       <DependentUpon>Testform.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\BaslerCamera.cs" />
+    <Compile Include="Tools\DeviceEnumerator.cs" />
+    <Compile Include="Tools\ImageProvider.cs" />
     <Compile Include="Tools\MySmartThreadPool.cs" />
     <Compile Include="tool\PLCController.cs" />
     <Compile Include="tool\SingleTon.cs" />
@@ -404,6 +415,7 @@
     <EmbeddedResource Include="Workspace.resx">
       <DependentUpon>Workspace.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="log4net.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -36,10 +36,11 @@ namespace pcbaoi.Tools
         void OnConnectionLost(Object sender, EventArgs e)
         {
             ICamera camera = sender as ICamera;
-            MessageBox.Show(string.Format("相机 {0} 断开，请重新连接，不用重启软件", camera.CameraInfo[CameraInfoKey.FriendlyName]),
-                "提示",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            Loghelper.WriteLog("相机断开");
+            MessageBox.Show(string.Format("相机 {0} 断开", camera.CameraInfo[CameraInfoKey.FriendlyName]),
+"提示",
+MessageBoxButtons.OK,
+MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             //string name = camera.CameraInfo[CameraInfoKey.FriendlyName];
             //if(camera.CameraInfo[CameraInfoKey.FriendlyName] == camera01.CameraInfo[CameraInfoKey.FriendlyName])
             //{
@@ -76,6 +77,7 @@ namespace pcbaoi.Tools
              "提示",
              MessageBoxButtons.OK,
              MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        Loghelper.WriteLog("相机重连成功");
                     }
                 }
                 #endregion
@@ -186,7 +188,7 @@ namespace pcbaoi.Tools
                 // Loop over all cameras found.
                 foreach (ICameraInfo cameraInfo in allCameras)
                 {
-                    string cameraName = cameraInfo[CameraInfoKey.FriendlyName];
+                    string cameraName = cameraInfo[CameraInfoKey.UserDefinedName];
                     if (cameraName.Contains(camId))
                     {
                         return cameraInfo;
@@ -199,7 +201,19 @@ namespace pcbaoi.Tools
                 return null;
             }
         }
-
+        public int TestGrabber() {
+            try
+            {
+                // Starts the grabbing of one image.
+                //camera.Parameters[PLCamera.AcquisitionMode].SetValue(PLCamera.AcquisitionMode.SingleFrame);
+                camera.StreamGrabber.Start(1, GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
+                return 1;
+            }
+            catch (Exception exception)
+            {
+                return 0;
+            }
+        }
         /// <summary>
         /// 打开相机
         /// </summary>
@@ -221,8 +235,12 @@ namespace pcbaoi.Tools
                         camera.CameraOpened += Line1Trigger;
                         camera.ConnectionLost += OnConnectionLost;
                         camera.StreamGrabber.ImageGrabbed += OnImageGrabbed;
+                        
                         camera.Open();
                         camera.Parameters[PLTransportLayer.HeartbeatTimeout].TrySetValue(heartbeatTimeout, IntegerValueCorrection.Nearest);  // 1000 ms timeout
+                        camera.Parameters[PLCamera.AcquisitionMode].SetValue(PLCamera.AcquisitionMode.Continuous);
+                        camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
+                        //camera.StreamGrabber.
                         return 1;
                     }
                     catch (Exception er)
@@ -257,6 +275,8 @@ namespace pcbaoi.Tools
                         camera.StreamGrabber.ImageGrabbed += onCalBack;
                         camera.Open();
                         camera.Parameters[PLTransportLayer.HeartbeatTimeout].TrySetValue(heartbeatTimeout, IntegerValueCorrection.Nearest);  // 1000 ms timeout
+                        camera.Parameters[PLCamera.AcquisitionMode].SetValue(PLCamera.AcquisitionMode.Continuous);
+                        camera.StreamGrabber.Start(GrabStrategy.OneByOne, GrabLoop.ProvidedByStreamGrabber);
                         return 1;
                     }
                     catch (Exception er) {

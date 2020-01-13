@@ -201,6 +201,7 @@
             this.savebt.TabIndex = 8;
             this.savebt.Text = "保存";
             this.savebt.UseVisualStyleBackColor = true;
+            this.savebt.Click += new System.EventHandler(this.savebt_Click);
             // 
             // righttitlebt
             // 
@@ -253,6 +254,7 @@
             this.WftrackBar.TabIndex = 5;
             this.WftrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.WftrackBar.ValueChanged += new System.EventHandler(this.WftrackBar_ValueChanged);
+            this.WftrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WftrackBar_MouseUp);
             // 
             // BtrackBar
             // 
@@ -265,6 +267,7 @@
             this.BtrackBar.TabIndex = 4;
             this.BtrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.BtrackBar.ValueChanged += new System.EventHandler(this.BtrackBar_ValueChanged);
+            this.BtrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtrackBar_MouseUp);
             // 
             // GtrackBar
             // 
@@ -277,6 +280,7 @@
             this.GtrackBar.TabIndex = 3;
             this.GtrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.GtrackBar.ValueChanged += new System.EventHandler(this.GtrackBar_ValueChanged);
+            this.GtrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GtrackBar_MouseUp);
             // 
             // RtrackBar
             // 
@@ -289,6 +293,7 @@
             this.RtrackBar.TabIndex = 2;
             this.RtrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.RtrackBar.ValueChanged += new System.EventHandler(this.RtrackBar_ValueChanged);
+            this.RtrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RtrackBar_MouseUp);
             // 
             // WotrackBar
             // 
@@ -301,6 +306,7 @@
             this.WotrackBar.TabIndex = 1;
             this.WotrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.WotrackBar.ValueChanged += new System.EventHandler(this.WotrackBar_ValueChanged);
+            this.WotrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WotrackBar_MouseUp);
             // 
             // lightpicbox
             // 

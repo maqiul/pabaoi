@@ -12,9 +12,11 @@ namespace pcbaoi
 {
     public partial class Collectionform : Form
     {
-        public Collectionform()
+        public Collectionform(string width,string height)
         {
             InitializeComponent();
+            textBox1.Text = height;
+            textBox2.Text = width;
             comboBox1.SelectedIndex = 0;
         }
 

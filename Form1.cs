@@ -44,15 +44,192 @@ namespace pcbaoi
         Control controlnew;
         bool pulleyStop =false;
         bool pulleySearchStop = true;
-
+        public static string cameraAid;
+        public static string cameraBid;
+        public static List<Bitmap> Abitmaps;
+        public static List<Bitmap> Bbitmaps;
+        public static PictureBox pbmain;
         public BaslerCamera.OnlyGetBitmapCallback cameraBitmapCallback = new BaslerCamera.OnlyGetBitmapCallback(MyCameraCallback);
 
 
         public static void MyCameraCallback(string cameraId, Bitmap bitmap)
         {
             //这里处理图片两个相机可以传入同一个函数，根据cameraId来区分正反面
+            if (cameraId == cameraAid)
+            {
+                pbmain.Image = bitmap;
+                Abitmaps.Add(bitmap);                            
+            }
+            else {
+                Bbitmaps.Add(bitmap);
+            }
+        }
+        BaslerCamera aa;
+        #region camera
+        private ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
+        private Bitmap m_bitmap = null;
+
+
+        /* Stops the image provider and handles exceptions. */
+        public void Stop()
+        {
+            /* Stop the grabbing. */
+            try
+            {
+                m_imageProvider.Stop();
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
         }
 
+        /* Closes the image provider and handles exceptions. */
+        private void CloseTheImageProvider()
+        {
+            /* Close the image provider. */
+            try
+            {
+                m_imageProvider.Close();
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
+        }
+
+        /* Handles the click on the stop frame acquisition button. */
+        private void toolStripButtonStop_Click(object sender, EventArgs e)
+        {
+            Stop(); /* Stops the grabbing of images. */
+        }
+
+        /* Handles the event related to the occurrence of an error while grabbing proceeds. */
+        private void OnGrabErrorEventCallback(Exception grabException, string additionalErrorMessage)
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback), grabException, additionalErrorMessage);
+                return;
+            }
+
+            Loghelper.WriteLog(additionalErrorMessage, grabException);
+        }
+
+        /* Handles the event related to the removal of a currently open device. */
+        private void OnDeviceRemovedEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback));
+                return;
+            }
+            /* Stops the grabbing of images. */
+            Stop();
+            /* Close the image provider. */
+            CloseTheImageProvider();
+        }
+
+        /* Handles the event related to a device being open. */
+        private void OnDeviceOpenedEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback));
+                return;
+            }
+        }
+
+        /* Handles the event related to a device being closed. */
+        private void OnDeviceClosedEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback));
+                return;
+            }
+        }
+
+        /* Handles the event related to the image provider executing grabbing. */
+        private void OnGrabbingStartedEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback));
+                return;
+            }
+            
+        }
+
+        /* Handles the event related to an image having been taken and waiting for processing. */
+        private void OnImageReadyEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback));
+                return;
+            }
+
+            try
+            {
+                /* Acquire the image from the image provider. Only show the latest image. The camera may acquire images faster than images can be displayed*/
+                ImageProvider.Image image = m_imageProvider.GetLatestImage();
+
+                /* Check if the image has been removed in the meantime. */
+                if (image != null)
+                {
+                    /* Check if the image is compatible with the currently used bitmap. */
+                    //if (BitmapFactory.IsCompatible(m_bitmap, image.Width, image.Height, image.Color))
+                    //{
+                    //    /* Update the bitmap with the image data. */
+                    //    BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
+                    //    /* To show the new image, request the display control to update itself. */
+                    //    pictureBox.Refresh();
+                    //}
+                    //else /* A new bitmap is required. */
+                    //{
+                    //    BitmapFactory.CreateBitmap(out m_bitmap, image.Width, image.Height, image.Color);
+                    //    BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
+                    //    /* We have to dispose the bitmap after assigning the new one to the display control. */
+                    //    Bitmap bitmap = pictureBox.Image as Bitmap;
+                    //    /* Provide the display control with the new bitmap. This action automatically updates the display. */
+                    //    pictureBox.Image = m_bitmap;
+                    //    if (bitmap != null)
+                    //    {
+                    //        /* Dispose the bitmap. */
+                    //        bitmap.Dispose();
+                    //    }
+                    //}
+                    /* The processing of the image is done. Release the image buffer. */
+                    m_imageProvider.ReleaseImage();
+                    /* The buffer can be used for the next image grabs. */
+                }
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
+        }
+
+        /* Handles the event related to the image provider having stopped grabbing. */
+        private void OnGrabbingStoppedEventCallback()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback));
+                return;
+            }
+            
+        }
+
+        #endregion
         public Form1(int i)
         {
             InitializeComponent();
@@ -64,21 +241,47 @@ namespace pcbaoi
             pPcbInfoTitle.Hide();
             pMain.Hide();
             from = i;
+            cameraAid = IniFile.iniRead("CameraA", "SerialNumber");
+            cameraBid = IniFile.iniRead("CameraB", "SerialNumber");
             //hidebutton();
             //asc.Initialize(this);
 
-            BaslerCamera aa = new BaslerCamera();
-            if (aa.RunCamera("正面", cameraBitmapCallback) == 0)
-            {
-                MessageBox.Show("打开相机失败");
-            }
+            aa = new BaslerCamera();
+            // if (aa.RunCamera(cameraBid, cameraBitmapCallback) == 0)
+            // {
+            //     MessageBox.Show("打开相机失败");
+            // }
+
+            #region camera
+
+            m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+            m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+            m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+            m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+            m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+            m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+            m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+            m_imageProvider.Open(m_imageProvider.GetDevice(cameraAid));
+            m_imageProvider.ContinuousShot();
+            #endregion
+
+
+            pbmain = this.pbMainImg;
             //aa.Dispose(); // 如果不使用相机一定需要主动调用Dispose来释放，否则等待系统回收可能要很久
+        }
+        public void dododo()
+        {
+            aa.TestGrabber();
+        }
+        public void closeCamera()
+        {
+            aa.Dispose();
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
             if (from==1) {
-                Workspace workspace = new Workspace();
+                Workspace workspace = new Workspace(this);
                 workspace.ShowDialog();
             }
 
@@ -130,6 +333,7 @@ namespace pcbaoi
 
 
         }
+        //public void image
 
         private async void PulleyPaging( int i)
         {
@@ -514,7 +718,7 @@ namespace pcbaoi
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            Workspace workspace = new Workspace();
+            Workspace workspace = new Workspace(this);
             workspace.ShowDialog();
 
         }
@@ -542,6 +746,7 @@ namespace pcbaoi
         {
             string deletesql = "delete from zijiban where isuse = 0";
             SQLiteHelper.ExecuteSql(deletesql);
+            Stop();
             Application.Exit();
         }
 
@@ -612,12 +817,18 @@ namespace pcbaoi
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Collectionform collectionform = new Collectionform();
+            Collectionform collectionform = new Collectionform(tbPcbWidth.Text,tbPcbLength.Text);
             collectionform.ShowDialog();
             if (collectionform.DialogResult == System.Windows.Forms.DialogResult.OK) {
                 collection collection = new collection();
                 collection = collectionform.Tag as collection;
-                MessageBox.Show("111");
+                if (collection.Type == "正面")
+                {
+                    Abitmaps = new List<Bitmap>();
+                }
+                else {
+                    Abitmaps = new List<Bitmap>();
+                }
             }
         }
 
@@ -646,6 +857,14 @@ namespace pcbaoi
             {
                 string file = dialog.FileName;
                 pbMainImg.Image = Image.FromFile(file);
+                if (tbFrontOrBack.Text == "正面")
+                {
+                    pbFrontImg.Image = Image.FromFile(file);
+                }
+                else {
+                    pbBackImg.Image = Image.FromFile(file);
+
+                }
             }
         }
 

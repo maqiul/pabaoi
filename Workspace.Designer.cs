@@ -33,6 +33,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnTest = new System.Windows.Forms.Button();
+            this.btnCloseCamera = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,6 +91,30 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "开始";
             // 
+            // btnTest
+            // 
+            this.btnTest.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnTest.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTest.Location = new System.Drawing.Point(72, 247);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(108, 54);
+            this.btnTest.TabIndex = 1;
+            this.btnTest.Text = "测试";
+            this.btnTest.UseVisualStyleBackColor = false;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
+            // btnCloseCamera
+            // 
+            this.btnCloseCamera.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnCloseCamera.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCloseCamera.Location = new System.Drawing.Point(94, 327);
+            this.btnCloseCamera.Name = "btnCloseCamera";
+            this.btnCloseCamera.Size = new System.Drawing.Size(108, 54);
+            this.btnCloseCamera.TabIndex = 1;
+            this.btnCloseCamera.Text = "关闭相机";
+            this.btnCloseCamera.UseVisualStyleBackColor = false;
+            this.btnCloseCamera.Click += new System.EventHandler(this.btnCloseCamera_Click);
+            // 
             // Workspace
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -98,6 +124,8 @@
             this.ClientSize = new System.Drawing.Size(850, 649);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btnCloseCamera);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -121,5 +149,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Button btnCloseCamera;
     }
 }
