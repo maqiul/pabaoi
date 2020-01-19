@@ -30,8 +30,8 @@ namespace pcbaoi
         public const int HTCAPTION = 0x0002;
 
         FileInfo FileInfonew;
-        Form1 aa;
-        public Workspace(Form1 form1)
+        CaptureForm aa;
+        public Workspace(CaptureForm form1)
         {
             InitializeComponent();
             aa = form1;

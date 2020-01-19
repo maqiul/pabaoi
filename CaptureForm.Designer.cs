@@ -1,6 +1,6 @@
 ﻿namespace pcbaoi
 {
-    partial class Form1
+    partial class CaptureForm
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaptureForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -1118,7 +1118,7 @@
             this.pingbi.Text = "屏蔽设置";
             this.pingbi.Click += new System.EventHandler(this.pingbi_Click);
             // 
-            // Form1
+            // CaptureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1135,13 +1135,13 @@
             this.Controls.Add(this.pMain);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "CaptureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Q smart";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.Load += new System.EventHandler(this.CaptureForm_Load);
+            this.Shown += new System.EventHandler(this.CaptureForm_Shown);
+            this.SizeChanged += new System.EventHandler(this.CaptureForm_SizeChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pLeftToolbox.ResumeLayout(false);

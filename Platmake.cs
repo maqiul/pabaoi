@@ -267,7 +267,7 @@ namespace pcbaoi
 
         private void button14_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1(2);
+            CaptureForm form1 = new CaptureForm(2);
             form1.Show();
             this.Hide();
 

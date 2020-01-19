@@ -43,7 +43,7 @@ namespace pcbaoi
             if (dialogResult == DialogResult.OK)
             {
                 login.Close();
-                Application.Run(new Form1(1));
+                Application.Run(new CaptureForm(1));
             }
         }
         private static void conn()

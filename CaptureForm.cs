@@ -22,7 +22,7 @@ using Emgu.CV.Util;
 
 namespace pcbaoi
 {
-    public partial class Form1 : Form
+    public partial class CaptureForm : Form
     {
         //AutoSizeFormClassnew asc = new AutoSizeFormClassnew();
         private int formStartX = 0;
@@ -277,7 +277,7 @@ namespace pcbaoi
         }
 
         #endregion
-        public Form1(int i)
+        public CaptureForm(int i)
         {
             InitializeComponent();
             //List<DeviceEnumerator.Device> list = DeviceEnumerator.EnumerateDevices();
@@ -305,7 +305,7 @@ namespace pcbaoi
         }
 
 
-        private void Form1_Shown(object sender, EventArgs e)
+        private void CaptureForm_Shown(object sender, EventArgs e)
         {
             if (from==1) {
                 Workspace workspace = new Workspace(this);
@@ -336,6 +336,7 @@ namespace pcbaoi
             }
             //pbMainImg.Height = oldlastheight;
             //pbMainImg.Width = oldlastwidth;
+            //图片滚轮缩放
             this.MouseWheel += PbMainImg_MouseWheel;
 
             pbMainImg.MouseWheel += PbMainImg_MouseWheel;
@@ -408,7 +409,7 @@ namespace pcbaoi
             MessageBox.Show(Settings.Default.path);
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e)
+        private void CaptureForm_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal) {
                 this.Width = this.formStartX;
@@ -417,7 +418,7 @@ namespace pcbaoi
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void CaptureForm_Load(object sender, EventArgs e)
         {
             fc = new FormControl(this);
             fc.GetInit(this, fc);
@@ -1575,7 +1576,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
 
         }
-
+        //A面获取状态
         private void getstatus(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             while (true) {
@@ -1595,6 +1596,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
 
         }
+        //A面运行方法
         private void run()
         {
             int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
@@ -1732,6 +1734,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                     Bitmap allbitmap = _image.Bitmap;
                     pbMainImg.Image = allbitmap;
                     aa.Dispose();
+                    Abitmaps = null;
                     GC.Collect();
                 }
                 catch (Exception e)
@@ -1769,6 +1772,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             }
             return obuf;
         }
+        //B面获取状态
         private void getstatus2(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             while (true) {
@@ -1787,6 +1791,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
 
         }
+        //B面运行方法
         private void run2()
         {
 
@@ -1995,7 +2000,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             if (PLCController.Instance.IsConnected)
                 PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
         }
-        
+        //轨道宽度设置
         private void runplace() {
             double value = Convert.ToDouble(IniFile.iniRead("Kwidth", "kwidth")) +Convert.ToDouble(tbPcbWidth.Text)*1562.5;
             double rate = 1000.0;

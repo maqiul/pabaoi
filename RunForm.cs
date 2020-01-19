@@ -250,7 +250,7 @@ namespace pcbaoi
 
             }
 
-            Form1 form1 = new Form1(2);
+            CaptureForm form1 = new CaptureForm(2);
             form1.Show();
             this.Hide();
         }

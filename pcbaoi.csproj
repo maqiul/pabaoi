@@ -238,6 +238,8 @@
     <Compile Include="Aiadd.Designer.cs">
       <DependentUpon>Aiadd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Aidemo.cs" />
+    <Compile Include="AITestSDK.cs" />
     <Compile Include="AlgorithmSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -267,11 +269,11 @@
     </Compile>
     <Compile Include="Element.cs" />
     <Compile Include="FileHandler.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="CaptureForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CaptureForm.Designer.cs">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Ftp.cs" />
     <Compile Include="IniFile.cs" />
@@ -435,8 +437,8 @@
     <EmbeddedResource Include="Collectionform.resx">
       <DependentUpon>Collectionform.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="CaptureForm.resx">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LightsourceForm.resx">
       <DependentUpon>LightsourceForm.cs</DependentUpon>

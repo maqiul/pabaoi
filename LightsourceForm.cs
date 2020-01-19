@@ -665,7 +665,7 @@ namespace pcbaoi
 
             }
         }
-
+        //开光
         private void Openlight()
         {
             try
@@ -731,6 +731,7 @@ namespace pcbaoi
 
 
         }
+        //关光
         private void Closelight()
         {
             try
