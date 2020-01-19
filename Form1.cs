@@ -12,6 +12,13 @@ using pcbaoi.Properties;
 using pcbaoi.Tools;
 using Basler.Pylon;
 using QTing.PLC;
+using PylonC.NETSupportLibrary;
+using System.Drawing.Imaging;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using Emgu.CV.Stitching;
+using Emgu.CV.Util;
 
 namespace pcbaoi
 {
@@ -46,28 +53,24 @@ namespace pcbaoi
         bool pulleySearchStop = true;
         public static string cameraAid;
         public static string cameraBid;
-        public static List<Bitmap> Abitmaps;
-        public static List<Bitmap> Bbitmaps;
+        public  List<Bitmap> Abitmaps = new List<Bitmap>();
+        public  List<Bitmap> Bbitmaps =new List<Bitmap>();
         public static PictureBox pbmain;
-        public BaslerCamera.OnlyGetBitmapCallback cameraBitmapCallback = new BaslerCamera.OnlyGetBitmapCallback(MyCameraCallback);
-
-
-        public static void MyCameraCallback(string cameraId, Bitmap bitmap)
-        {
-            //这里处理图片两个相机可以传入同一个函数，根据cameraId来区分正反面
-            if (cameraId == cameraAid)
-            {
-                pbmain.Image = bitmap;
-                Abitmaps.Add(bitmap);                            
-            }
-            else {
-                Bbitmaps.Add(bitmap);
-            }
-        }
-        BaslerCamera aa;
+        BackgroundWorker backgroundWorker = null;
+        BackgroundWorker backgroundWorker2 = null;
+        bool isruna = false;
+        bool isrunb = false;
         #region camera
         private ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
         private Bitmap m_bitmap = null;
+
+        private int D2000 = 0;
+        private int D2001 = 0;
+        private int D2002 = 0;
+        private int D2003 = 0;
+        private int D2004 = 0;
+
+
 
 
         /* Stops the image provider and handles exceptions. */
@@ -185,28 +188,72 @@ namespace pcbaoi
                 if (image != null)
                 {
                     /* Check if the image is compatible with the currently used bitmap. */
-                    //if (BitmapFactory.IsCompatible(m_bitmap, image.Width, image.Height, image.Color))
-                    //{
-                    //    /* Update the bitmap with the image data. */
-                    //    BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
-                    //    /* To show the new image, request the display control to update itself. */
-                    //    pictureBox.Refresh();
-                    //}
-                    //else /* A new bitmap is required. */
-                    //{
-                    //    BitmapFactory.CreateBitmap(out m_bitmap, image.Width, image.Height, image.Color);
-                    //    BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
-                    //    /* We have to dispose the bitmap after assigning the new one to the display control. */
-                    //    Bitmap bitmap = pictureBox.Image as Bitmap;
-                    //    /* Provide the display control with the new bitmap. This action automatically updates the display. */
-                    //    pictureBox.Image = m_bitmap;
-                    //    if (bitmap != null)
-                    //    {
-                    //        /* Dispose the bitmap. */
-                    //        bitmap.Dispose();
-                    //    }
-                    //}
+                    if (BitmapFactory.IsCompatible(m_bitmap, image.Width, image.Height, image.Color))
+                    {
+                        /* Update the bitmap with the image data. */
+                        BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
+                        /* To show the new image, request the display control to update itself. */
+                        if (m_imageProvider.CameraId == cameraAid)
+                        {
+                            Bitmap listbitmap;
+                            listbitmap =(Bitmap) PicSized(m_bitmap, 4).Clone();
+                            pbFrontImg.Image = m_bitmap;
+                            pbMainImg.Image = m_bitmap;
+                            Abitmaps.Add(listbitmap);
+                            //listbitmap.Dispose();
+                            //m_bitmap.Save("d:\\pic\\test" + ".bmp", ImageFormat.Bmp);
+                            //Abitmaps[Abitmaps.Count - 1].Save("d:\\pic\\test2" + ".bmp", ImageFormat.Bmp);
+                            //;
+                        }
+                        else {
+                            Bitmap listbitmap;
+                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            pbBackImg.Image = m_bitmap;
+                            pbMainImg.Image = m_bitmap;
+                            Bbitmaps.Add(listbitmap);
+                            //listbitmap.Dispose();
+                            //m_bitmap.Save("d:\\pic\\" + DateTimeUtil.DateTimeToLongTimeStamp().ToString() + ".bmp", ImageFormat.Bmp);
+                        }
+
+                    }
+                    else /* A new bitmap is required. */
+                    {
+                        BitmapFactory.CreateBitmap(out m_bitmap, image.Width, image.Height, image.Color);
+                        BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
+                        /* We have to dispose the bitmap after assigning the new one to the display control. */
+                        Bitmap bitmap = pbMainImg.Image as Bitmap;
+                        /* Provide the display control with the new bitmap. This action automatically updates the display. */
+                        if (m_imageProvider.CameraId == cameraAid)
+                        {
+                            Bitmap listbitmap;
+                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            pbFrontImg.Image = m_bitmap;
+                            pbMainImg.Image = m_bitmap;
+                            Abitmaps.Add(listbitmap);
+                            //listbitmap.Dispose();
+                            //m_bitmap.Save("d:\\pic\\test" + ".bmp", ImageFormat.Bmp);
+                            //Abitmaps[Abitmaps.Count - 1].Save("d:\\pic\\test2" + ".bmp", ImageFormat.Bmp);
+
+                        }
+                        else
+                        {
+                            Bitmap listbitmap;
+                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            pbBackImg.Image = m_bitmap;
+                            pbMainImg.Image = m_bitmap;
+                            Bbitmaps.Add(listbitmap);
+                            //listbitmap.Dispose();
+                            //m_bitmap.Save("d:\\pic\\" + DateTimeUtil.DateTimeToLongTimeStamp().ToString() + ".bmp", ImageFormat.Bmp);
+                        }
+
+                        if (bitmap != null)
+                        {
+                            /* Dispose the bitmap. */
+                            bitmap.Dispose();
+                        }
+                    }
                     /* The processing of the image is done. Release the image buffer. */
+                    // 
                     m_imageProvider.ReleaseImage();
                     /* The buffer can be used for the next image grabs. */
                 }
@@ -233,6 +280,7 @@ namespace pcbaoi
         public Form1(int i)
         {
             InitializeComponent();
+            //List<DeviceEnumerator.Device> list = DeviceEnumerator.EnumerateDevices();
             pLeftToolbox.Hide();
             pBottomToolbox.Hide();
             pCenterXY.Hide();
@@ -240,43 +288,22 @@ namespace pcbaoi
             pFrontInfo.Hide();
             pPcbInfoTitle.Hide();
             pMain.Hide();
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.WorkerSupportsCancellation = true;
+            backgroundWorker.DoWork += new DoWorkEventHandler(getstatus);
+            backgroundWorker2 = new BackgroundWorker();
+            backgroundWorker2.WorkerReportsProgress = true;
+            backgroundWorker2.WorkerSupportsCancellation = true;
+            backgroundWorker2.DoWork += new DoWorkEventHandler(getstatus2);
             from = i;
             cameraAid = IniFile.iniRead("CameraA", "SerialNumber");
             cameraBid = IniFile.iniRead("CameraB", "SerialNumber");
-            //hidebutton();
-            //asc.Initialize(this);
-
-            aa = new BaslerCamera();
-            // if (aa.RunCamera(cameraBid, cameraBitmapCallback) == 0)
-            // {
-            //     MessageBox.Show("打开相机失败");
-            // }
-
-            #region camera
-
-            m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
-            m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
-            m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
-            m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
-            m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
-            m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
-            m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
-            m_imageProvider.Open(m_imageProvider.GetDevice(cameraAid));
-            m_imageProvider.ContinuousShot();
-            #endregion
-
-
+            
             pbmain = this.pbMainImg;
-            //aa.Dispose(); // 如果不使用相机一定需要主动调用Dispose来释放，否则等待系统回收可能要很久
+            
         }
-        public void dododo()
-        {
-            aa.TestGrabber();
-        }
-        public void closeCamera()
-        {
-            aa.Dispose();
-        }
+
 
         private void Form1_Shown(object sender, EventArgs e)
         {
@@ -314,6 +341,7 @@ namespace pcbaoi
             pbMainImg.MouseWheel += PbMainImg_MouseWheel;
             this.MouseWheel += PbMainImg_MouseWheel;
 
+            runplace();
 
         }
 
@@ -747,6 +775,7 @@ namespace pcbaoi
             string deletesql = "delete from zijiban where isuse = 0";
             SQLiteHelper.ExecuteSql(deletesql);
             Stop();
+            CloseTheImageProvider();
             Application.Exit();
         }
 
@@ -825,9 +854,28 @@ namespace pcbaoi
                 if (collection.Type == "正面")
                 {
                     Abitmaps = new List<Bitmap>();
+                    isrunb = true;
+                    isruna = true;
+                    if (backgroundWorker2.IsBusy) {
+
+                        backgroundWorker2.CancelAsync();
+                    }
+                    if (!backgroundWorker.IsBusy) {
+                        backgroundWorker.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
+                    }
                 }
                 else {
-                    Abitmaps = new List<Bitmap>();
+                    Bbitmaps = new List<Bitmap>();
+                    isruna = true;
+                    isrunb = true;
+                    if (backgroundWorker.IsBusy)
+                    {
+                        backgroundWorker.CancelAsync();
+                    }
+                    if (!backgroundWorker2.IsBusy)
+                    {
+                        backgroundWorker2.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
+                    }
                 }
             }
         }
@@ -872,49 +920,138 @@ namespace pcbaoi
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            pbBackImg.Refresh();
-            PictureBox p = (PictureBox)sender;
-            Pen pp = new Pen(Color.Blue);
-            using (Graphics gc = p.CreateGraphics()) {
-                Rectangle rect = new Rectangle();
-                rect.Location = new Point(0,0);
-                rect.Size = new Size(pbFrontImg.Width-3,pbFrontImg.Height-3);
-                gc.DrawRectangle(pp, rect);
+            try
+            {
+                pbBackImg.Refresh();
+                PictureBox p = (PictureBox)sender;
+                Pen pp = new Pen(Color.Blue);
+                using (Graphics gc = p.CreateGraphics())
+                {
+                    Rectangle rect = new Rectangle();
+                    rect.Location = new Point(0, 0);
+                    rect.Size = new Size(pbFrontImg.Width - 3, pbFrontImg.Height - 3);
+                    gc.DrawRectangle(pp, rect);
+
+                }
+
+                    pbMainImg.Image = p.Image;
+                    tbFrontOrBack.Text = "正面";
+                    Settings.Default.frontorside = "front";
+                    foreach (Control control in pbMainImg.Controls)
+                    {
+                        if (control is PictureBox)
+                        {
+                            pbMainImg.Controls.Remove(control);
+                        }
+                    }
+                if (pbMainImg.Image != null) {
+                    drawpicboxall();
+                    pbMainImg.Height = oldlastheight;
+                    pbMainImg.Width = oldlastwidth;
+                }
+
+                #region camera
+                if (m_imageProvider.CameraId == cameraBid)
+                {
+                    Stop();
+                    /* Close the image provider. */
+                    CloseTheImageProvider();
+                }
+                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+                m_imageProvider.CameraId = cameraAid;
+                uint id = m_imageProvider.GetDevice(cameraAid);
+                if (id == 99)
+                {
+                    MessageBox.Show("未连接相机");
+                }
+                else
+                {
+                    m_imageProvider.Open(id);
+                    //Thread.Sleep(100);
+                    m_imageProvider.ContinuousShot();
+                }
+                #endregion
+
 
             }
-            pbMainImg.Image = p.Image;
-            tbFrontOrBack.Text = "正面";
-            Settings.Default.frontorside = "front";
-            foreach (Control control in pbMainImg.Controls) {
-                if (control is PictureBox) {
-                    pbMainImg.Controls.Remove(control);                
-                }
+            catch {
+
+
+
             }
-            
-            drawpicboxall();
-            pbMainImg.Height = oldlastheight;
-            pbMainImg.Width = oldlastwidth;
+
+
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            pbFrontImg.Refresh();
-            PictureBox p = (PictureBox)sender;
-            Pen pp = new Pen(Color.Blue);
-            using (Graphics gc = p.CreateGraphics())
+            try
             {
-                Rectangle rect = new Rectangle();
-                rect.Location = new Point(0,0);
-                rect.Size = new Size(p.Width - 3, p.Height - 3);
-                gc.DrawRectangle(pp, rect);
+
+                pbFrontImg.Refresh();
+                PictureBox p = (PictureBox)sender;
+                Pen pp = new Pen(Color.Blue);
+                using (Graphics gc = p.CreateGraphics())
+                {
+                    Rectangle rect = new Rectangle();
+                    rect.Location = new Point(0, 0);
+                    rect.Size = new Size(p.Width - 3, p.Height - 3);
+                    gc.DrawRectangle(pp, rect);
+
+                }
+
+                    pbMainImg.Image = p.Image;
+                    tbFrontOrBack.Text = "反面";
+                    Settings.Default.frontorside = "side";
+                if (pbMainImg.Image != null)
+                {
+                    drawpicboxall();
+                    pbMainImg.Height = oldlastheight;
+                    pbMainImg.Width = oldlastwidth;
+                }
+                #region camera
+
+                if (m_imageProvider.CameraId == cameraAid)
+                {
+                    Stop();
+                    /* Close the image provider. */
+                    CloseTheImageProvider();
+                }
+                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+                m_imageProvider.CameraId = cameraBid;
+                uint id = m_imageProvider.GetDevice(cameraBid);
+                if (id == 99)
+                {
+                    MessageBox.Show("未连接相机");
+                }
+                else
+                {
+                    m_imageProvider.Open(id);
+                    //Thread.Sleep(100);
+                    m_imageProvider.ContinuousShot();
+                }
+
+                #endregion
 
             }
-            pbMainImg.Image = p.Image;
-            tbFrontOrBack.Text = "反面";
-            Settings.Default.frontorside = "side";
-            drawpicboxall();
-            pbMainImg.Height = oldlastheight;
-            pbMainImg.Width = oldlastwidth;
+            catch {
+
+
+            }
+
+
 
         }
 
@@ -1127,28 +1264,46 @@ namespace pcbaoi
 
         private void button3_Click(object sender, EventArgs e)
         {
-            oldlastheight = pbMainImg.Height;
-            oldlastwidth = pbMainImg.Width;
-            pbMainImg.Height = pbMainImg.Image.Height;
-            pbMainImg.Width = pbMainImg.Image.Width;
-            string selectall = "select zijiname from zijiban ";
-            DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
-            for (int i=0;i<dataTable.Rows.Count;i++) {
-                string name = dataTable.Rows[i]["zijiname"].ToString();
-                foreach (Control control in pbMainImg.Controls) {
-                    if (control.Name == name) {
-                        string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'",control.Location.X,control.Location.Y,control.Width,control.Height,name);
-                        SQLiteHelper.ExecuteSql(updatesql);
+            try
+            {
+                if (pbMainImg.Image!= null){
+                    oldlastheight = pbMainImg.Height;
+                    oldlastwidth = pbMainImg.Width;
+                    pbMainImg.Height = pbMainImg.Image.Height;
+                    pbMainImg.Width = pbMainImg.Image.Width;
+                    string selectall = "select zijiname from zijiban ";
+                    DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
+                    for (int i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        string name = dataTable.Rows[i]["zijiname"].ToString();
+                        foreach (Control control in pbMainImg.Controls)
+                        {
+                            if (control.Name == name)
+                            {
+                                string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'", control.Location.X, control.Location.Y, control.Width, control.Height, name);
+                                SQLiteHelper.ExecuteSql(updatesql);
+
+                            }
+
+                        }
+
 
                     }
-                
+                    pbMainImg.Height = oldlastheight;
+                    pbMainImg.Width = oldlastwidth;
+                    MessageBox.Show("保存成功");
+
+
                 }
 
-            
+
+
             }
-            pbMainImg.Height = oldlastheight;
-            pbMainImg.Width = oldlastwidth;
-            MessageBox.Show("保存成功");
+            catch {
+
+
+            }
+
 
 
         }
@@ -1187,6 +1342,7 @@ namespace pcbaoi
         {
             RunForm runForm = new RunForm();
             runForm.Show();
+            
             this.Hide();
         }
         private void drawpicboxall() {
@@ -1280,8 +1436,59 @@ namespace pcbaoi
 
         private void toolStripMenuItem13_Click(object sender, EventArgs e)
         {
+            Stop();
+            CloseTheImageProvider();
             LightsourceForm lightsourceForm = new LightsourceForm();
             lightsourceForm.ShowDialog();
+            if (tbFrontOrBack.Text == "正面")
+            {
+                #region camera
+
+                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+                m_imageProvider.CameraId = cameraAid;
+                uint id = m_imageProvider.GetDevice(cameraAid);
+                if (id == 99)
+                {
+                    MessageBox.Show("未连接相机");
+                }
+                else
+                {
+                    m_imageProvider.Open(id);
+                    m_imageProvider.ContinuousShot();
+                }
+                #endregion
+
+            }
+            else {
+                #region camera
+
+                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+                m_imageProvider.CameraId = cameraBid;
+                uint id = m_imageProvider.GetDevice(cameraBid);
+                if (id == 99)
+                {
+                    MessageBox.Show("未连接相机");
+                }
+                else
+                {
+                    m_imageProvider.Open(id);
+                    m_imageProvider.ContinuousShot();
+                }
+                #endregion
+
+            }
         }
 
         private void toolStripMenuItem14_Click_1(object sender, EventArgs e)
@@ -1324,6 +1531,676 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                 Console.WriteLine("连接成功");
             else
                 MessageBox.Show("连接失败");
+
+        }
+        private void close() {
+
+            PLCController.Instance.CloseConnection();
+        }
+
+        private void send(int intvalue, int address)
+        {
+            double value = Convert.ToDouble(intvalue.ToString());
+            int registerAddress = address;
+            byte[] receiveData = new byte[255];
+            if (registerAddress < 2133)
+            {
+                if (value > 0xffffffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+                byte[] writeValue = new byte[4];
+                value = value * 1000;
+                writeValue[0] = (byte)((value % Math.Pow(256, 2)) / 256);
+                writeValue[1] = (byte)((value % Math.Pow(256, 2)) % 256);
+                writeValue[2] = (byte)(value / Math.Pow(256, 3));
+                writeValue[3] = (byte)((value / Math.Pow(256, 2)) % 256);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
+            }
+            else
+            {
+                if (value > 0xffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+                byte[] writeValue = new byte[2];
+                writeValue[0] = (byte)(value / Math.Pow(256, 1));
+                writeValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
+            }
+
+
+        }
+
+        private void getstatus(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (true) {
+                while (isruna)
+                {
+                    //判断是否取消操作 
+                    if (backgroundWorker.CancellationPending)
+                    {
+                        e.Cancel = true; //这里才真正取消 
+                        return;
+                    }
+                    run();
+
+                }
+
+            }
+
+
+        }
+        private void run()
+        {
+            int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
+            int yvalue = Convert.ToInt32(Convert.ToInt32(tbPcbLength.Text));
+            List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
+            List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
+            byte[] receiveData = new byte[255];
+            byte[] writeValueX = new byte[ay.Count * 4];
+            byte[] writeValueY = new byte[ay.Count * 4];
+            byte[] writeValue = new byte[4];
+            bool cantak = true;
+            while (cantak)
+            {
+
+                byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
+                double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+
+                if (newvalue == 0.00)
+                {
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    writeValue = DoubleToByte(0);
+                    if (PLCController.Instance.IsConnected)
+                        PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
+
+                    for (int i = 0; i < ax.Count; i++)
+                    {
+                        if (i == ax.Count)
+                        {
+                            continue;
+                        }
+                        for (int n = 0; n < ay.Count; n++)
+                        {
+                            byte[] ibuf = new byte[4];
+                            ibuf = DoubleToByte(ax[i]);
+                            writeValueX[n * 4] = ibuf[0];
+                            writeValueX[n * 4 + 1] = ibuf[1];
+                            writeValueX[n * 4 + 2] = ibuf[2];
+                            writeValueX[n * 4 + 3] = ibuf[3];
+
+                            //Thread.Sleep(50);
+                            ibuf = DoubleToByte(ay[n]);
+                            writeValueY[n * 4] = ibuf[0];
+                            writeValueY[n * 4 + 1] = ibuf[1];
+                            writeValueY[n * 4 + 2] = ibuf[2];
+                            writeValueY[n * 4 + 3] = ibuf[3];
+
+
+                        }
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(3000, ay.Count * 2, writeValueX, receiveData);
+                        Thread.Sleep(50);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(3200, ay.Count * 2, writeValueY, receiveData);
+                        writeValue = DoubleToByte(ay.Count);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
+                        double value = 1.00;
+                        byte[] newwriteValue = new byte[2];
+                        newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
+                        newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(2144, 1, newwriteValue, receiveData);
+                        bool isrun = true;
+                        while (isrun)
+                        {
+
+                            //Thread.Sleep(50);
+                            newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+
+                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
+
+
+
+                            newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+                            if (newvalue == 1.00)
+                            {
+
+                                isrun = false;
+                            }
+                        }
+
+                    }
+                    cantak = false;
+
+                }
+
+            }
+            double thenewvalue = 1.00;
+            byte[] thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
+            Thread.Sleep(200);
+            //Mat aa =new Mat();
+            if (Abitmaps.Count > 0) {
+                try
+                {
+                int patchWidth = Abitmaps[0].Width ;
+                int patchHeight = Abitmaps[0].Height;
+                Mat aa = new Mat(ax.Count * patchHeight, ay.Count * patchWidth ,DepthType.Cv8U, 3);
+                    if (Abitmaps.Count == ax.Count * ay.Count)
+                    {
+
+                        for (int i = 0; i < ax.Count; i++)
+                        {
+                            for (int j = 0; j < ay.Count; j++)
+                            {
+                                int count = i * ay.Count + j;
+
+                                Bitmap bitmap = Abitmaps[count];
+                                bitmap.Save("d:\\newpic\\2" + count.ToString() + ".bmp", ImageFormat.Bmp);
+
+                               // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
+                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+                                Mat invert = new Mat();
+                                CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+                                //Mat temp = aa.ToImage<Bgr, byte>().GetSubRect(new Rectangle(i * patchHeight, j * patchWidth, invert.Size.Width, invert.Size.Height)).Mat;
+                                //temp.Save("d:\\newpic\\temp" + i.ToString() + "_" + j.ToString() + "jpg");
+                                //invert.CopyTo(temp);
+                               
+                                AoiAi.addPatch(aa.Ptr, invert.Ptr,  (float)j * patchWidth,(float)i * patchHeight);
+                                aa.Save("d:\\newpic\\aa" + i.ToString() + "_" + j.ToString() + ".jpg");
+                                invert.Dispose();
+                            }
+
+                        }
+                    }
+                   
+                    Image<Bgr, Byte> _image = aa.ToImage<Bgr, Byte>();
+                    Bitmap allbitmap = _image.Bitmap;
+                    pbMainImg.Image = allbitmap;
+                    aa.Dispose();
+                    GC.Collect();
+                }
+                catch (Exception e)
+                {
+                    Loghelper.WriteLog("报错了", e);
+
+
+                }
+            }
+
+
+            //Bitmap allbitmap = Mat
+        }
+        private byte[] DoubleToByte(double value)
+        {
+            byte[] obuf = new byte[4];
+
+            if (value < 0)
+            {
+                value = Math.Abs(value);
+                obuf[0] = (byte)~(byte)((value % Math.Pow(256, 2)) / 256);
+                obuf[1] = (byte)~(byte)((value % Math.Pow(256, 2)) % 256);
+                obuf[2] = (byte)~(byte)(value / Math.Pow(256, 3));
+                obuf[3] = (byte)~(byte)((value / Math.Pow(256, 2)) % 256);
+
+                obuf[1] = (byte)((byte)~(byte)((value % Math.Pow(256, 2)) % 256) + 1);
+                // obuf[2] = (byte)((byte)~(byte)(value / Math.Pow(256, 3)) + 128);
+            }
+            else
+            {
+                obuf[0] = (byte)((value % Math.Pow(256, 2)) / 256);
+                obuf[1] = (byte)((value % Math.Pow(256, 2)) % 256);
+                obuf[2] = (byte)(value / Math.Pow(256, 3));
+                obuf[3] = (byte)((value / Math.Pow(256, 2)) % 256);
+            }
+            return obuf;
+        }
+        private void getstatus2(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (true) {
+                while (isrunb)
+                {
+                    //判断是否取消操作 
+                    if (backgroundWorker2.CancellationPending)
+                    {
+                        e.Cancel = true; //这里才真正取消 
+                        return;
+                    }
+                    run2();
+
+                }
+            }
+
+
+        }
+        private void run2()
+        {
+
+            int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
+            int yvalue = Convert.ToInt32(Convert.ToInt32(tbPcbLength.Text));
+            List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
+            List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
+            byte[] receiveData = new byte[255];
+            byte[] writeValueX = new byte[by.Count * 4];
+            byte[] writeValueY = new byte[by.Count * 4];
+            byte[] writeValue = new byte[4];
+            bool cantak = true;
+            while (cantak)
+            {
+
+                byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
+                double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+
+                if (newvalue == 0.00)
+                {
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    writeValue = DoubleToByte(0);
+                    if (PLCController.Instance.IsConnected)
+                        PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
+
+
+                    for (int i = 0; i < bx.Count; i++)
+                    {
+                        if (i == bx.Count)
+                        {
+                            continue;
+                        }
+                        for (int n = 0; n < by.Count; n++)
+                        {
+                            byte[] ibuf = new byte[4];
+                            ibuf = DoubleToByte(bx[i]);
+                            writeValueX[n * 4] = ibuf[0];
+                            writeValueX[n * 4 + 1] = ibuf[1];
+                            writeValueX[n * 4 + 2] = ibuf[2];
+                            writeValueX[n * 4 + 3] = ibuf[3];
+
+                            //Thread.Sleep(50);
+                            ibuf = DoubleToByte(by[n]);
+                            writeValueY[n * 4] = ibuf[0];
+                            writeValueY[n * 4 + 1] = ibuf[1];
+                            writeValueY[n * 4 + 2] = ibuf[2];
+                            writeValueY[n * 4 + 3] = ibuf[3];
+
+
+                        }
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(3400, by.Count * 2, writeValueX, receiveData);
+                        Thread.Sleep(50);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(3600, by.Count * 2, writeValueY, receiveData);
+                        writeValue = DoubleToByte(by.Count);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
+                        double value = 1.00;
+                        byte[] newwriteValue = new byte[2];
+                        newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
+                        newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                        if (PLCController.Instance.IsConnected)
+                            PLCController.Instance.WriteData(2146, 1, newwriteValue, receiveData);
+                        bool isrun = true;
+                        while (isrun)
+                        {
+
+                            //Thread.Sleep(50);
+                            newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+
+                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
+
+
+
+                            newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+                            if (newvalue == 1.00)
+                            {
+
+                                isrun = false;
+                            }
+                        }
+
+                    }
+                    cantak = false;
+
+                }
+
+            }
+            double thenewvalue = 1.00;
+            byte[] thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+            if (Bbitmaps.Count > 0)
+            {
+                try
+                {
+                    int patchWidth = Bbitmaps[0].Width / 4;
+                    int patchHeight = Bbitmaps[0].Height / 4;
+                    Mat aa = new Mat(by.Count * patchWidth, bx.Count * patchHeight, DepthType.Cv8U, 3);
+                    if (Bbitmaps.Count == bx.Count * by.Count)
+                    {
+
+                        for (int i = 0; i < bx.Count; i++)
+                        {
+                            for (int j = 0; j < by.Count; j++)
+                            {
+                                int count = i * by.Count + j;
+
+                                Bitmap bitmap = Bbitmaps[count];
+                                bitmap.Save("d:\\newpic\\2" + i.ToString() + ".bmp", ImageFormat.Bmp);
+                                bitmap = PicSized(bitmap, 4);
+                                bitmap.Save("d:\\newpic\\" + i.ToString() + ".bmp", ImageFormat.Bmp);
+                                //bitmap.
+                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+                                //mats.Add( currentFrame.Mat);
+                                Mat invert = new Mat();
+                                CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+                                //Mat temp = aa.ToImage<Bgr, byte>().GetSubRect(new Rectangle(i * patchHeight, j * patchWidth, invert.Size.Width, invert.Size.Height)).Mat;
+                                //temp.Save("d:\\newpic\\temp" + i.ToString() + "_" + j.ToString() + "jpg");
+                                //invert.CopyTo(temp);
+                                aa.Save("d:\\newpic\\aa" + i.ToString() + "_" + j.ToString() + "jpg");
+                                AoiAi.addPatch(aa.Ptr, invert.Ptr, (float)j * patchWidth, (float)i * patchHeight);
+                                invert.Dispose();
+                            }
+
+                        }
+                    }
+
+
+                    Image<Bgr, Byte> _image = aa.ToImage<Bgr, Byte>();
+                    Bitmap allbitmap = _image.Bitmap;
+                    //Bitmap tt = new Bitmap(aa.Cols, aa.Rows, (int)aa.Step, PixelFormat.Format24bppRgb, aa.Ptr);
+                    pbMainImg.Image = allbitmap;
+                    CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
+                    CvInvoke.Imshow("AJpg", aa); //显示图片
+                                                 //mats = null;
+                    aa.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Loghelper.WriteLog("报错了", e);
+
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 放大缩小图片尺寸
+        /// </summary>
+        /// <param name="picPath"></param>
+        /// <param name="reSizePicPath"></param>
+        /// <param name="iSize"></param>
+        /// <param name="format"></param>
+        public Bitmap PicSized(Bitmap bitmap , int iSize)
+        {
+            //Bitmap originBmp = new Bitmap(picPath);
+            int w = bitmap.Width / iSize;
+            int h = bitmap.Height / iSize;
+            Bitmap resizedBmp = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            Graphics g = Graphics.FromImage(resizedBmp);
+            //设置高质量插值法  
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            //设置高质量,低速度呈现平滑程度  
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            //消除锯齿
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.DrawImage(bitmap, new Rectangle(0, 0, w, h), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+            //resizedBmp.Save(reSizePicPath, format);
+            g.Dispose();
+            //originBmp.Dispose();
+            return resizedBmp;
+
+        }
+
+        private void button10_Click_1(object sender, EventArgs e)
+        {
+            byte[] receiveData = new byte[255];
+            byte[] writeValue = new byte[4];
+            writeValue = DoubleToByte(0);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
+            double thenewvalue = 1.00;
+            byte[] thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
+            receiveData = new byte[255];
+            writeValue = new byte[4];
+            writeValue = DoubleToByte(0);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
+            thenewvalue = 1.00;
+            thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+        }
+        
+        private void runplace() {
+            double value = Convert.ToDouble(IniFile.iniRead("Kwidth", "kwidth")) +Convert.ToDouble(tbPcbWidth.Text)*1562.5;
+            double rate = 1000.0;
+            int registerAddress = 2124;
+            int wordBit = 32;
+            byte[] receiveData = new byte[255];
+            value = value ;
+            if (wordBit == 32)
+            {
+                if (value > 0xffffffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+
+                byte[] writeValue = new byte[4];
+                writeValue = DoubleToByte(value);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
+            }
+
+            try
+            {
+
+                int[] registerBitall = { 5 };
+                foreach (int i in registerBitall)
+                {
+                    registerAddress = 2004;
+                    int registerBit = i;
+                     int newvalue = 1 << registerBit;
+
+                    int currentValue = 0;
+
+                     receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = newvalue;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+
+
+            }
+            catch
+            {
+
+
+            }
+
+
+        }
+        private void SendValueToRegister(int registerAddress, int value, byte[] receiveData)
+        {
+            try
+            {
+                byte[] writeValue = new byte[2] { (byte)(value / 256), (byte)(value % 256) };
+                //byte[] receiveData = new byte[255];
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
+            }
+            catch (Exception exp)
+            {
+
+            }
+        }
+
+        private void fengmiqi_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+
+                int[] registerBitall = { 10 };
+                foreach (int i in registerBitall)
+                {
+                    int registerAddress = 2004;
+                    int registerBit = i;
+                    int value = 1 << registerBit;
+
+                    int currentValue = 0;
+
+                    byte[] receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = value;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        private void fengmiqi_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+
+                int[] registerBitall = { 10 };
+                foreach (int i in registerBitall)
+                {
+                    int registerAddress = 2004;
+                    int registerBit = i;
+                    int value = 0 << registerBit;
+
+                    int currentValue = 0;
+
+                    byte[] receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = value;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        private void Openchanle_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+
+                int[] registerBitall = { 0 };
+                foreach (int i in registerBitall)
+                {
+                    int registerAddress = 2004;
+                    int registerBit = i;
+                    int value = 1 << registerBit;
+
+                    int currentValue = 0;
+
+                    byte[] receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = value;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        private void Openchanle_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+
+                int[] registerBitall = { 0 };
+                foreach (int i in registerBitall)
+                {
+                    int registerAddress = 2004;
+                    int registerBit = i;
+                    int value = 0 << registerBit;
+
+                    int currentValue = 0;
+
+                    byte[] receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = value;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        private void pingbi_Click(object sender, EventArgs e)
+        {
+            PingbiForm pingbiForm = new PingbiForm();
+            pingbiForm.ShowDialog();
 
         }
     }

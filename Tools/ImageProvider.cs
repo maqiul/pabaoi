@@ -55,12 +55,13 @@ namespace pcbaoi.Tools
             protected List<GrabResult> m_grabbedBuffers; /* List of grab results already grabbed. */
             protected DeviceCallbackHandler m_callbackHandler; /* Handles callbacks from a device .*/
             protected string m_lastError = "";                 /* Holds the error information belonging to the last exception thrown. */
-
+            
 
         public uint GetDevice(string cameraId)
         {
             try
             {
+                PylonC.NET.Pylon.Initialize();
                 /* Ask the device enumerator for a list of devices. */
                 List<DeviceEnumerator.Device> list = DeviceEnumerator.EnumerateDevices();
 
@@ -72,6 +73,7 @@ namespace pcbaoi.Tools
                         return device.Index;
                     }
                 }
+
                 return 99;
             }
             catch (Exception er)
@@ -125,15 +127,26 @@ namespace pcbaoi.Tools
                 get { return m_open; }
             }
 
-            /* Open using index. Before ImageProvider can be opened using the index, PylonC.NET.Pylon.EnumerateDevices() needs to be called. */
-            public void Open(uint index)
+        public string CameraId { get => cameraId; set => cameraId = value; }
+
+        private string cameraId;
+
+
+        /* Open using index. Before ImageProvider can be opened using the index, PylonC.NET.Pylon.EnumerateDevices() needs to be called. */
+        public void Open(uint index)
             {
+
                 /* Get a handle for the device and proceed. */
                 Open(PylonC.NET.Pylon.CreateDeviceByIndex(index));
             }
+        public void newOpen(uint index)
+        {
+            /* Get a handle for the device and proceed. */
+            newOpen(PylonC.NET.Pylon.CreateDeviceByIndex(index));
 
-            /* Close the device */
-            public void Close()
+        }
+        /* Close the device */
+        public void Close()
             {
                 /* Notify that ImageProvider is about to close the device to give other objects the chance to do clean up operations. */
                 OnDeviceClosingEvent();
@@ -409,9 +422,103 @@ namespace pcbaoi.Tools
                 /* Notify that the ImageProvider is open and ready for grabbing and configuration. */
                 OnDeviceOpenedEvent();
             }
+        //持续拍照
+        protected void newOpen(PYLON_DEVICE_HANDLE device)
+        {
+            try
+            {
+                /* Use provided device. */
+                m_hDevice = device;
 
-            /* Prepares everything for grabbing. */
-            protected void SetupGrab()
+                /* Before using the device, it must be opened. Open it for configuring
+                parameters and for grabbing images. */
+                PylonC.NET.Pylon.DeviceOpen(m_hDevice, PylonC.NET.Pylon.cPylonAccessModeControl | PylonC.NET.Pylon.cPylonAccessModeStream);
+
+                /* Register the callback function. */
+                m_hRemovalCallback = PylonC.NET.Pylon.DeviceRegisterRemovalCallback(m_hDevice, m_callbackHandler);
+
+                /* For GigE cameras, we recommend increasing the packet size for better
+                   performance. When the network adapter supports jumbo frames, set the packet
+                   size to a value > 1500, e.g., to 8192. In this sample, we only set the packet size
+                   to 1500. */
+                /* ... Check first to see if the GigE camera packet size parameter is supported and if it is writable. */
+                if (PylonC.NET.Pylon.DeviceFeatureIsWritable(m_hDevice, "GevSCPSPacketSize"))
+                {
+                    /* ... The device supports the packet size feature. Set a value. */
+                    PylonC.NET.Pylon.DeviceSetIntegerFeature(m_hDevice, "GevSCPSPacketSize", 1500);
+                }
+
+                /* The sample does not work in chunk mode. It must be disabled. */
+                if (PylonC.NET.Pylon.DeviceFeatureIsWritable(m_hDevice, "ChunkModeActive"))
+                {
+                    /* Disable the chunk mode. */
+                    PylonC.NET.Pylon.DeviceSetBooleanFeature(m_hDevice, "ChunkModeActive", false);
+                }
+
+                /* Disable acquisition start trigger if available. */
+                //if (PylonC.NET.Pylon.DeviceFeatureIsAvailable(m_hDevice, "EnumEntry_TriggerSelector_AcquisitionStart"))
+                //{
+                //    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerSelector", "AcquisitionStart");
+                //    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerMode", "Off");
+                //}
+
+                /* Disable frame burst start trigger if available */
+                if (PylonC.NET.Pylon.DeviceFeatureIsAvailable(m_hDevice, "EnumEntry_TriggerSelector_FrameBurstStart"))
+                {
+                    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerSelector", "FrameBurstStart");
+                    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerMode", "Off");
+                }
+
+                /* Disable frame start trigger if available. */
+                if (PylonC.NET.Pylon.DeviceFeatureIsAvailable(m_hDevice, "EnumEntry_TriggerSelector_FrameStart"))
+                {
+                    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerSelector", "FrameStart");
+                    PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerMode", "Off");
+                }
+
+                //PylonC.NET.Pylon.DeviceFeatureFromString(m_hDevice, "TriggerSource", "Line1");
+                /* Image grabbing is done using a stream grabber.
+                  A device may be able to provide different streams. A separate stream grabber must
+                  be used for each stream. In this sample, we create a stream grabber for the default
+                  stream, i.e., the first stream ( index == 0 ).
+                  */
+
+                /* Get the number of streams supported by the device and the transport layer. */
+                if (PylonC.NET.Pylon.DeviceGetNumStreamGrabberChannels(m_hDevice) < 1)
+                {
+                    throw new Exception("The transport layer doesn't support image streams.");
+                }
+
+                /* Create and open a stream grabber for the first channel. */
+                m_hGrabber = PylonC.NET.Pylon.DeviceGetStreamGrabber(m_hDevice, 0);
+                PylonC.NET.Pylon.StreamGrabberOpen(m_hGrabber);
+
+                /* Get a handle for the stream grabber's wait object. The wait object
+                   allows waiting for m_buffers to be filled with grabbed data. */
+                m_hWait = PylonC.NET.Pylon.StreamGrabberGetWaitObject(m_hGrabber);
+            }
+            catch
+            {
+                /* Get the last error message here, because it could be overwritten by cleaning up. */
+                UpdateLastError();
+
+                try
+                {
+                    Close(); /* Try to close any open handles. */
+                }
+                catch
+                {
+                    /* Another exception cannot be handled. */
+                }
+                throw;
+            }
+
+            /* Notify that the ImageProvider is open and ready for grabbing and configuration. */
+            OnDeviceOpenedEvent();
+        }
+
+        /* Prepares everything for grabbing. */
+        protected void SetupGrab()
             {
                 /* Clear the grab result queue. This is not done when cleaning up to still be able to provide the
                  images, e.g. in single frame mode.*/
@@ -511,7 +618,7 @@ namespace pcbaoi.Tools
                                 {
                                     /* A timeout occurred. This can happen if an external trigger is used or
                                        if the programmed exposure time is longer than the grab timeout. */
-                                    throw new Exception("A grab timeout occurred.");
+                                    //throw new Exception("A grab timeout occurred.");
                                 }
                                 continue;
                             }

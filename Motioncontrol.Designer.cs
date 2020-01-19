@@ -32,6 +32,9 @@
             this.Titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
             this.leftpanel = new System.Windows.Forms.Panel();
+            this.Yspeed = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.Checkbt = new System.Windows.Forms.Button();
             this.Restbt = new System.Windows.Forms.Button();
             this.Xspeed = new System.Windows.Forms.TextBox();
@@ -49,9 +52,6 @@
             this.frontlabel = new System.Windows.Forms.Label();
             this.lightpicbox = new System.Windows.Forms.PictureBox();
             this.Mainpicbox = new System.Windows.Forms.PictureBox();
-            this.Yspeed = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.Titlepanel.SuspendLayout();
             this.leftpanel.SuspendLayout();
             this.righttitlebt.SuspendLayout();
@@ -105,6 +105,34 @@
             this.leftpanel.Size = new System.Drawing.Size(275, 500);
             this.leftpanel.TabIndex = 4;
             // 
+            // Yspeed
+            // 
+            this.Yspeed.Location = new System.Drawing.Point(137, 240);
+            this.Yspeed.Name = "Yspeed";
+            this.Yspeed.Size = new System.Drawing.Size(87, 21);
+            this.Yspeed.TabIndex = 21;
+            this.Yspeed.TextChanged += new System.EventHandler(this.Yspeed_TextChanged);
+            this.Yspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Yspeed_KeyPress);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(54, 245);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Y运动速度";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(33, 245);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "label4";
+            // 
             // Checkbt
             // 
             this.Checkbt.Location = new System.Drawing.Point(151, 271);
@@ -113,6 +141,8 @@
             this.Checkbt.TabIndex = 18;
             this.Checkbt.Text = "运动自检";
             this.Checkbt.UseVisualStyleBackColor = true;
+            this.Checkbt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Checkbt_MouseDown);
+            this.Checkbt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Checkbt_MouseUp);
             // 
             // Restbt
             // 
@@ -122,7 +152,8 @@
             this.Restbt.TabIndex = 17;
             this.Restbt.Text = "相机运动到原点";
             this.Restbt.UseVisualStyleBackColor = true;
-            this.Restbt.Click += new System.EventHandler(this.Restbt_Click);
+            this.Restbt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Restbt_MouseDown);
+            this.Restbt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Restbt_MouseUp);
             // 
             // Xspeed
             // 
@@ -162,6 +193,8 @@
             this.Xup.TabIndex = 13;
             this.Xup.UseVisualStyleBackColor = true;
             this.Xup.Click += new System.EventHandler(this.Xup_Click);
+            this.Xup.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ydown_MouseHover);
+            this.Xup.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ydown_MouseUp);
             // 
             // Ydown
             // 
@@ -173,6 +206,8 @@
             this.Ydown.TabIndex = 12;
             this.Ydown.UseVisualStyleBackColor = true;
             this.Ydown.Click += new System.EventHandler(this.Ydown_Click);
+            this.Ydown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ydown_MouseHover);
+            this.Ydown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ydown_MouseUp);
             // 
             // Xdown
             // 
@@ -184,6 +219,8 @@
             this.Xdown.TabIndex = 11;
             this.Xdown.UseVisualStyleBackColor = true;
             this.Xdown.Click += new System.EventHandler(this.Xdown_Click);
+            this.Xdown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Yup_MouseHover);
+            this.Xdown.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Yup_MouseUp);
             // 
             // Yup
             // 
@@ -195,6 +232,8 @@
             this.Yup.TabIndex = 10;
             this.Yup.UseVisualStyleBackColor = true;
             this.Yup.Click += new System.EventHandler(this.Yup_Click);
+            this.Yup.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Xup_MouseHover);
+            this.Yup.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Xup_MouseUp);
             // 
             // canelbt
             // 
@@ -274,34 +313,6 @@
             this.Mainpicbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Mainpicbox.TabIndex = 3;
             this.Mainpicbox.TabStop = false;
-            // 
-            // Yspeed
-            // 
-            this.Yspeed.Location = new System.Drawing.Point(137, 240);
-            this.Yspeed.Name = "Yspeed";
-            this.Yspeed.Size = new System.Drawing.Size(87, 21);
-            this.Yspeed.TabIndex = 21;
-            this.Yspeed.TextChanged += new System.EventHandler(this.Yspeed_TextChanged);
-            this.Yspeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Yspeed_KeyPress);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(54, 245);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 12);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Y运动速度";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(33, 245);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 12);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "label4";
             // 
             // Motioncontrol
             // 

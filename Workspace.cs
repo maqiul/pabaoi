@@ -158,6 +158,7 @@ namespace pcbaoi
             else
             {
                 MessageBox.Show("文件夹信息已损坏，请新建项目");
+                return;
             }
             this.DialogResult = DialogResult.OK;
             isclose = false;
@@ -204,12 +205,12 @@ namespace pcbaoi
 
         private void loadsetting() {
 
-           // string picsettingsql = string.Format("select * from setting");
-            //DataRowCollection picseeting = MySqlHelper.GetallRow(picsettingsql);
-            //Setting.Projectpath = picseeting[0]["settingvalue"].ToString();
-            //Setting.Completepicturepath = picseeting[1]["settingvalue"].ToString();
-            Setting.Projectpath = "D:\\prosetting\\";
-            Setting.Completepicturepath = "D:\\completepicturepath\\";
+            string picsettingsql = string.Format("select * from setting");
+            DataRowCollection picseeting = MySqlHelper.GetallRow(picsettingsql);
+            Setting.Projectpath = picseeting[0]["settingvalue"].ToString();
+            Setting.Completepicturepath = picseeting[1]["settingvalue"].ToString();
+            //Setting.Projectpath = "D:\\prosetting\\";
+            //Setting.Completepicturepath = "D:\\completepicturepath\\";
 
 
 
@@ -218,7 +219,7 @@ namespace pcbaoi
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            aa.dododo();
+           // aa.dododo();
         }
 
         private void btnCloseCamera_Click(object sender, EventArgs e)
