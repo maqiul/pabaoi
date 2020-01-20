@@ -121,7 +121,7 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button12.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Runbt.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAAFI1JREFUeF7t
         nQmwZVV1hkFQxDAJiBLSjMUgyKiiIiApCfMsBsqAODBGpWQIkwhGUFQmQUQaUCIUyKSMRoEWEAQioxqU
@@ -214,7 +214,7 @@
         urYX0m4w2hlGZ5bch8YuGv2r/+vr2k9sYzSFrXzmmOP/AAbLCdCJmzNEAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button11.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Testcheckbt.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAADcFJREFUeF7t
         3W3IX3UZB3DpQYLKQkJFV0hvQhkzQcqRhG+2RdYUxTa7deRDasyHNCOywd6oo0lTKqWmobgtUsIsMIYK
@@ -278,7 +278,7 @@
         YeE1KL7piu9M5Nt3277HXaQrzh5nkLPImVzjY9rSUUf9B9ZFic8CGgkIAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button10.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="SubstrateOut.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAADxRJREFUeF7t
         3XmsXVUVBnAQKjIFEBvAJqAggwURqEAjYZCaMjQMUhkUZCrU2gpU0RRoCEWGAClDkZC2FFoBoYYGkEkQ
@@ -348,7 +348,7 @@
         7IsYhliDZSzQMsv8D9OL7LTajsCCAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button9.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="SubstrateIn.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAADpBJREFUeF7t
         3XmMXlUZx3EkEJAEIlosghqkoJRaCqXQsrdAadmhIIgBgwgBqwYkKBg0EA2SQtgCCgqIIIuIFayICAH+
@@ -416,7 +416,7 @@
         APB1fDDBq79oAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button8.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Rulerbt.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAADNFJREFUeF7t
         nWnMHWUVx5EIEjSyiAaCRGKNEhdErftWF6riVkS+mDQhMX7yCwb9IF9qNGpao40bRKOgcSOV2NDgGqVK
@@ -476,7 +476,7 @@
         abLcY0QIIYQQQgghhBBCCCGEEEIIIYQQQgghhJgfRx31P3yACaWxyB8UAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button7.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="SububstrateAdd.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAABr9JREFUeF7t
         3UGOVVUbhWEcjxgZQg0BRiGzgIHQgCbMoFqOQ2zQoIGjANfyO4levX7Jd6iz7j6V90l2t/YrtVduKMv/
