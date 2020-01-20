@@ -30,9 +30,11 @@ namespace pcbaoi
         public const int HTCAPTION = 0x0002;
 
         FileInfo FileInfonew;
-        public Workspace()
+        CaptureForm aa;
+        public Workspace(CaptureForm form1)
         {
             InitializeComponent();
+            aa = form1;
             filehandler = new FileHandler();
             loadsetting();
             this.MouseDown += Workspace_MouseDown;
@@ -156,6 +158,7 @@ namespace pcbaoi
             else
             {
                 MessageBox.Show("文件夹信息已损坏，请新建项目");
+                return;
             }
             this.DialogResult = DialogResult.OK;
             isclose = false;
@@ -206,13 +209,23 @@ namespace pcbaoi
             DataRowCollection picseeting = MySqlHelper.GetallRow(picsettingsql);
             Setting.Projectpath = picseeting[0]["settingvalue"].ToString();
             Setting.Completepicturepath = picseeting[1]["settingvalue"].ToString();
-
+            //Setting.Projectpath = "D:\\prosetting\\";
+            //Setting.Completepicturepath = "D:\\completepicturepath\\";
 
 
 
 
         }
 
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+           // aa.dododo();
+        }
 
+        private void btnCloseCamera_Click(object sender, EventArgs e)
+        {
+            //aa.closeCamera();
+            aa.Stop();
+        }
     }
 }
