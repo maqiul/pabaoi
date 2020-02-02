@@ -1,5 +1,4 @@
-﻿using ConsoleApp2;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -13,7 +12,7 @@ namespace pcbaoi
 {
     class Aidemo
     {
-        private int sdkin()
+        public int sdkin()
         {
 
             // VS要用管理员权限打开
@@ -21,11 +20,11 @@ namespace pcbaoi
             // VS要用管理员权限打开
 
             //初始化检测器
-            return AITestSDK.init(@"F:\newdemoall\newdemoall\bin\x64\Debug\suomi\data\config.data",
+            return AITestSDK.init(@"E:/pcbaoi/bin/x64/Debug/modelWeights/config.data",
                  // 特别说明，这里的路径一定要用 '/' 不能用反斜杠
                  // 特别说明，这里的路径一定要用 '/' 不能用反斜杠
                  // 特别说明，这里的路径一定要用 '/' 不能用反斜杠
-                 "F:/newdemoall/newdemoall/bin/x64/Debug/suomi/data/voc.weights",
+                 "E:/pcbaoi/bin/x64/Debug/modelWeights/voc.weights",
                  0);
 
         }
@@ -66,6 +65,10 @@ namespace pcbaoi
                         (int)boxlist.bboxlist[i].y,
                         (int)boxlist.bboxlist[i].w,
                         (int)boxlist.bboxlist[i].h, Color.Red, 2, DashStyle.Solid);
+                //    DrawRectangleInPicture(bitmap, 50,
+                //        50,
+                //        50,
+                //        50, Color.Red, 2, DashStyle.Solid);
                 }
                 ng = true;
             }

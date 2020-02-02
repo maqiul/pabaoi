@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,8 +23,28 @@ using Emgu.CV.Util;
 
 namespace pcbaoi
 {
+    enum SIDE
+    {
+        FRONT = 1,
+        BACK
+    };
+    
     public partial class CaptureForm : Form
     {
+        //拍摄点位X和Y方向间隔，当前都为14mm
+        private const float capturePointIntervalXInMM = 14.0f;
+        private const float capturePointIntervalYInMM = 14.0f;
+        //单张拍摄图片对应的物理宽度，当前为17mm
+        private const float singleCaptureWidthInMM = 17.0f;
+        //最终用于显示的大图每1mm对应的像素个数
+        private const float pixelNumPerMM = 30.0f;
+
+        //记录拍了多少块板子
+        int captureCount = 0;
+
+        //AI检测模块
+        private Aidemo aidemo;
+
         //AutoSizeFormClassnew asc = new AutoSizeFormClassnew();
         private int formStartX = 0;
         private int formStartY = 0;
@@ -199,16 +220,23 @@ namespace pcbaoi
                 /* Check if the image has been removed in the meantime. */
                 if (image != null)
                 {
+                    String directory = "d:\\SavedPerCameraImages\\" + captureCount.ToString();
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
                     /* Check if the image is compatible with the currently used bitmap. */
                     if (BitmapFactory.IsCompatible(m_bitmap, image.Width, image.Height, image.Color))
-                    {
+                    {                        
                         /* Update the bitmap with the image data. */
                         BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
                         /* To show the new image, request the display control to update itself. */
                         if (m_imageProvider.CameraId == cameraAid)
                         {
+                            
+                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
                             Bitmap listbitmap;
-                            listbitmap =(Bitmap) PicSized(m_bitmap, 4).Clone();
+                            listbitmap =(Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbFrontImg.Image = m_bitmap;
                             pbMainImg.Image = m_bitmap;
                             Abitmaps.Add(listbitmap);
@@ -218,8 +246,9 @@ namespace pcbaoi
                             //;
                         }
                         else {
+                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
                             Bitmap listbitmap;
-                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbBackImg.Image = m_bitmap;
                             pbMainImg.Image = m_bitmap;
                             Bbitmaps.Add(listbitmap);
@@ -237,25 +266,27 @@ namespace pcbaoi
                         /* Provide the display control with the new bitmap. This action automatically updates the display. */
                         if (m_imageProvider.CameraId == cameraAid)
                         {
+                            //保存相机拍摄的原始图片
+                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+
                             Bitmap listbitmap;
-                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbFrontImg.Image = m_bitmap;
                             pbMainImg.Image = m_bitmap;
                             Abitmaps.Add(listbitmap);
                             //listbitmap.Dispose();
-                            //m_bitmap.Save("d:\\pic\\test" + ".bmp", ImageFormat.Bmp);
-                            //Abitmaps[Abitmaps.Count - 1].Save("d:\\pic\\test2" + ".bmp", ImageFormat.Bmp);
-
                         }
                         else
                         {
+                            //保存相机拍摄的原始图片
+                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+
                             Bitmap listbitmap;
-                            listbitmap = (Bitmap)PicSized(m_bitmap, 4).Clone();
+                            listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbBackImg.Image = m_bitmap;
                             pbMainImg.Image = m_bitmap;
                             Bbitmaps.Add(listbitmap);
                             //listbitmap.Dispose();
-                            //m_bitmap.Save("d:\\pic\\" + DateTimeUtil.DateTimeToLongTimeStamp().ToString() + ".bmp", ImageFormat.Bmp);
                         }
 
                         if (bitmap != null)
@@ -312,8 +343,39 @@ namespace pcbaoi
             from = i;
             cameraAid = IniFile.iniRead("CameraA", "SerialNumber");
             cameraBid = IniFile.iniRead("CameraB", "SerialNumber");
-            
-            
+
+            //初始化AI检测SDK
+            bbox_t_container boxlist = new bbox_t_container();
+            aidemo = new Aidemo();
+            int res = aidemo.sdkin();
+            if (res == -1)
+            {
+                MessageBox.Show("AI加载失败");
+            }
+            //AITestSDK.detect_image_path("D:\\00.jpg", ref boxlist);
+            Bitmap bitTest = new Bitmap("D:\\3.jpg");
+            aidemo.savepic(bitTest, "D:\\3_res.jpg");
+
+         //   for (int j = 0; j < boxlist.bboxlist.Length; j++)
+         //   {
+         //       if (boxlist.bboxlist[j].h == 0) // 这里需要这样判断退出循环
+         //       {
+         //           break;
+         //       }
+         //       else
+         //       {
+         //           /*
+         //            *   public uint x, y, w, h;       // 缺陷框坐标 定点x,y 宽高w,h
+         //public float prob;            // 置信度
+         //public uint obj_id;           // 缺陷id
+         //public uint track_id;         // 预留，tracking id for video (0 - untracked, 1 - inf - tracked object)
+         //public uint frames_counter;   // 预留，counter of frames on which the object was detected
+         //public float x_3d, y_3d, z_3d;// 预留 
+         //            */
+         //       }
+         //   }
+
+
         }
 
         
@@ -357,6 +419,14 @@ namespace pcbaoi
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            try
+            {
+                AITestSDK.dispose(); // 程序退出执行
+            }
+            catch(Exception er)
+            {
+
+            }
             string deletesql = "delete from zijiban where isuse = 0";
             SQLiteHelper.ExecuteSql(deletesql);
             Stop();
@@ -1271,6 +1341,12 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         }
 
 
+        //计算全图画布大小
+        private void getCanvasSize(int xCaptureCount, int yCaptureCount, ref int canvasWidth, ref int canvasHeight)
+        {
+            canvasHeight = (int)((float)(xCaptureCount) * capturePointIntervalYInMM * pixelNumPerMM);
+            canvasWidth = (int)((float)(yCaptureCount) * capturePointIntervalXInMM * pixelNumPerMM);
+        }
 
         //A面获取状态
         private void getstatusA(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -1284,164 +1360,31 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         e.Cancel = true; //这里才真正取消 
                         return;
                     }
-                    run();
 
+                    run(SIDE.FRONT);
                 }
 
             }
-
-
         }
-        //A面运行主要方法
-        private void run()
+
+        //B面获取状态
+        private void getstatusB(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
-            int yvalue = Convert.ToInt32(Convert.ToInt32(tbPcbLength.Text));
-            //计算X,Y方向的运行点位和拍摄数量
-            List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
-            List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
-            byte[] receiveData = new byte[255];
-            byte[] writeValueX = new byte[ay.Count * 4];
-            byte[] writeValueY = new byte[ay.Count * 4];
-            byte[] writeValue = new byte[4];
-            bool cantak = true;
-            while (cantak)
+            while (true)
             {
-
-                byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
-                //检测板子到位信号
-                double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];              
-                if (newvalue == 0.00)
+                while (isrunb)
                 {
-                    Thread.Sleep(100);
-                }
-                else
-                {
-                    //设置B面拍摄数量为0
-                    writeValue = DoubleToByte(0);
-                    if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
-                    //循环写入点位 一次数量为y方向最大数量
-                    for (int i = 0; i < ax.Count; i++)
+                    //判断是否取消操作 
+                    if (backgroundWorkerB.CancellationPending)
                     {
-                        if (i == ax.Count)
-                        {
-                            continue;
-                        }
-                        for (int n = 0; n < ay.Count; n++)
-                        {
-                            byte[] ibuf = new byte[4];
-                            ibuf = DoubleToByte(ax[i]);
-                            writeValueX[n * 4] = ibuf[0];
-                            writeValueX[n * 4 + 1] = ibuf[1];
-                            writeValueX[n * 4 + 2] = ibuf[2];
-                            writeValueX[n * 4 + 3] = ibuf[3];
-
-                            //Thread.Sleep(50);
-                            ibuf = DoubleToByte(ay[n]);
-                            writeValueY[n * 4] = ibuf[0];
-                            writeValueY[n * 4 + 1] = ibuf[1];
-                            writeValueY[n * 4 + 2] = ibuf[2];
-                            writeValueY[n * 4 + 3] = ibuf[3];
-
-
-                        }
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3000, ay.Count * 2, writeValueX, receiveData);
-                        Thread.Sleep(50);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3200, ay.Count * 2, writeValueY, receiveData);
-                        //设置拍摄数量
-                        writeValue = DoubleToByte(ay.Count);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
-                        double value = 1.00;
-                        byte[] newwriteValue = new byte[2];
-                        newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
-                        newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
-                        //发送开始拍摄信号
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(2144, 1, newwriteValue, receiveData);
-                        bool isrun = true;
-                        while (isrun)
-                        {
-                            //检测拍完信号
-                            newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
-                            newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
-                            if (newvalue == 1.00)
-                            {
-
-                                isrun = false;
-                            }
-                        }
-
+                        e.Cancel = true; //这里才真正取消 
+                        return;
                     }
-                    cantak = false;
-
-                }
-
-            }
-            //发送出出板信号
-            double thenewvalue = 1.00;
-            byte[] thenewwriteValue = new byte[2];
-            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-            if (PLCController.Instance.IsConnected)
-                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
-            Thread.Sleep(200);
-
-            if (Abitmaps.Count > 0) {
-                try
-                {
-                int patchWidth = Abitmaps[0].Width ;
-                int patchHeight = Abitmaps[0].Height;
-                Mat aa = new Mat(ax.Count * patchHeight, ay.Count * patchWidth ,DepthType.Cv8U, 3);
-                    if (Abitmaps.Count == ax.Count * ay.Count)
-                    {
-
-                        for (int i = 0; i < ax.Count; i++)
-                        {
-                            for (int j = 0; j < ay.Count; j++)
-                            {
-                                int count = i * ay.Count + j;
-
-                                Bitmap bitmap = Abitmaps[count];
-                                bitmap.Save("d:\\newpic\\2" + count.ToString() + ".bmp", ImageFormat.Bmp);
-
-                               // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
-                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
-                                Mat invert = new Mat();
-                                CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-                                //Mat temp = aa.ToImage<Bgr, byte>().GetSubRect(new Rectangle(i * patchHeight, j * patchWidth, invert.Size.Width, invert.Size.Height)).Mat;
-                                //temp.Save("d:\\newpic\\temp" + i.ToString() + "_" + j.ToString() + "jpg");
-                                //invert.CopyTo(temp);
-                               
-                                AoiAi.addPatch(aa.Ptr, invert.Ptr,  (float)j * patchWidth,(float)i * patchHeight);
-                                aa.Save("d:\\newpic\\aa" + i.ToString() + "_" + j.ToString() + ".jpg");
-                                invert.Dispose();
-                            }
-
-                        }
-                    }
-                   
-                    Image<Bgr, Byte> _image = aa.ToImage<Bgr, Byte>();
-                    Bitmap allbitmap = _image.Bitmap;
-                    pbMainImg.Image = allbitmap;
-                    aa.Dispose();
-                    Abitmaps = null;
-                    GC.Collect();
-                }
-                catch (Exception e)
-                {
-                    Loghelper.WriteLog("报错了", e);
-
-
+                    run(SIDE.BACK);
                 }
             }
+        }       
 
-        }
         //转Double 转字节
         private byte[] DoubleToByte(double value)
         {
@@ -1467,45 +1410,50 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             }
             return obuf;
         }
-        //B面获取状态
-        private void getstatusB(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            while (true) {
-                while (isrunb)
-                {
-                    //判断是否取消操作 
-                    if (backgroundWorkerB.CancellationPending)
-                    {
-                        e.Cancel = true; //这里才真正取消 
-                        return;
-                    }
-                    run2();
 
-                }
+
+        //单面运行主要方法
+        private void run(SIDE side)
+        {
+            int portData = 1131, portDataCaptureDone = 1133, portX = 0, portY = 0, portCaptureNumOtherSide = 0, portCaptureNum = 0, portCapture = 0, portMoveOut = 0;
+            List<Bitmap> bitmapList = Abitmaps;
+            if (side == SIDE.FRONT)
+            {
+                portX = 3000;
+                portY = 3200;
+                portCaptureNumOtherSide = 5002;
+                portCaptureNum = 5000;
+                portCapture = 2144;
+                portMoveOut = 2145;
+                bitmapList = Abitmaps;
+            }
+            else
+            {
+                portX = 3400;
+                portY = 3600;
+                portCaptureNumOtherSide = 5000;
+                portCaptureNum = 5002;
+                portCapture = 2146;
+                portMoveOut = 2147;
+                bitmapList = Bbitmaps;
             }
 
-
-        }
-        //B面运行主要方法
-        private void run2()
-        {
-           
             int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
             int yvalue = Convert.ToInt32(Convert.ToInt32(tbPcbLength.Text));
             //计算X,Y方向的运行点位和拍摄数量
-            List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
-            List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
+            List<int> x = Xycoordinate.axcoordinate((int)Math.Ceiling((float)xvalue / capturePointIntervalXInMM), (int)(capturePointIntervalXInMM));
+            List<int> y = Xycoordinate.aycoordinate((int)Math.Ceiling((float)yvalue / capturePointIntervalYInMM), (int)(capturePointIntervalYInMM));
             byte[] receiveData = new byte[255];
-            byte[] writeValueX = new byte[by.Count * 4];
-            byte[] writeValueY = new byte[by.Count * 4];
+            byte[] writeValueX = new byte[y.Count * 4];
+            byte[] writeValueY = new byte[y.Count * 4];
             byte[] writeValue = new byte[4];
             bool cantak = true;
             while (cantak)
             {
 
                 byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
-                //检测可拍摄状态
+                int num = PLCController.Instance.ReadData(portData, 2, newreceiveData);
+                //检测板子到位信号
                 double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
                 if (newvalue == 0.00)
                 {
@@ -1513,28 +1461,28 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                 }
                 else
                 {
-                    //设置A面拍摄为0
+                    //设置B面拍摄数量为0
                     writeValue = DoubleToByte(0);
                     if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
-                    //循环添加拍摄点位（次长度为y方向最大次数）
-                    for (int i = 0; i < bx.Count; i++)
+                        PLCController.Instance.WriteData(portCaptureNumOtherSide, 2, writeValue, receiveData);
+                    //循环写入点位 一次数量为y方向最大数量
+                    for (int i = 0; i < x.Count; i++)
                     {
-                        if (i == bx.Count)
+                        if (i == x.Count)
                         {
                             continue;
                         }
-                        for (int n = 0; n < by.Count; n++)
+                        for (int n = 0; n < y.Count; n++)
                         {
                             byte[] ibuf = new byte[4];
-                            ibuf = DoubleToByte(bx[i]);
+                            ibuf = DoubleToByte(x[i]);
                             writeValueX[n * 4] = ibuf[0];
                             writeValueX[n * 4 + 1] = ibuf[1];
                             writeValueX[n * 4 + 2] = ibuf[2];
                             writeValueX[n * 4 + 3] = ibuf[3];
 
                             //Thread.Sleep(50);
-                            ibuf = DoubleToByte(by[n]);
+                            ibuf = DoubleToByte(y[n]);
                             writeValueY[n * 4] = ibuf[0];
                             writeValueY[n * 4 + 1] = ibuf[1];
                             writeValueY[n * 4 + 2] = ibuf[2];
@@ -1543,28 +1491,27 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
                         }
                         if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3400, by.Count * 2, writeValueX, receiveData);
+                            PLCController.Instance.WriteData(portX, y.Count * 2, writeValueX, receiveData);
                         Thread.Sleep(50);
                         if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3600, by.Count * 2, writeValueY, receiveData);
-                        writeValue = DoubleToByte(by.Count);
+                            PLCController.Instance.WriteData(portY, y.Count * 2, writeValueY, receiveData);
+                        //设置拍摄数量
+                        writeValue = DoubleToByte(y.Count);
                         if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
-                        //发送拍摄信号
+                            PLCController.Instance.WriteData(portCaptureNum, 2, writeValue, receiveData);
                         double value = 1.00;
                         byte[] newwriteValue = new byte[2];
                         newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
                         newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                        //发送开始拍摄信号
                         if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(2146, 1, newwriteValue, receiveData);
+                            PLCController.Instance.WriteData(portCapture, 1, newwriteValue, receiveData);
                         bool isrun = true;
                         while (isrun)
                         {
-                            //Thread.Sleep(50);
                             //检测拍完信号
                             newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
-
+                            num = PLCController.Instance.ReadData(portDataCaptureDone, 2, newreceiveData);
                             newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
                             if (newvalue == 1.00)
                             {
@@ -1579,92 +1526,129 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                 }
 
             }
-            //发送出板信号
-            double thenewvalue = 1.00;
-            byte[] thenewwriteValue = new byte[2];
-            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-            if (PLCController.Instance.IsConnected)
-                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+            //发送出出板信号
+            substrateOut(); //暂时强制出板
+            //double thenewvalue = 1.00;
+            //byte[] thenewwriteValue = new byte[2];
+            //thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            // thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            //if (PLCController.Instance.IsConnected)
+            //    PLCController.Instance.WriteData(portMoveOut, 1, thenewwriteValue, receiveData);
+            Thread.Sleep(200);
+
+
             //根据数组进行拼图
-            if (Bbitmaps.Count > 0)
+            if (bitmapList.Count > 0)
             {
                 try
                 {
-                    int patchWidth = Bbitmaps[0].Width;
-                    int patchHeight = Bbitmaps[0].Height;
-                    Mat bb = new Mat(bx.Count * patchHeight, by.Count * patchWidth, DepthType.Cv8U, 3);
-                    if (Bbitmaps.Count == bx.Count * by.Count)
+                    int cavasWidthInPixel = 0;
+                    int cavasHeightInPixel = 0;
+                    getCanvasSize(x.Count, y.Count, ref cavasWidthInPixel, ref cavasHeightInPixel);
+                    Mat totalCanvas = new Mat(cavasHeightInPixel, cavasWidthInPixel, DepthType.Cv8U, 3);
+                    if (bitmapList.Count == x.Count * y.Count)
                     {
 
-                        for (int i = 0; i < bx.Count; i++)
+                        for (int i = 0; i < x.Count; i++)
                         {
-                            for (int j = 0; j < by.Count; j++)
+                            for (int j = 0; j < y.Count; j++)
                             {
-                                int count = i * by.Count + j;
+                                int count = i * y.Count + j;
 
-                                Bitmap bitmap = Abitmaps[count];
-                                bitmap.Save("d:\\newpic\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
+                                Bitmap bitmap = bitmapList[count];
+                                //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
 
                                 // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
                                 Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
                                 Mat invert = new Mat();
                                 CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-  
-                                AoiAi.addPatch(bb.Ptr, invert.Ptr, (float)j * patchWidth, (float)i * patchHeight);
-                                bb.Save("d:\\newpic\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
+
+                                AoiAi.addPatch(totalCanvas.Ptr, invert.Ptr, (float)j * bitmap.Width, (float)i * bitmap.Height);
+                                //totalCanvas.Save("d:\\SavedPerCameraImages\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
                                 invert.Dispose();
                             }
-
                         }
+                        totalCanvas.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\total.jpg");
+                        captureCount++;
                     }
 
-                    Image<Bgr, Byte> _image = bb.ToImage<Bgr, Byte>();
+                    Image<Bgr, Byte> _image = totalCanvas.ToImage<Bgr, Byte>();
                     Bitmap allbitmap = _image.Bitmap;
                     pbMainImg.Image = allbitmap;
-                    bb.Dispose();
-                    Bbitmaps = null;
+                    totalCanvas.Dispose();
+                    bitmapList = null;
+                    if (side == SIDE.FRONT)
+                    {
+                        Abitmaps.Clear();
+                    } else
+                    {
+                        Bbitmaps.Clear();
+                    }
                     GC.Collect();
                 }
                 catch (Exception e)
                 {
                     Loghelper.WriteLog("报错了", e);
-
-
                 }
             }
         }
 
+        private Bitmap cropBmp(Bitmap src, Rectangle cropRect)
+        {
+            Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+
+            using (Graphics g = Graphics.FromImage(target))
+            {
+                g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                      cropRect,
+                      GraphicsUnit.Pixel);
+            }
+            return target;
+        }
+
         /// <summary>
-        /// 放大缩小图片尺寸
+        /// 按照拍摄系统的物理参数，对每张拍摄的图片进行截断和缩放
         /// </summary>
         /// <param name="picPath"></param>
         /// <param name="reSizePicPath"></param>
         /// <param name="iSize"></param>
         /// <param name="format"></param>
-        public Bitmap PicSized(Bitmap bitmap , int iSize)
+        public Bitmap singleCaptureCropAndResize(Bitmap bitmap)
         {
-            //Bitmap originBmp = new Bitmap(picPath);
-            int w = bitmap.Width / iSize;
-            int h = bitmap.Height / iSize;
-            Bitmap resizedBmp = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
+            int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
+
+            float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
+            float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
+            float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
+            int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
+
+            int marginX = (bitmap.Width - widthAfterCrop) / 2;
+            int marginY = (bitmap.Height - heightAfterCrop) / 2;
+            Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
+
+            //设置高质量插值法  
+            Bitmap cropedBmp = cropBmp(bitmap, cropRect);
+            int widthAfterResize = (int) (pixelNumPerMM * capturePointIntervalXInMM);
+            int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM);
+            Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
             Graphics g = Graphics.FromImage(resizedBmp);
             //设置高质量插值法  
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
             //设置高质量,低速度呈现平滑程度  
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
             //消除锯齿
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.DrawImage(bitmap, new Rectangle(0, 0, w, h), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
             //resizedBmp.Save(reSizePicPath, format);
             g.Dispose();
             //originBmp.Dispose();
             return resizedBmp;
 
         }
-        //出板按钮
-        private void SubstrateOut_Click(object sender, EventArgs e)
+
+        private void substrateOut()
         {
             byte[] receiveData = new byte[255];
             byte[] writeValue = new byte[4];
@@ -1689,6 +1673,13 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             if (PLCController.Instance.IsConnected)
                 PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
         }
+
+        //出板按钮
+        private void SubstrateOut_Click(object sender, EventArgs e)
+        {
+            substrateOut();
+        }
+
         //轨道宽度设置
         private void runplace() {
             double value = Convert.ToDouble(IniFile.iniRead("Kwidth", "kwidth")) +Convert.ToDouble(tbPcbWidth.Text)*1562.5;

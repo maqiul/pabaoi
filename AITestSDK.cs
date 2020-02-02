@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace ConsoleApp2
+namespace pcbaoi
 {
     [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct bbox_t
