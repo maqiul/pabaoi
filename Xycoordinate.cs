@@ -13,44 +13,46 @@ namespace pcbaoi
         static int bx = Convert.ToInt32(IniFile.iniRead("XYwidth", "bx"));
         static int ay = Convert.ToInt32(IniFile.iniRead("XYwidth", "ay"));
         static int by = Convert.ToInt32(IniFile.iniRead("XYwidth", "by"));
-        public static List<int> axcoordinate(int num)
+        static int motorScale = 250;
+
+        public static List<int> axcoordinate(int num, int xIntervalInMM)
         {
             List<int> xcoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                xcoordinatelist.Add(ax + 15 * i * 250);
+                xcoordinatelist.Add(ax + xIntervalInMM * i * motorScale);
             }
 
             return xcoordinatelist;
         }
-        public static List<int> bxcoordinate(int num)
+        public static List<int> bxcoordinate(int num, int xIntervalInMM)
         {
             List<int> xcoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                xcoordinatelist.Add(bx + 15 * i * 250);
+                xcoordinatelist.Add(bx + xIntervalInMM * i * motorScale);
             }
 
             return xcoordinatelist;
         }
-        public static List<int> aycoordinate(int num)
+        public static List<int> aycoordinate(int num, int yIntervalInMM)
         {
             List<int> ycoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
 
-                ycoordinatelist.Add(ay + 15 * i * 250);
+                ycoordinatelist.Add(ay + yIntervalInMM * i * motorScale);
 
             }
 
             return ycoordinatelist;
         }
-        public static List<int> bycoordinate(int num)
+        public static List<int> bycoordinate(int num, int yIntervalInMM)
         {
             List<int> ycoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                ycoordinatelist.Add(by + 15 * i * 250);
+                ycoordinatelist.Add(by + yIntervalInMM * i * motorScale);
             }
 
             return ycoordinatelist;

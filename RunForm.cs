@@ -312,8 +312,8 @@ namespace pcbaoi
         {
             int xvalue = Convert.ToInt32(Convert.ToInt32(width));
             int yvalue = Convert.ToInt32(Convert.ToInt32(height));
-            List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
-            List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
+            List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
+            List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
             byte[] receiveData = new byte[255];
             byte[] writeValueX = new byte[ay.Count * 4];
             byte[] writeValueY = new byte[ay.Count * 4];
@@ -510,8 +510,8 @@ namespace pcbaoi
         {
             int xvalue = Convert.ToInt32(width);
             int yvalue = Convert.ToInt32(height);
-            List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)15));
-            List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)15));
+            List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
+            List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
             byte[] receiveData = new byte[255];
             byte[] writeValueX = new byte[by.Count * 4];
             byte[] writeValueY = new byte[by.Count * 4];
