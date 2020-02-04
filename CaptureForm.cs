@@ -20,6 +20,9 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Stitching;
 using Emgu.CV.Util;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace pcbaoi
 {
@@ -32,8 +35,8 @@ namespace pcbaoi
     public partial class CaptureForm : Form
     {
         //拍摄点位X和Y方向间隔，当前都为14mm
-        private const float capturePointIntervalXInMM = 14.0f;
-        private const float capturePointIntervalYInMM = 14.0f;
+        private const float capturePointIntervalXInMM = 13.0f;
+        private const float capturePointIntervalYInMM = 13.0f;
         //单张拍摄图片对应的物理宽度，当前为17mm
         private const float singleCaptureWidthInMM = 17.0f;
         //最终用于显示的大图每1mm对应的像素个数
@@ -100,8 +103,8 @@ namespace pcbaoi
         bool isrunb = false;
         //plc对应标志位
         private int D2004 = 0;
-
-
+        //自定义板名
+        Snowflake snowflake = new Snowflake(2);
 
         #region 相机使用模块
         private ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
@@ -234,7 +237,7 @@ namespace pcbaoi
                         if (m_imageProvider.CameraId == cameraAid)
                         {
                             
-                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
                             Bitmap listbitmap;
                             listbitmap =(Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbFrontImg.Image = m_bitmap;
@@ -246,7 +249,7 @@ namespace pcbaoi
                             //;
                         }
                         else {
-                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
                             Bitmap listbitmap;
                             listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             pbBackImg.Image = m_bitmap;
@@ -267,7 +270,7 @@ namespace pcbaoi
                         if (m_imageProvider.CameraId == cameraAid)
                         {
                             //保存相机拍摄的原始图片
-                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
 
                             Bitmap listbitmap;
                             listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
@@ -279,7 +282,7 @@ namespace pcbaoi
                         else
                         {
                             //保存相机拍摄的原始图片
-                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".bmp", ImageFormat.Bmp);
+                            m_bitmap.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
 
                             Bitmap listbitmap;
                             listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
@@ -353,28 +356,8 @@ namespace pcbaoi
                 MessageBox.Show("AI加载失败");
             }
             //AITestSDK.detect_image_path("D:\\00.jpg", ref boxlist);
-            Bitmap bitTest = new Bitmap("D:\\3.jpg");
-            aidemo.savepic(bitTest, "D:\\3_res.jpg");
-
-         //   for (int j = 0; j < boxlist.bboxlist.Length; j++)
-         //   {
-         //       if (boxlist.bboxlist[j].h == 0) // 这里需要这样判断退出循环
-         //       {
-         //           break;
-         //       }
-         //       else
-         //       {
-         //           /*
-         //            *   public uint x, y, w, h;       // 缺陷框坐标 定点x,y 宽高w,h
-         //public float prob;            // 置信度
-         //public uint obj_id;           // 缺陷id
-         //public uint track_id;         // 预留，tracking id for video (0 - untracked, 1 - inf - tracked object)
-         //public uint frames_counter;   // 预留，counter of frames on which the object was detected
-         //public float x_3d, y_3d, z_3d;// 预留 
-         //            */
-         //       }
-         //   }
-
+            //Bitmap bitTest = new Bitmap("D:\\3.jpg");
+            //aidemo.savepic(bitTest, "D:\\3_res.jpg");
 
         }
 
@@ -1344,8 +1327,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         //计算全图画布大小
         private void getCanvasSize(int xCaptureCount, int yCaptureCount, ref int canvasWidth, ref int canvasHeight)
         {
-            canvasHeight = (int)((float)(xCaptureCount) * capturePointIntervalYInMM * pixelNumPerMM);
-            canvasWidth = (int)((float)(yCaptureCount) * capturePointIntervalXInMM * pixelNumPerMM);
+            canvasHeight = (int)((float)(xCaptureCount) * capturePointIntervalYInMM * pixelNumPerMM*3);
+            canvasWidth = (int)((float)(yCaptureCount) * capturePointIntervalXInMM * pixelNumPerMM*3);
         }
 
         //A面获取状态
@@ -1545,6 +1528,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                     int cavasWidthInPixel = 0;
                     int cavasHeightInPixel = 0;
                     getCanvasSize(x.Count, y.Count, ref cavasWidthInPixel, ref cavasHeightInPixel);
+                    List<Checkpic> checkpics = new List<Checkpic>();
                     Mat totalCanvas = new Mat(cavasHeightInPixel, cavasWidthInPixel, DepthType.Cv8U, 3);
                     if (bitmapList.Count == x.Count * y.Count)
                     {
@@ -1559,6 +1543,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                 //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
 
                                 // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
+                                Checkpic checkpic = aidemo.savepic(bitmap, j * bitmap.Width, i * bitmap.Height);
+                                checkpics.Add(checkpic);
                                 Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
                                 Mat invert = new Mat();
                                 CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
@@ -1574,7 +1560,11 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
                     Image<Bgr, Byte> _image = totalCanvas.ToImage<Bgr, Byte>();
                     Bitmap allbitmap = _image.Bitmap;
+                    Bitmap newbitmap;
+                    newbitmap = (Bitmap)allbitmap.Clone();
                     pbMainImg.Image = allbitmap;
+                    SendresulttoOther(newbitmap, captureCount.ToString(), checkpics);
+                    newbitmap.Dispose();
                     totalCanvas.Dispose();
                     bitmapList = null;
                     if (side == SIDE.FRONT)
@@ -1585,6 +1575,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         Bbitmaps.Clear();
                     }
                     GC.Collect();
+                    
                 }
                 catch (Exception e)
                 {
@@ -1615,36 +1606,44 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         /// <param name="format"></param>
         public Bitmap singleCaptureCropAndResize(Bitmap bitmap)
         {
-            float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
-            int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
+            try
+            {
+                float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
+                int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
 
-            float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
-            float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
-            float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
-            int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
+                float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
+                float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
+                float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
+                int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
 
-            int marginX = (bitmap.Width - widthAfterCrop) / 2;
-            int marginY = (bitmap.Height - heightAfterCrop) / 2;
-            Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
+                int marginX = (bitmap.Width - widthAfterCrop) / 2;
+                int marginY = (bitmap.Height - heightAfterCrop) / 2;
+                Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
 
-            //设置高质量插值法  
-            Bitmap cropedBmp = cropBmp(bitmap, cropRect);
-            int widthAfterResize = (int) (pixelNumPerMM * capturePointIntervalXInMM);
-            int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM);
-            Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
-            Graphics g = Graphics.FromImage(resizedBmp);
-            //设置高质量插值法  
-            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-            //设置高质量,低速度呈现平滑程度  
-            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-            //消除锯齿
-            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
-            //resizedBmp.Save(reSizePicPath, format);
-            g.Dispose();
-            //originBmp.Dispose();
-            return resizedBmp;
+                //设置高质量插值法  
+                Bitmap cropedBmp = cropBmp(bitmap, cropRect);
+                int widthAfterResize = (int)(pixelNumPerMM * capturePointIntervalXInMM * 3);
+                int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM * 3);
+                Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
+                Graphics g = Graphics.FromImage(resizedBmp);
+                //设置高质量插值法  
+                //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                //设置高质量,低速度呈现平滑程度  
+                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                //消除锯齿
+                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
+                //resizedBmp.Save(reSizePicPath, format);
+                g.Dispose();
+                //originBmp.Dispose();
+                return resizedBmp;
+            }
+            catch {
+                return null;
+
+            }
+
 
         }
 
@@ -1748,6 +1747,115 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             }
         }
 
+        private void SendresulttoOther(Bitmap bitmap,string path,List<Checkpic> checkpics) {
+            try
+            {
+                long i = snowflake.nextId();
+                string directory = "d:\\" + i.ToString();
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+                //CopyDir(@"f:\ftp\", @"f:\" + i + "\\");
+                bitmap.Save("d:\\" + i.ToString() + "\\front.jpg", ImageFormat.Jpeg);
+                //本机要上传的目录的父目录
+                string localPath = @"d:\\";
+                //要上传的目录名
+                string fileName = @i.ToString();
+                Ftp.UploadDirectory(localPath, fileName);
+                //Checkpic checkpic = aidemo.savepic(bitmap);
+                JsonData<Pcb> jsonData = new JsonData<Pcb>();
+                List<Result> results = new List<Result>();
+                Snowflake snowflake2 = new Snowflake(3);
+                Pcb pcb = new Pcb();
+                pcb.Id = i.ToString();
+                pcb.PcbNumber = path;
+                pcb.PcbName = path;
+                pcb.PcbWidth = Int32.Parse(tbPcbWidth.Text);
+                pcb.PcbHeight = Int32.Parse(tbPcbLength.Text);
+                pcb.PcbChildenNumber = 1;
+                pcb.SurfaceNumber = 1;
+                pcb.PcbPath = i.ToString();
+                pcb.IsError = 0;
+                pcb.CreateTime = DateTime.Now;
+                for (int k =0;k< checkpics.Count;k++) {
+                    Checkpic checkpic = checkpics[k];
+                    if (checkpic.IsNg)
+                    {
+
+                        for (int n = 0; n < checkpic.Lists.Count; n++)
+                        {
+                            string idstring = snowflake2.nextId().ToString();
+                            Result result = new Result();
+                            result.Id = idstring;
+                            result.IsBack = 0;
+                            result.PcbId = i.ToString();
+                            result.Area = "";
+                            result.Region = checkpic.Lists[n].x + "," + checkpic.Lists[n].y + "," + checkpic.Lists[n].w + "," + checkpic.Lists[n].h;
+                            result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
+                            result.PartImagePath = idstring + ".jpg";
+                            result.CreateTime = DateTime.Now;
+                            results.Add(result);
+                        }
+                        pcb.IsError = 1;
+
+                    }
+                    
+                }
+                pcb.results = results;
+                jsonData.data = pcb;
+                string jo = JsonConvert.SerializeObject(jsonData);
+                var factory = new ConnectionFactory();
+                factory.AutomaticRecoveryEnabled = true;
+                factory.HostName = @IniFile.iniRead("Factory", "hostName"); // RabbitMQ服务在本地运行
+                factory.UserName = @IniFile.iniRead("Factory", "userName"); // 用户名
+                factory.Password = @IniFile.iniRead("Factory", "password"); // 密码
+                factory.VirtualHost = "my_vhost";
+
+                using (var connection = factory.CreateConnection())
+                {
+                    using (var channel = connection.CreateModel())
+                    {
+                        // 将消息标记为持久性。
+                        var properties = channel.CreateBasicProperties();
+                        properties.Persistent = true;
+                        channel.QueueDeclare("work", true, false, false, null); // 创建一个名称为hello的消息队列
+                        string message = jo; // 传递的消息内容
+                        var body = Encoding.UTF8.GetBytes(message);
+
+                        channel.BasicPublish("", "work", properties, body); // 开始传递
+                                                                            //MessageBox.Show("已发送： {0}", message);
+                    }
+                }
+                Loghelper.WriteLog("发送内容为：" + jo);
+
+            }
+            catch(Exception ex) {
+                Loghelper.WriteLog("发送至输出端出错",ex);
+            }
+
+
+
+        }
+
+        private void CopyDir(string v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
+        //图片深拷贝
+        public Bitmap DeepClone(Bitmap bitmap)
+        {
+            Bitmap dstBitmap = null;
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(mStream, bitmap);
+                mStream.Seek(0, SeekOrigin.Begin);
+                dstBitmap = (Bitmap)bf.Deserialize(mStream);
+                mStream.Close();
+            }
+            return dstBitmap;
+        }
 
     }
 }

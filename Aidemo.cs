@@ -41,9 +41,9 @@ namespace pcbaoi
             }
         }
         //检测错误保存文件
-        public bool savepic(Bitmap bitmap, String path)
+        public Checkpic  savepic(Bitmap bitmap,int x,int y)
         {
-
+            Checkpic checkpic = new Checkpic();
             bbox_t_container boxlist = new bbox_t_container();
             bool ng;
             byte[] byteImg = Bitmap2Byte(bitmap);
@@ -52,32 +52,43 @@ namespace pcbaoi
             long endtime = DateTimeUtil.DateTimeToLongTimeStamp();
             long gettime = endtime - intime;
             Console.WriteLine(gettime);
-
+            List<bbox_t> bbox_s = new List<bbox_t>();
             if (n == -1)
             {
                 Loghelper.WriteLog("调用失败，请检测目录是否包含opencv的dll");
             }
             if (boxlist.bboxlist.Length > 0)
             {
+
                 for (int i = 0; i < boxlist.bboxlist.Length; i++)
                 {
-                    DrawRectangleInPicture(bitmap, (int)boxlist.bboxlist[i].x,
-                        (int)boxlist.bboxlist[i].y,
-                        (int)boxlist.bboxlist[i].w,
-                        (int)boxlist.bboxlist[i].h, Color.Red, 2, DashStyle.Solid);
-                //    DrawRectangleInPicture(bitmap, 50,
-                //        50,
-                //        50,
-                //        50, Color.Red, 2, DashStyle.Solid);
+                    if (boxlist.bboxlist[i].h == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        bbox_t bbox = boxlist.bboxlist[i];
+                        bbox.x = bbox.x + (uint)x;
+                        bbox.y = bbox.y + (uint)y;
+                        bbox_s.Add(bbox);
+                    }
                 }
-                ng = true;
+               
             }
-            else
+            //bitmap.Save(path, System.Drawing.Imaging.ImageFormat.Bmp);
+            if (bbox_s.Count > 0)
             {
-                ng = false;
+                checkpic.IsNg = true;
+                checkpic.Lists = bbox_s;
+
             }
-            bitmap.Save(path, System.Drawing.Imaging.ImageFormat.Bmp);
-            return ng;
+            else {
+                checkpic.IsNg = false;
+                checkpic.Lists = bbox_s;
+            }
+
+            return checkpic;
 
         }
         public static Bitmap DrawRectangleInPicture(Bitmap bmp, int x, int y, int width, int height, Color RectColor, int LineWidth, DashStyle ds)
