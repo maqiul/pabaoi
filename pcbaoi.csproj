@@ -249,6 +249,7 @@
     <Compile Include="Algorithmtype.cs" />
     <Compile Include="AoiAi.cs" />
     <Compile Include="AutoSizeFormClass.cs" />
+    <Compile Include="Checkpic.cs" />
     <Compile Include="class_Broad.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Enumall.cs" />
@@ -298,6 +299,7 @@
       <DependentUpon>Motioncontrol.cs</DependentUpon>
     </Compile>
     <Compile Include="MysqlHelper.cs" />
+    <Compile Include="Ngtype.cs" />
     <Compile Include="Operatorselect.cs" />
     <Compile Include="Pcb.cs" />
     <Compile Include="PcbName.cs" />
