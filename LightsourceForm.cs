@@ -26,7 +26,7 @@ namespace pcbaoi
         public static string cameraAid;
         public static string cameraBid;
         string thisbad ="A";
-        BaslerCamera aa;
+        //BaslerCamera aa;
         #region camera
         private Tools.ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
         private Bitmap m_bitmap = null;

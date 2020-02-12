@@ -101,7 +101,8 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "正面",
-            "反面"});
+            "反面",
+            "双面"});
             this.comboBox1.Location = new System.Drawing.Point(178, 88);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(175, 28);
