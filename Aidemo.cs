@@ -81,6 +81,7 @@ namespace pcbaoi
             {
                 checkpic.IsNg = true;
                 checkpic.Lists = bbox_s;
+                Console.WriteLine("有错误");
 
             }
             else {
