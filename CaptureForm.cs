@@ -27,7 +27,7 @@ using System.Drawing.Drawing2D;
 
 namespace pcbaoi
 {
-    enum SIDE
+    public enum SIDE
     {
         FRONT,
         BACK,
@@ -118,6 +118,12 @@ namespace pcbaoi
         long dicid;
         //保存图片路径
         string savepath;
+        public  Queue<Bitmap> Amats = new Queue<Bitmap>();
+        public  Queue<Bitmap> Bmats = new Queue<Bitmap>();
+        public  Mat Amat;
+        public  Mat Bmat;
+        public int Aimagenum = 0;
+        public int Bimagenum = 0;
 
 
         #region 相机使用模块 初始化两个相机
@@ -312,11 +318,12 @@ namespace pcbaoi
                         if (m_imageProvider.CameraId == cameraAid)
                         {
 
-                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
+                            m_bitmap.Save(directory + "\\F" + Aimagenum.ToString() + ".jpg", ImageFormat.Jpeg);
                             Bitmap listbitmap;
                             //listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             listbitmap = (Bitmap)m_bitmap.Clone();
-                            Abitmaps.Add(listbitmap);
+                            Amats.Enqueue(listbitmap);
+                            //Abitmaps.Add(listbitmap);
                             //listbitmap.Dispose();
                             pbFrontImg.Image = m_bitmap;
                             if (tbFrontOrBack.Text == "正面")
@@ -330,6 +337,7 @@ namespace pcbaoi
                             //Abitmaps[Abitmaps.Count - 1].Save("d:\\pic\\test2" + ".bmp", ImageFormat.Bmp);
                             //;
                         }
+                        Aimagenum++;
                     }
                     else /* A new bitmap is required. */
                     {
@@ -340,12 +348,13 @@ namespace pcbaoi
                         /* Provide the display control with the new bitmap. This action automatically updates the display. */
                         if (m_imageProvider.CameraId == cameraAid)
                         {
-                            m_bitmap.Save(directory + "\\F" + Abitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
+                            m_bitmap.Save(directory + "\\F" + Aimagenum.ToString() + ".jpg", ImageFormat.Jpeg);
                             //保存相机拍摄的原始图片
                             Bitmap listbitmap;
                             //listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmap).Clone();
                             listbitmap = (Bitmap)m_bitmap.Clone();
-                            Abitmaps.Add(listbitmap);
+                            Amats.Enqueue(listbitmap);
+                            // Abitmaps.Add(listbitmap);
                             pbFrontImg.Image = m_bitmap;
                             if (tbFrontOrBack.Text == "正面")
                             {
@@ -360,6 +369,7 @@ namespace pcbaoi
                             /* Dispose the bitmap. */
                             bitmap.Dispose();
                         }
+                        Aimagenum++;
                     }
                     /* The processing of the image is done. Release the image buffer. */
                     // 
@@ -404,16 +414,17 @@ namespace pcbaoi
                         BitmapFactory.UpdateBitmap(m_bitmapB, image.Buffer, image.Width, image.Height, image.Color);
                         /* To show the new image, request the display control to update itself. */
 
-                        m_bitmapB.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
+                        m_bitmapB.Save(directory + "\\B" + Bimagenum.ToString().ToString() + ".jpg", ImageFormat.Jpeg);
                         Bitmap listbitmap;
                         listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmapB).Clone();
-                        Bbitmaps.Add(listbitmap);
+                        Bmats.Enqueue(listbitmap);
+                        //Bbitmaps.Add(listbitmap);
                         pbBackImg.Image = m_bitmapB;
                         if (tbFrontOrBack.Text != "正面")
                         {
                             pbMainImg.Image = m_bitmapB;
                         }
-
+                        Bimagenum++;
                         //listbitmap.Dispose();
                         //m_bitmap.Save("d:\\pic\\" + DateTimeUtil.DateTimeToLongTimeStamp().ToString() + ".bmp", ImageFormat.Bmp);
 
@@ -426,11 +437,12 @@ namespace pcbaoi
                         /* We have to dispose the bitmap after assigning the new one to the display control. */
                         Bitmap bitmap = pbBackImg.Image as Bitmap;
                         /* Provide the display control with the new bitmap. This action automatically updates the display. */
-                        m_bitmapB.Save(directory + "\\B" + Bbitmaps.Count.ToString() + ".jpg", ImageFormat.Jpeg);
+                        m_bitmapB.Save(directory + "\\B" + Bimagenum.ToString().ToString() + ".jpg", ImageFormat.Jpeg);
                         //保存相机拍摄的原始图片
                         Bitmap listbitmap;
                         listbitmap = (Bitmap)singleCaptureCropAndResize(m_bitmapB).Clone();
-                        Bbitmaps.Add(listbitmap);
+                        Bmats.Enqueue(listbitmap);
+                        //Bbitmaps.Add(listbitmap);
                         pbBackImg.Image = m_bitmapB;
                         if (tbFrontOrBack.Text != "正面")
                         {
@@ -444,6 +456,7 @@ namespace pcbaoi
                             /* Dispose the bitmap. */
                             bitmap.Dispose();
                         }
+                        Bimagenum++;
                     }
                     /* The processing of the image is done. Release the image buffer. */
                     // 
@@ -1645,6 +1658,10 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             byte[] writeValueY = new byte[y.Count * 4];
             byte[] writeValue = new byte[4];
             bool cantak = true;
+            int n_rows = x.Count;
+            int n_cols = y.Count;
+            Thread thread = new Thread(() => copypic(n_rows, n_cols, side));
+            thread.IsBackground = true;
             while (cantak)
             {
 
@@ -1658,6 +1675,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                 }
                 else
                 {
+                    thread.Start();
                     if (!isdoubleside)
                     {
                         //设置B面拍摄数量为0
@@ -1687,14 +1705,14 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             writeValueY[n * 4 + 1] = ibuf[1];
                             writeValueY[n * 4 + 2] = ibuf[2];
                             writeValueY[n * 4 + 3] = ibuf[3];
-                            if (side == SIDE.FRONT)
-                            {
-                                Console.WriteLine("A 面X:" + i.ToString() + "Y:" + n.ToString());
-                            }
-                            else
-                            {
-                                Console.WriteLine("B 面X:" + i.ToString() + "Y:" + n.ToString());
-                            }
+                            //if (side == SIDE.FRONT)
+                            //{
+                            //    Console.WriteLine("A 面X:" + i.ToString() + "Y:" + n.ToString());
+                            //}
+                            //else
+                            //{
+                            //    Console.WriteLine("B 面X:" + i.ToString() + "Y:" + n.ToString());
+                            //}
 
                         }
                         if (PLCController.Instance.IsConnected)
@@ -1736,7 +1754,355 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                 }
 
             }
-            Thread.Sleep(200);
+            while (true)
+            {
+                if (!thread.IsAlive)
+                {
+                    try
+                    {
+                        Image<Bgr, Byte> _image = Amat.ToImage<Bgr, Byte>();
+                        Bitmap allbitmap = _image.Bitmap;
+                        if (side == SIDE.FRONT)
+                        {
+                            allbitmap.Save(savepath + captureCount.ToString() + "\\Ftotal.jpg", ImageFormat.Jpeg);
+                        }
+                        else
+                        {
+                            allbitmap.Save(savepath + captureCount.ToString() + "\\Btotal.jpg", ImageFormat.Jpeg);
+                        }
+                        allbitmap = KiResizeImage(allbitmap, 2);
+                        Bitmap newbitmap;
+                        newbitmap = (Bitmap)allbitmap.Clone();
+                        pbMainImg.Image = allbitmap;
+                        Savepic(newbitmap, side);
+                        //SendresulttoOther(newbitmap, captureCount.ToString(), checkpics);
+                        _image.Dispose();
+                        allbitmap = null;
+                        newbitmap.Dispose();
+                        Amat.Dispose();
+                        bitmapList = null;
+                        if (side == SIDE.FRONT)
+                        {
+                            Aend = true;
+                            Abitmaps.Clear();
+                        }
+                        else
+                        {
+                            Bend = true;
+                            Bbitmaps.Clear();
+                        }
+                        GC.Collect();
+
+                    }
+                    catch (Exception exp)
+                    {
+
+                        Console.WriteLine("错误:" + exp.Message);
+
+                    }
+                    break;
+                }
+
+
+            }
+            Thread.Sleep(300);
+            #region 老同步拼图代码
+            //根据数组进行拼图
+            //if (bitmapList.Count > 0)
+            //{
+            //    try
+            //    {
+            //        Loghelper.WriteLog("拍摄数量：" + bitmapList.Count.ToString());
+            //        //int cavasWidthInPixel = 0;
+            //        //int cavasHeightInPixel = 0;
+            //        //getCanvasSize(x.Count, y.Count, ref cavasWidthInPixel, ref cavasHeightInPixel);
+            //        //List<Checkpic> checkpics = new List<Checkpic>();
+            //        //老方法
+            //        // Mat totalCanvas = new Mat(cavasHeightInPixel, cavasWidthInPixel, DepthType.Cv8U, 3);
+            //        Mat dst = null;
+            //        //拼图开始时间
+            //        long intime = DateTimeUtil.DateTimeToLongTimeStamp();
+            //        if (bitmapList.Count == x.Count * y.Count)
+            //        {
+            //            #region //拼图老方法
+            //            //for (int i = 0; i < x.Count; i++)
+            //            //{
+            //            //    for (int j = 0; j < y.Count; j++)
+            //            //    {
+            //            //        int count = i * y.Count + j;
+
+            //            //        Bitmap bitmap = bitmapList[count];
+            //            //        //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
+
+            //            //        // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
+            //            //        Checkpic checkpic = aidemo.savepic(bitmap, j * bitmap.Width, i * bitmap.Height);
+            //            //        if (side == SIDE.FRONT)
+            //            //        {
+            //            //            Acheckpics.Add(checkpic);
+            //            //        }
+            //            //        else {
+            //            //            Bcheckpics.Add(checkpic);
+            //            //        }
+            //            //        Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+            //            //        Mat invert = new Mat();
+            //            //        CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+
+            //            //        AoiAi.addPatch(totalCanvas.Ptr, invert.Ptr, (float)j * bitmap.Width, (float)i * bitmap.Height);
+            //            //        //totalCanvas.Save("d:\\SavedPerCameraImages\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
+            //            //        invert.Dispose();
+            //            //    }
+            //            //}
+            //            //if (side == SIDE.FRONT)
+            //            //{
+            //            //    totalCanvas.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Ftotal.jpg");
+            //            //}
+            //            //else {
+            //            //    totalCanvas.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Btotal.jpg");
+            //            //}
+            //            #endregion
+            //            double or_hl = 0.23; // lower bound for horizontal overlap ratio
+            //            double or_hu = 0.24; // upper
+            //            double or_vl = 0.065; // vertical
+            //            double or_vu = 0.08;
+            //            double dr_hu = 0.01; // upper bound for horizontal drift ratio
+            //            double dr_vu = 0.01; // 
+            //            int n_rows = x.Count;
+            //            int n_cols = y.Count;
+
+            //            Rectangle roi0 = new Rectangle(); //上一行第一张的区域
+            //                                              // first row 
+            //            Rectangle roi = new Rectangle(); // 左对齐的参考的区域
+            //                                             // first row 
+
+            //            for (int col = 0; col < n_cols; ++col)
+            //            {
+
+            //                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmapList[col]);
+            //                Bitmap bitmap = bitmapList[col];
+
+            //                Mat img = new Mat();
+            //                CvInvoke.BitwiseAnd(currentFrame, currentFrame, img);
+
+            //                if (col == 0)
+            //                {
+            //                    roi0 = new Rectangle(Convert.ToInt32(img.Cols * (n_cols - 1) * dr_hu), Convert.ToInt32(img.Rows * (n_rows - 1) * dr_vu), img.Cols, img.Rows);
+            //                    dst = new Mat(Convert.ToInt32(img.Rows * (n_rows + (n_rows - 1) * (dr_vu * 2 - or_vl))), Convert.ToInt32(img.Cols * (n_cols + (n_cols - 1) * (dr_hu * 2 - or_hl))), img.Depth, 3); // 第一张图不要0,0 最好留一些像素
+            //                    roi = roi0;
+            //                }
+            //                else
+            //                {
+            //                    AoiAi.stitchv2(dst.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu));
+            //                }
+            //                //AoiAi.addPatch(dst.Ptr,img.Ptr, roi.X, roi.Y);
+            //                AoiAi.copy_to(dst.Ptr, img.Ptr, roi);
+            //                Checkpic checkpic = aidemo.savepic(bitmap, roi.X, roi.Y);
+            //                if (side == SIDE.FRONT)
+            //                {
+            //                    Acheckpics.Add(checkpic);
+            //                }
+            //                else
+            //                {
+            //                    Bcheckpics.Add(checkpic);
+            //                }
+            //                img.Dispose();
+            //                currentFrame.Dispose();
+            //                bitmap.Dispose();
+            //                #region 这里去掉
+            //                //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
+            //                //CvInvoke.Imshow("AJpg", dst);
+
+            //                //char key = (char)CvInvoke.WaitKey(1);
+            //                //if (key == 0x1b || key == 'q') continue;
+            //                #endregion 这里去掉
+
+            //            }
+
+            //            // other rows
+            //            for (int row = 1; row < n_rows; ++row)
+            //            {
+            //                for (int col = 0; col < n_cols; ++col)
+            //                {
+            //                    Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmapList[n_cols * row + col]);
+            //                    Bitmap bitmap = bitmapList[n_cols * row + col];
+            //                    //Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row*bitmap.Height);
+            //                    //if (side == SIDE.FRONT)
+            //                    //{
+            //                    //    Acheckpics.Add(checkpic);
+            //                    //}
+            //                    //else
+            //                    //{
+            //                    //    Bcheckpics.Add(checkpic);
+            //                    //}
+            //                    Mat img = new Mat();
+            //                    CvInvoke.BitwiseAnd(currentFrame, currentFrame, img);
+            //                    //std::cout << n_cols * row + col << "\n";
+
+            //                    if (col == 0)
+            //                    {
+            //                        AoiAi.stitchv2(dst.Ptr, roi0, img.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(img.Cols * or_vl), Convert.ToInt32(img.Cols * or_vu), Convert.ToInt32(img.Rows * dr_hu));
+            //                        roi = roi0;
+            //                    }
+            //                    else
+            //                    {
+            //                        AoiAi.stitchv2(dst.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(img.Rows * or_vl), Convert.ToInt32(img.Rows * or_vu), Convert.ToInt32(img.Cols * dr_hu));
+            //                    }
+            //                    AoiAi.copy_to(dst.Ptr, img.Ptr, roi);
+            //                    Checkpic checkpic = aidemo.savepic(bitmap, roi.X, roi.Y);
+            //                    if (side == SIDE.FRONT)
+            //                    {
+            //                        Acheckpics.Add(checkpic);
+            //                    }
+            //                    else
+            //                    {
+            //                        Bcheckpics.Add(checkpic);
+            //                    }
+            //                    img.Dispose();
+            //                    currentFrame.Dispose();
+            //                    bitmap.Dispose();
+            //                    #region 这里去掉
+            //                    //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
+            //                    //CvInvoke.Imshow("AJpg", dst);
+            //                    //char key = (char)CvInvoke.WaitKey(1);
+            //                    //if (key == 0x1b || key == 'q') continue;
+            //                    #endregion 这里去掉
+            //                }
+            //            }
+            //            #region 弃用代码
+            //            //for (int row = 0; row < n_rows; row++) // 这里就有问题
+            //            //{
+            //            //    if (row == 0)
+            //            //    {
+            //            //        for (int col = 0; col < n_cols; ++col)
+            //            //        {
+            //            //            int count = row * n_cols + col;
+
+            //            //            Bitmap bitmap = bitmapList[count];
+            //            //            bitmap.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Fa" + count.ToString() + ".jpg");
+            //            //            //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
+
+            //            //            // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
+            //            //            Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row * bitmap.Height);
+            //            //            if (side == SIDE.FRONT)
+            //            //            {
+            //            //                Acheckpics.Add(checkpic);
+            //            //            }
+            //            //            else
+            //            //            {
+            //            //                Bcheckpics.Add(checkpic);
+            //            //            }
+            //            //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+            //            //            Mat invert = new Mat();
+            //            //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+            //            //            //Mat img = new Mat(fileList[col], Emgu.CV.CvEnum.LoadImageType.AnyColor);
+            //            //            if (col == 0)
+            //            //            {
+            //            //                roi0 = new Rectangle(Convert.ToInt32(invert.Cols * (n_cols - 1) * dr_hu), Convert.ToInt32(invert.Rows * (n_rows - 1) * dr_vu), invert.Cols, invert.Rows);
+            //            //                dst = new Mat(Convert.ToInt32(invert.Rows * (n_rows + (n_rows - 1) * (dr_vu * 2 - or_vl))), Convert.ToInt32(invert.Cols * (n_cols + (n_cols - 1) * (dr_hu * 2 - or_hl))), invert.Depth, 3); // 第一张图不要0,0 最好留一些像素
+            //            //                roi = roi0;
+            //            //            }
+            //            //            else
+            //            //            {
+            //            //                AoiAi.stitchv2(dst.Ptr, roi, invert.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(invert.Cols * or_hl), Convert.ToInt32(invert.Cols * or_hu), Convert.ToInt32(invert.Rows * dr_vu));
+            //            //            }
+
+            //            //            AoiAi.copy_to(dst.Ptr, invert.Ptr, roi);
+            //            //            //AoiAi.addPatch(totalCanvas.Ptr, invert.Ptr, (float)j * bitmap.Width, (float)i * bitmap.Height);
+            //            //            //totalCanvas.Save("d:\\SavedPerCameraImages\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
+            //            //            invert.Dispose();
+
+
+
+            //            //        }
+
+
+            //            //    }
+            //            //    else
+            //            //    {
+
+            //            //        for (int col = 0; col < n_cols; ++col)
+            //            //        {
+            //            //            int count = row * n_cols + col;
+
+            //            //            Bitmap bitmap = bitmapList[count];
+            //            //            bitmap.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Fa"+ count.ToString()+ ".jpg");
+            //            //            //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
+
+            //            //            // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
+            //            //            Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row * bitmap.Height);
+            //            //            if (side == SIDE.FRONT)
+            //            //            {
+            //            //                Acheckpics.Add(checkpic);
+            //            //            }
+            //            //            else
+            //            //            {
+            //            //                Bcheckpics.Add(checkpic);
+            //            //            }
+            //            //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+            //            //            Mat invert = new Mat();
+            //            //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+            //            //            //std::cout << n_cols * row + col << "\n";
+
+            //            //            if (col == 0)
+            //            //            {
+            //            //                AoiAi.stitchv2(dst.Ptr, roi0, invert.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(invert.Cols * or_vl), Convert.ToInt32(invert.Cols * or_vu), Convert.ToInt32(invert.Rows * dr_hu));
+            //            //                roi = roi0;
+            //            //            }
+            //            //            else
+            //            //            {
+            //            //                AoiAi.stitchv2(dst.Ptr, roi, invert.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(invert.Cols * or_hl), Convert.ToInt32(invert.Cols * or_hu), Convert.ToInt32(invert.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(invert.Rows * or_vl), Convert.ToInt32(invert.Rows * or_vu), Convert.ToInt32(invert.Cols * dr_hu));
+            //            //            }
+            //            //            AoiAi.copy_to(dst.Ptr, invert.Ptr, roi);
+            //            //        }
+            //            //    }
+            //            //}
+            //            #endregion
+
+            //        }
+
+
+            //        Image<Bgr, Byte> _image = dst.ToImage<Bgr, Byte>();
+            //        Bitmap allbitmap = _image.Bitmap;
+            //        if (side == SIDE.FRONT)
+            //        {
+            //            allbitmap.Save(savepath + captureCount.ToString() + "\\Ftotal.jpg",ImageFormat.Jpeg);
+            //        }
+            //        else
+            //        {
+            //            allbitmap.Save(savepath + captureCount.ToString() + "\\Btotal.jpg",ImageFormat.Jpeg);
+            //        }
+            //        allbitmap =KiResizeImage(allbitmap,2);
+            //        Bitmap newbitmap;
+            //        newbitmap = (Bitmap)allbitmap.Clone();
+            //        pbMainImg.Image = allbitmap;
+            //        Savepic(newbitmap, side);
+            //        //SendresulttoOther(newbitmap, captureCount.ToString(), checkpics);
+            //        _image.Dispose();
+            //        allbitmap = null;
+            //        newbitmap.Dispose();
+            //        dst.Dispose();
+            //        bitmapList = null;
+            //        if (side == SIDE.FRONT)
+            //        {
+            //            Aend = true;
+            //            Abitmaps.Clear();
+            //        }
+            //        else
+            //        {
+            //            Bend = true;
+            //            Bbitmaps.Clear();
+            //        }
+            //        GC.Collect();
+            //        long endtime = DateTimeUtil.DateTimeToLongTimeStamp();
+            //        long gettime = endtime - intime;
+            //        Console.WriteLine("拼图完成" + gettime);
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Loghelper.WriteLog("报错了", e);
+            //    }
+            //}
+            #endregion
             if (!isdoubleside)
             {
                 Console.WriteLine("发送出板信号");
@@ -1755,289 +2121,119 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                     PLCController.Instance.WriteData(portMoveOut, 1, thenewwriteValue, receiveData);
             }
             Thread.Sleep(200);
-            //根据数组进行拼图
-            if (bitmapList.Count > 0)
-            {
-                try
+        }
+
+        public void copypic(int n_rows, int n_cols, SIDE side)
+        {
+            Rectangle roi0 = new Rectangle(); //上一行第一张的区域
+                                              // first row 
+            Rectangle roi = new Rectangle(); // 左对齐的参考的区域
+            int row = 0;
+            int col = 0;
+            double or_hl = 0.23; // lower bound for horizontal overlap ratio
+            double or_hu = 0.24; // upper
+            double or_vl = 0.065; // vertical
+            double or_vu = 0.08;
+            double dr_hu = 0.01; // upper bound for horizontal drift ratio
+            double dr_vu = 0.01; // 
+            while (true)
+            {               
+                lock (Amats)
                 {
-                    Loghelper.WriteLog("拍摄数量：" + bitmapList.Count.ToString());
-                    //int cavasWidthInPixel = 0;
-                    //int cavasHeightInPixel = 0;
-                    //getCanvasSize(x.Count, y.Count, ref cavasWidthInPixel, ref cavasHeightInPixel);
-                    //List<Checkpic> checkpics = new List<Checkpic>();
-                    //老方法
-                    // Mat totalCanvas = new Mat(cavasHeightInPixel, cavasWidthInPixel, DepthType.Cv8U, 3);
-                    Mat dst = null;
-                    if (bitmapList.Count == x.Count * y.Count)
+                    try
                     {
-                        #region //拼图老方法
-                        //for (int i = 0; i < x.Count; i++)
-                        //{
-                        //    for (int j = 0; j < y.Count; j++)
-                        //    {
-                        //        int count = i * y.Count + j;
-
-                        //        Bitmap bitmap = bitmapList[count];
-                        //        //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
-
-                        //        // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
-                        //        Checkpic checkpic = aidemo.savepic(bitmap, j * bitmap.Width, i * bitmap.Height);
-                        //        if (side == SIDE.FRONT)
-                        //        {
-                        //            Acheckpics.Add(checkpic);
-                        //        }
-                        //        else {
-                        //            Bcheckpics.Add(checkpic);
-                        //        }
-                        //        Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
-                        //        Mat invert = new Mat();
-                        //        CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-
-                        //        AoiAi.addPatch(totalCanvas.Ptr, invert.Ptr, (float)j * bitmap.Width, (float)i * bitmap.Height);
-                        //        //totalCanvas.Save("d:\\SavedPerCameraImages\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
-                        //        invert.Dispose();
-                        //    }
-                        //}
-                        //if (side == SIDE.FRONT)
-                        //{
-                        //    totalCanvas.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Ftotal.jpg");
-                        //}
-                        //else {
-                        //    totalCanvas.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Btotal.jpg");
-                        //}
-                        #endregion
-                        double or_hl = 0.2; // lower bound for horizontal overlap ratio
-                        double or_hu = 0.25; // upper
-                        double or_vl = 0.05; // vertical
-                        double or_vu = 0.1;
-                        double dr_hu = 0.01; // upper bound for horizontal drift ratio
-                        double dr_vu = 0.01; // 
-                        int n_rows = x.Count;
-                        int n_cols = y.Count;
-
-                        Rectangle roi0 = new Rectangle(); //上一行第一张的区域
-                                                          // first row 
-                        Rectangle roi = new Rectangle(); // 左对齐的参考的区域
-                                                         // first row 
-
-
-                        for (int col = 0; col < n_cols; ++col)
+                        if (row == n_rows)
                         {
-
-                            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmapList[col]);
-                            Bitmap bitmap = bitmapList[col];
-                            Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, bitmap.Height);
-                            if (side == SIDE.FRONT)
-                            {
-                                Acheckpics.Add(checkpic);
-                            }
-                            else
-                            {
-                                Bcheckpics.Add(checkpic);
-                            }
-                            Mat img = new Mat();
-                            CvInvoke.BitwiseAnd(currentFrame, currentFrame, img);
-
-                            if (col == 0)
-                            {
-                                roi0 = new Rectangle(Convert.ToInt32(img.Cols * (n_cols - 1) * dr_hu), Convert.ToInt32(img.Rows * (n_rows - 1) * dr_vu), img.Cols, img.Rows);
-                                dst = new Mat(Convert.ToInt32(img.Rows * (n_rows + (n_rows - 1) * (dr_vu * 2 - or_vl))), Convert.ToInt32(img.Cols * (n_cols + (n_cols - 1) * (dr_hu * 2 - or_hl))), img.Depth, 3); // 第一张图不要0,0 最好留一些像素
-                                roi = roi0;
-                            }
-                            else
-                            {
-                                AoiAi.stitchv2(dst.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu));
-                            }
-                            //AoiAi.addPatch(dst.Ptr,img.Ptr, roi.X, roi.Y);
-                            AoiAi.copy_to(dst.Ptr, img.Ptr, roi);
-                            img.Dispose();
-                            currentFrame.Dispose();
-                            bitmap.Dispose();
-                            #region 这里去掉
-                            //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
-                            //CvInvoke.Imshow("AJpg", dst);
-
-                            //char key = (char)CvInvoke.WaitKey(1);
-                            //if (key == 0x1b || key == 'q') continue;
-                            #endregion 这里去掉
-
+                            break;
                         }
-
-                        // other rows
-                        for (int row = 1; row < n_rows; ++row)
+                        if (Amats.Count > 0)
                         {
-                            for (int col = 0; col < n_cols; ++col)
+
+                            if (row == 0)
                             {
-                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmapList[n_cols * row + col]);
-                                Bitmap bitmap = bitmapList[n_cols * row + col];
-                                Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row*bitmap.Height);
-                                if (side == SIDE.FRONT)
+                                Bitmap bitmap = Amats.Dequeue();
+                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+
+
+                                Mat img = new Mat();
+                                CvInvoke.BitwiseAnd(currentFrame, currentFrame, img);
+
+                                if (col == 0)
                                 {
-                                    Acheckpics.Add(checkpic);
+                                    roi0 = new Rectangle(Convert.ToInt32(img.Cols * (n_cols - 1) * dr_hu), Convert.ToInt32(img.Rows * (n_rows - 1) * dr_vu), img.Cols, img.Rows);
+                                    Amat = new Mat(Convert.ToInt32(img.Rows * (n_rows + (n_rows - 1) * (dr_vu * 2 - or_vl))), Convert.ToInt32(img.Cols * (n_cols + (n_cols - 1) * (dr_hu * 2 - or_hl))), img.Depth, 3); // 第一张图不要0,0 最好留一些像素
+                                    roi = roi0;
                                 }
                                 else
                                 {
-                                    Bcheckpics.Add(checkpic);
+                                    AoiAi.stitchv2(Amat.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu));
                                 }
+                                //AoiAi.addPatch(dst.Ptr,img.Ptr, roi.X, roi.Y);
+                                AoiAi.copy_to(Amat.Ptr, img.Ptr, roi);
+                                Checkpic checkpic = aidemo.savepic(bitmap, roi.X, roi.Y);
+                                Acheckpics.Add(checkpic);
+                                img.Dispose();
+                                currentFrame.Dispose();
+                                bitmap.Dispose();
+                                col++;
+
+
+                            }
+                            else
+                            {
+
+                                Bitmap bitmap = Amats.Dequeue();
+                                Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+
+
                                 Mat img = new Mat();
                                 CvInvoke.BitwiseAnd(currentFrame, currentFrame, img);
                                 //std::cout << n_cols * row + col << "\n";
 
                                 if (col == 0)
                                 {
-                                    AoiAi.stitchv2(dst.Ptr, roi0, img.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(img.Cols * or_vl), Convert.ToInt32(img.Cols * or_vu), Convert.ToInt32(img.Rows * dr_hu));
+                                    AoiAi.stitchv2(Amat.Ptr, roi0, img.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(img.Cols * or_vl), Convert.ToInt32(img.Cols * or_vu), Convert.ToInt32(img.Rows * dr_hu));
                                     roi = roi0;
                                 }
                                 else
                                 {
-                                    AoiAi.stitchv2(dst.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(img.Rows * or_vl), Convert.ToInt32(img.Rows * or_vu), Convert.ToInt32(img.Cols * dr_hu));
+                                    AoiAi.stitchv2(Amat.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(img.Rows * or_vl), Convert.ToInt32(img.Rows * or_vu), Convert.ToInt32(img.Cols * dr_hu));
                                 }
-                                AoiAi.copy_to(dst.Ptr, img.Ptr, roi);
+                                AoiAi.copy_to(Amat.Ptr, img.Ptr, roi);
+                                Checkpic checkpic = aidemo.savepic(bitmap, roi.X, roi.Y);
+                                Acheckpics.Add(checkpic);
                                 img.Dispose();
                                 currentFrame.Dispose();
                                 bitmap.Dispose();
-                                #region 这里去掉
+                                //#region 这里去掉
                                 //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
                                 //CvInvoke.Imshow("AJpg", dst);
                                 //char key = (char)CvInvoke.WaitKey(1);
                                 //if (key == 0x1b || key == 'q') continue;
-                                #endregion 这里去掉
+                                //#endregion 这里去掉
+                                col++;
+
                             }
+                            if (col == n_cols)
+                            {
+                                col = 0;
+                                row++;
+
+                            }
+
                         }
-                        #region xxx
-                        //for (int row = 0; row < n_rows; row++) // 这里就有问题
-                        //{
-                        //    if (row == 0)
-                        //    {
-                        //        for (int col = 0; col < n_cols; ++col)
-                        //        {
-                        //            int count = row * n_cols + col;
-
-                        //            Bitmap bitmap = bitmapList[count];
-                        //            bitmap.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Fa" + count.ToString() + ".jpg");
-                        //            //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
-
-                        //            // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
-                        //            Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row * bitmap.Height);
-                        //            if (side == SIDE.FRONT)
-                        //            {
-                        //                Acheckpics.Add(checkpic);
-                        //            }
-                        //            else
-                        //            {
-                        //                Bcheckpics.Add(checkpic);
-                        //            }
-                        //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
-                        //            Mat invert = new Mat();
-                        //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-                        //            //Mat img = new Mat(fileList[col], Emgu.CV.CvEnum.LoadImageType.AnyColor);
-                        //            if (col == 0)
-                        //            {
-                        //                roi0 = new Rectangle(Convert.ToInt32(invert.Cols * (n_cols - 1) * dr_hu), Convert.ToInt32(invert.Rows * (n_rows - 1) * dr_vu), invert.Cols, invert.Rows);
-                        //                dst = new Mat(Convert.ToInt32(invert.Rows * (n_rows + (n_rows - 1) * (dr_vu * 2 - or_vl))), Convert.ToInt32(invert.Cols * (n_cols + (n_cols - 1) * (dr_hu * 2 - or_hl))), invert.Depth, 3); // 第一张图不要0,0 最好留一些像素
-                        //                roi = roi0;
-                        //            }
-                        //            else
-                        //            {
-                        //                AoiAi.stitchv2(dst.Ptr, roi, invert.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(invert.Cols * or_hl), Convert.ToInt32(invert.Cols * or_hu), Convert.ToInt32(invert.Rows * dr_vu));
-                        //            }
-
-                        //            AoiAi.copy_to(dst.Ptr, invert.Ptr, roi);
-                        //            //AoiAi.addPatch(totalCanvas.Ptr, invert.Ptr, (float)j * bitmap.Width, (float)i * bitmap.Height);
-                        //            //totalCanvas.Save("d:\\SavedPerCameraImages\\bb" + i.ToString() + "_" + j.ToString() + ".jpg");
-                        //            invert.Dispose();
-
-
-
-                        //        }
-
-
-                        //    }
-                        //    else
-                        //    {
-
-                        //        for (int col = 0; col < n_cols; ++col)
-                        //        {
-                        //            int count = row * n_cols + col;
-
-                        //            Bitmap bitmap = bitmapList[count];
-                        //            bitmap.Save("d:\\SavedPerCameraImages\\" + captureCount.ToString() + "\\Fa"+ count.ToString()+ ".jpg");
-                        //            //bitmap.Save("d:\\SavedPerCameraImages\\B" + count.ToString() + ".jpg", ImageFormat.Jpeg);
-
-                        //            // bitmap.Save("d:\\newpic\\" + count.ToString() + ".bmp", ImageFormat.Bmp);
-                        //            Checkpic checkpic = aidemo.savepic(bitmap, col * bitmap.Width, row * bitmap.Height);
-                        //            if (side == SIDE.FRONT)
-                        //            {
-                        //                Acheckpics.Add(checkpic);
-                        //            }
-                        //            else
-                        //            {
-                        //                Bcheckpics.Add(checkpic);
-                        //            }
-                        //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
-                        //            Mat invert = new Mat();
-                        //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-                        //            //std::cout << n_cols * row + col << "\n";
-
-                        //            if (col == 0)
-                        //            {
-                        //                AoiAi.stitchv2(dst.Ptr, roi0, invert.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(invert.Cols * or_vl), Convert.ToInt32(invert.Cols * or_vu), Convert.ToInt32(invert.Rows * dr_hu));
-                        //                roi = roi0;
-                        //            }
-                        //            else
-                        //            {
-                        //                AoiAi.stitchv2(dst.Ptr, roi, invert.Ptr, ref roi, (int)AoiAi.side.left, Convert.ToInt32(invert.Cols * or_hl), Convert.ToInt32(invert.Cols * or_hu), Convert.ToInt32(invert.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(invert.Rows * or_vl), Convert.ToInt32(invert.Rows * or_vu), Convert.ToInt32(invert.Cols * dr_hu));
-                        //            }
-                        //            AoiAi.copy_to(dst.Ptr, invert.Ptr, roi);
-                        //        }
-                        //    }
-                        //}
-                        #endregion
-
-
                     }
-
-
-                    Image<Bgr, Byte> _image = dst.ToImage<Bgr, Byte>();
-                    Bitmap allbitmap = _image.Bitmap;
-                    if (side == SIDE.FRONT)
+                    catch (Exception ex)
                     {
-                        allbitmap.Save(savepath + captureCount.ToString() + "\\Ftotal.jpg",ImageFormat.Jpeg);
+                        Console.WriteLine("拼图检测错误:" + ex.Message);
+
+
                     }
-                    else
-                    {
-                        allbitmap.Save(savepath + captureCount.ToString() + "\\Btotal.jpg",ImageFormat.Jpeg);
-                    }
-                    allbitmap =KiResizeImage(allbitmap,4);
-                    Bitmap newbitmap;
-                    newbitmap = (Bitmap)allbitmap.Clone();
-                    pbMainImg.Image = allbitmap;
-                    Savepic(newbitmap, side);
-                    //SendresulttoOther(newbitmap, captureCount.ToString(), checkpics);
-                    _image.Dispose();
-                    allbitmap = null;
-                    newbitmap.Dispose();
-                    dst.Dispose();
-                    bitmapList = null;
-                    if (side == SIDE.FRONT)
-                    {
-                        Aend = true;
-                        Abitmaps.Clear();
-                    }
-                    else
-                    {
-                        Bend = true;
-                        Bbitmaps.Clear();
-                    }
-                    GC.Collect();
 
 
                 }
-                catch (Exception e)
-                {
-                    Loghelper.WriteLog("报错了", e);
-                }
-            }
+
+            }         
         }
 
         private Bitmap cropBmp(Bitmap src, Rectangle cropRect)
@@ -2208,7 +2404,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         private void Savepic(Bitmap bitmap, SIDE Side)
         {
             long i = dicid;
-            string directory = "d:\\" + i.ToString();
+            string directory = "d:\\ftpimage\\" + i.ToString();
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
@@ -2216,11 +2412,11 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             //CopyDir(@"f:\ftp\", @"f:\" + i + "\\");
             if (Side == SIDE.FRONT)
             {
-                bitmap.Save("d:\\" + i.ToString() + "\\front.jpg", ImageFormat.Jpeg);
+                bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\front.jpg", ImageFormat.Jpeg);
             }
             else
             {
-                bitmap.Save("d:\\" + i.ToString() + "\\back.jpg", ImageFormat.Jpeg);
+                bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\back.jpg", ImageFormat.Jpeg);
             }
 
         }
@@ -2230,7 +2426,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             {
                 long i = dicid;
                 //本机要上传的目录的父目录
-                string localPath = @"d:\\";
+                string localPath = @"d:\\ftpimage\\";
                 //要上传的目录名
                 string fileName = @i.ToString();
                 Ftp.UploadDirectory(localPath, fileName);
@@ -2258,6 +2454,9 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                     Checkpic checkpic = acheckpics[k];
                     if (checkpic.IsNg)
                     {
+                        if (Directory.Exists(savepath + captureCount.ToString())) {
+                            Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString()+"-Ng");
+                        }
 
                         for (int n = 0; n < checkpic.Lists.Count; n++)
                         {
@@ -2267,7 +2466,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             result.IsBack = 0;
                             result.PcbId = i.ToString();
                             result.Area = "";
-                            result.Region = checkpic.Lists[n].x + "," + checkpic.Lists[n].y + "," + checkpic.Lists[n].w + "," + checkpic.Lists[n].h;
+                            result.Region = checkpic.Lists[n].x/2 + "," + checkpic.Lists[n].y/2 + "," + checkpic.Lists[n].w/2 + "," + checkpic.Lists[n].h/2;
                             result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
                             result.PartImagePath = idstring + ".jpg";
                             result.CreateTime = DateTime.Now;
@@ -2283,6 +2482,10 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                     Checkpic checkpic = bcheckpics[k];
                     if (checkpic.IsNg)
                     {
+                        if (Directory.Exists(savepath + captureCount.ToString()))
+                        {
+                            Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString() + "-Ng");
+                        }
 
                         for (int n = 0; n < checkpic.Lists.Count; n++)
                         {
@@ -2292,7 +2495,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             result.IsBack = 1;
                             result.PcbId = i.ToString();
                             result.Area = "";
-                            result.Region = checkpic.Lists[n].x + "," + checkpic.Lists[n].y + "," + checkpic.Lists[n].w + "," + checkpic.Lists[n].h;
+                            result.Region = checkpic.Lists[n].x/2 + "," + checkpic.Lists[n].y/2 + "," + checkpic.Lists[n].w/2 + "," + checkpic.Lists[n].h/2;
                             result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
                             result.PartImagePath = idstring + ".jpg";
                             result.CreateTime = DateTime.Now;
@@ -2424,13 +2627,15 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
                             Aend = false;
                             Bend = false;
+                            Aimagenum = 0;
+                            Bimagenum = 0;
                         }
                     }
                     else
                     {
                         if (Aend)
                         {
-                           // SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
+                            SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
                             Bcheckpics.Clear();
                             Acheckpics.Clear();
                             dicid = snowflake.nextId();
@@ -2444,10 +2649,12 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             Loghelper.WriteLog("创建目录："+ savepath + captureCount.ToString());
                            Aend = false;
                             Bend = false;
+                            Aimagenum = 0;
+                            Bimagenum = 0;
                         }
                         if (Bend)
                         {
-                           // SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
+                            SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
                             Bcheckpics.Clear();
                             Acheckpics.Clear();
                             dicid = snowflake.nextId();
@@ -2459,8 +2666,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             }
                             Directory.CreateDirectory(savepath + captureCount.ToString());
                             Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
-                            Aend = false;
-                            Bend = false;
+                            Aimagenum = 0;
+                            Bimagenum = 0;
                         }
                     }
                 }

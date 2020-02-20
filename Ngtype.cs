@@ -10,16 +10,21 @@ namespace pcbaoi
     {
         public enum enumNgtype
      {
-            aoken=0,
-            huashang=1,
-            jieliu=2,
-            luotong=3,
-            quesun=4,
-            wuran=5,
-            yanghua=6,
-            yashang=7,
-            yiwu=8,
-            zhanxi=9
+            beiyong2=0,
+            beiyong3=1,
+            beiyong4=2,
+            beiyong5=3,
+            aoken=4,
+            huashang= 5,
+            jiban_duanlie= 6,
+            jieliu=7,
+            luotong=8,
+            quesun=9,
+            wuran=10,
+            yanghua=11,
+            yashang=12,
+            yiwu=13,
+            zhanxi=14
         }
         public static string IntConvertToEnum(int i)
         {
