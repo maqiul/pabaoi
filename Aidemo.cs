@@ -41,12 +41,12 @@ namespace pcbaoi
             }
         }
         //检测错误保存文件
-        public Checkpic  savepic(Bitmap bitmap,int x,int y)
+        public Checkpic  savepic(byte[] byteImg, int x,int y)
         {
             Checkpic checkpic = new Checkpic();
             bbox_t_container boxlist = new bbox_t_container();
             bool ng;
-            byte[] byteImg = Bitmap2Byte(bitmap);
+            //byte[] byteImg = Bitmap2Byte(bitmap);
             long intime = DateTimeUtil.DateTimeToLongTimeStamp();
             int n = AITestSDK.detect_opencv_mat(byteImg, byteImg.Length, ref boxlist);
             long endtime = DateTimeUtil.DateTimeToLongTimeStamp();
@@ -81,7 +81,7 @@ namespace pcbaoi
             {
                 checkpic.IsNg = true;
                 checkpic.Lists = bbox_s;
-                Console.WriteLine("有错误");
+                //Console.WriteLine("有错误");
 
             }
             else {

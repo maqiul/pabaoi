@@ -215,7 +215,8 @@ namespace pcbaoi
                     //if (PLCController.Instance.IsConnected)
                     //    PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
                     MessageBox.Show("还有板子在设备中请先取出，然后重启软件");
-                    return;
+                    Application.Exit();
+                    //return;
 
                 }
 

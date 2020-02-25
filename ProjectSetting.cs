@@ -13,9 +13,13 @@ namespace pcbaoi
         private string name;
         [Description("客户名")]
         private string cname;
-        [Description("板宽")]
+        [Description("载板长")]
+        private int carrierplatewidth;
+        [Description("载板宽")]
+        private int carrierplateheight;
+        [Description("pcb板宽")]
         private int width;
-        [Description("板长")]
+        [Description("pcb板长")]
         private int height;
         [Description("轨道夹紧量")]
         private int nip;
@@ -25,5 +29,8 @@ namespace pcbaoi
         public int Width { get => width; set => width = value; }
         public int Height { get => height; set => height = value; }
         public int Nip { get => nip; set => nip = value; }
+        public int Carrierplatewidth { get => carrierplatewidth; set => carrierplatewidth = value; }
+        public int Carrierplateheight { get => carrierplateheight; set => carrierplateheight = value; }
+
     }
 }

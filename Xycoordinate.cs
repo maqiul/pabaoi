@@ -15,44 +15,44 @@ namespace pcbaoi
         static int by = Convert.ToInt32(IniFile.iniRead("XYwidth", "by"));
         static int motorScale = 250;
 
-        public static List<int> axcoordinate(int num, int xIntervalInMM)
+        public static List<int> axcoordinate(int num, int xIntervalInMM,int differencevalue)
         {
             List<int> xcoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                xcoordinatelist.Add(ax + xIntervalInMM * i * motorScale);
+                xcoordinatelist.Add(ax + differencevalue * motorScale + xIntervalInMM * i * motorScale);
             }
 
             return xcoordinatelist;
         }
-        public static List<int> bxcoordinate(int num, int xIntervalInMM)
+        public static List<int> bxcoordinate(int num, int xIntervalInMM, int differencevalue)
         {
             List<int> xcoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                xcoordinatelist.Add(bx + xIntervalInMM * i * motorScale);
+                xcoordinatelist.Add(bx + differencevalue * motorScale + xIntervalInMM * i * motorScale);
             }
 
             return xcoordinatelist;
         }
-        public static List<int> aycoordinate(int num, int yIntervalInMM)
+        public static List<int> aycoordinate(int num, int yIntervalInMM, int differencevalue)
         {
             List<int> ycoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
 
-                ycoordinatelist.Add(ay + yIntervalInMM * i * motorScale);
+                ycoordinatelist.Add(ay + differencevalue * motorScale + yIntervalInMM * i * motorScale);
 
             }
 
             return ycoordinatelist;
         }
-        public static List<int> bycoordinate(int num, int yIntervalInMM)
+        public static List<int> bycoordinate(int num, int yIntervalInMM, int differencevalue)
         {
             List<int> ycoordinatelist = new List<int>();
             for (int i = 0; i < num; i++)
             {
-                ycoordinatelist.Add(by + yIntervalInMM * i * motorScale);
+                ycoordinatelist.Add(by + differencevalue * motorScale + yIntervalInMM * i * motorScale);
             }
 
             return ycoordinatelist;

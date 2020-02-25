@@ -303,170 +303,170 @@ namespace pcbaoi
                     e.Cancel = true; //这里才真正取消 
                     return;
                 }
-                run();
+                //run();
 
             }
 
         }
-        private void run()
-        {
-            int xvalue = Convert.ToInt32(Convert.ToInt32(width));
-            int yvalue = Convert.ToInt32(Convert.ToInt32(height));
-            List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
-            List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
-            byte[] receiveData = new byte[255];
-            byte[] writeValueX = new byte[ay.Count * 4];
-            byte[] writeValueY = new byte[ay.Count * 4];
-            byte[] writeValue = new byte[4];
-            bool cantak = true;
-            while (cantak)
-            {
+        //private void run()
+        //{
+        //    int xvalue = Convert.ToInt32(Convert.ToInt32(width));
+        //    int yvalue = Convert.ToInt32(Convert.ToInt32(height));
+        //    List<int> ax = Xycoordinate.axcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
+        //    List<int> ay = Xycoordinate.aycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
+        //    byte[] receiveData = new byte[255];
+        //    byte[] writeValueX = new byte[ay.Count * 4];
+        //    byte[] writeValueY = new byte[ay.Count * 4];
+        //    byte[] writeValue = new byte[4];
+        //    bool cantak = true;
+        //    while (cantak)
+        //    {
 
-                byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
-                double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+        //        byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+        //        int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
+        //        double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
 
-                if (newvalue == 0.00)
-                {
-                    Thread.Sleep(100);
-                }
-                else
-                {
-
-
-
-                    for (int i = 0; i < ax.Count; i++)
-                    {
-                        if (i == ax.Count)
-                        {
-                            continue;
-                        }
-                        for (int n = 0; n < ay.Count; n++)
-                        {
-                            byte[] ibuf = new byte[4];
-                            ibuf = DoubleToByte(ax[i]);
-                            writeValueX[n * 4] = ibuf[0];
-                            writeValueX[n * 4 + 1] = ibuf[1];
-                            writeValueX[n * 4 + 2] = ibuf[2];
-                            writeValueX[n * 4 + 3] = ibuf[3];
-
-                            //Thread.Sleep(50);
-                            ibuf = DoubleToByte(ay[n]);
-                            writeValueY[n * 4] = ibuf[0];
-                            writeValueY[n * 4 + 1] = ibuf[1];
-                            writeValueY[n * 4 + 2] = ibuf[2];
-                            writeValueY[n * 4 + 3] = ibuf[3];
-
-
-                        }
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3000, ay.Count * 2, writeValueX, receiveData);
-                        Thread.Sleep(50);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3200, ay.Count * 2, writeValueY, receiveData);
-                        writeValue = DoubleToByte(ay.Count);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
-                        double value = 1.00;
-                        byte[] newwriteValue = new byte[2];
-                        newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
-                        newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(2144, 1, newwriteValue, receiveData);
-                        bool isrun = true;
-                        while (isrun)
-                        {
-
-                            //Thread.Sleep(50);
-                            newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-
-                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
+        //        if (newvalue == 0.00)
+        //        {
+        //            Thread.Sleep(100);
+        //        }
+        //        else
+        //        {
 
 
 
-                            newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
-                            if (newvalue == 1.00)
-                            {
+        //            for (int i = 0; i < ax.Count; i++)
+        //            {
+        //                if (i == ax.Count)
+        //                {
+        //                    continue;
+        //                }
+        //                for (int n = 0; n < ay.Count; n++)
+        //                {
+        //                    byte[] ibuf = new byte[4];
+        //                    ibuf = DoubleToByte(ax[i]);
+        //                    writeValueX[n * 4] = ibuf[0];
+        //                    writeValueX[n * 4 + 1] = ibuf[1];
+        //                    writeValueX[n * 4 + 2] = ibuf[2];
+        //                    writeValueX[n * 4 + 3] = ibuf[3];
 
-                                isrun = false;
-                            }
-                        }
-
-                    }
-                    cantak = false;
-
-                }
-
-            }
-            double thenewvalue = 1.00;
-            byte[] thenewwriteValue = new byte[2];
-            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-            if (PLCController.Instance.IsConnected)
-                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
-            Thread.Sleep(200);
-            //Mat aa =new Mat();
-            //if (Abitmaps.Count > 0)
-            //{
-            //    try
-            //    {
-            //        int patchWidth = Abitmaps[0].Width / 4;
-            //        int patchHeight = Abitmaps[0].Height / 4;
-            //        Mat aa = new Mat(ay.Count * patchWidth, ax.Count * patchHeight, DepthType.Cv8U, 3);
+        //                    //Thread.Sleep(50);
+        //                    ibuf = DoubleToByte(ay[n]);
+        //                    writeValueY[n * 4] = ibuf[0];
+        //                    writeValueY[n * 4 + 1] = ibuf[1];
+        //                    writeValueY[n * 4 + 2] = ibuf[2];
+        //                    writeValueY[n * 4 + 3] = ibuf[3];
 
 
-            //        //if (Abitmaps.Count == ax.Count * ay.Count)
-            //        //{
+        //                }
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(3000, ay.Count * 2, writeValueX, receiveData);
+        //                Thread.Sleep(50);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(3200, ay.Count * 2, writeValueY, receiveData);
+        //                writeValue = DoubleToByte(ay.Count);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
+        //                double value = 1.00;
+        //                byte[] newwriteValue = new byte[2];
+        //                newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
+        //                newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(2144, 1, newwriteValue, receiveData);
+        //                bool isrun = true;
+        //                while (isrun)
+        //                {
 
-            //        //    for (int i = 0; i < ax.Count; i++)
-            //        //    {
-            //        //        for (int j = 0; j < ay.Count; j++)
-            //        //        {
-            //        //            int count = i * ay.Count + j;
+        //                    //Thread.Sleep(50);
+        //                    newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
-            //        //            Bitmap bitmap = Abitmaps[count];
-            //        //            bitmap.Save("d:\\newpic\\2" + i.ToString() + ".bmp", ImageFormat.Bmp);
-            //        //            bitmap = PicSized(bitmap, 4);
-            //        //            bitmap.Save("d:\\newpic\\" + i.ToString() + ".bmp", ImageFormat.Bmp);
-            //        //            //bitmap.
-            //        //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
-            //        //            //mats.Add( currentFrame.Mat);
-            //        //            Mat invert = new Mat();
-            //        //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
-            //        //            Mat temp = aa.ToImage<Bgr, byte>().GetSubRect(new Rectangle(i * patchHeight, j * patchWidth, invert.Size.Width, invert.Size.Height)).Mat;
-            //        //            temp.Save("d:\\newpic\\temp" + i.ToString() + "_" + j.ToString() + "jpg");
-            //        //            invert.CopyTo(temp);
-            //        //            aa.Save("d:\\newpic\\aa" + i.ToString() + "_" + j.ToString() + "jpg");
-            //        //            //AoiAi.addPatch(aa.Ptr, invert.Ptr, 500 * k, 500 * n);
-            //        //            //invert.Dispose();
-            //        //        }
-
-            //        //    }
-            //        //}
-            //        // Mat[] matsnew = mats.ToArray();
-            //        //Stitcher stitcher = new Stitcher(false);
-            //        //stitcher.Stitch(new VectorOfMat(matsnew), aa);
-
-            //        //Image<Bgr, Byte> _image = aa.ToImage<Bgr, Byte>();
-            //        //Bitmap allbitmap = _image.Bitmap;
-            //        ////Bitmap tt = new Bitmap(aa.Cols, aa.Rows, (int)aa.Step, PixelFormat.Format24bppRgb, aa.Ptr);
-            //        //pbMainImg.Image = allbitmap;
-            //        //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
-            //        //CvInvoke.Imshow("AJpg", aa); //显示图片
-            //        //                             //mats = null;
-            //        //aa.Dispose();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Loghelper.WriteLog("报错了", e);
+        //                    num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
 
 
-            //    }
-            //}
+
+        //                    newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+        //                    if (newvalue == 1.00)
+        //                    {
+
+        //                        isrun = false;
+        //                    }
+        //                }
+
+        //            }
+        //            cantak = false;
+
+        //        }
+
+        //    }
+        //    double thenewvalue = 1.00;
+        //    byte[] thenewwriteValue = new byte[2];
+        //    thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+        //    thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+        //    if (PLCController.Instance.IsConnected)
+        //        PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
+        //    Thread.Sleep(200);
+        //    //Mat aa =new Mat();
+        //    //if (Abitmaps.Count > 0)
+        //    //{
+        //    //    try
+        //    //    {
+        //    //        int patchWidth = Abitmaps[0].Width / 4;
+        //    //        int patchHeight = Abitmaps[0].Height / 4;
+        //    //        Mat aa = new Mat(ay.Count * patchWidth, ax.Count * patchHeight, DepthType.Cv8U, 3);
 
 
-            //Bitmap allbitmap = Mat
-        }
+        //    //        //if (Abitmaps.Count == ax.Count * ay.Count)
+        //    //        //{
+
+        //    //        //    for (int i = 0; i < ax.Count; i++)
+        //    //        //    {
+        //    //        //        for (int j = 0; j < ay.Count; j++)
+        //    //        //        {
+        //    //        //            int count = i * ay.Count + j;
+
+        //    //        //            Bitmap bitmap = Abitmaps[count];
+        //    //        //            bitmap.Save("d:\\newpic\\2" + i.ToString() + ".bmp", ImageFormat.Bmp);
+        //    //        //            bitmap = PicSized(bitmap, 4);
+        //    //        //            bitmap.Save("d:\\newpic\\" + i.ToString() + ".bmp", ImageFormat.Bmp);
+        //    //        //            //bitmap.
+        //    //        //            Emgu.CV.Image<Bgr, Byte> currentFrame = new Emgu.CV.Image<Bgr, Byte>(bitmap);
+        //    //        //            //mats.Add( currentFrame.Mat);
+        //    //        //            Mat invert = new Mat();
+        //    //        //            CvInvoke.BitwiseAnd(currentFrame, currentFrame, invert);
+        //    //        //            Mat temp = aa.ToImage<Bgr, byte>().GetSubRect(new Rectangle(i * patchHeight, j * patchWidth, invert.Size.Width, invert.Size.Height)).Mat;
+        //    //        //            temp.Save("d:\\newpic\\temp" + i.ToString() + "_" + j.ToString() + "jpg");
+        //    //        //            invert.CopyTo(temp);
+        //    //        //            aa.Save("d:\\newpic\\aa" + i.ToString() + "_" + j.ToString() + "jpg");
+        //    //        //            //AoiAi.addPatch(aa.Ptr, invert.Ptr, 500 * k, 500 * n);
+        //    //        //            //invert.Dispose();
+        //    //        //        }
+
+        //    //        //    }
+        //    //        //}
+        //    //        // Mat[] matsnew = mats.ToArray();
+        //    //        //Stitcher stitcher = new Stitcher(false);
+        //    //        //stitcher.Stitch(new VectorOfMat(matsnew), aa);
+
+        //    //        //Image<Bgr, Byte> _image = aa.ToImage<Bgr, Byte>();
+        //    //        //Bitmap allbitmap = _image.Bitmap;
+        //    //        ////Bitmap tt = new Bitmap(aa.Cols, aa.Rows, (int)aa.Step, PixelFormat.Format24bppRgb, aa.Ptr);
+        //    //        //pbMainImg.Image = allbitmap;
+        //    //        //CvInvoke.NamedWindow("AJpg", NamedWindowType.Normal); //创建一个显示窗口
+        //    //        //CvInvoke.Imshow("AJpg", aa); //显示图片
+        //    //        //                             //mats = null;
+        //    //        //aa.Dispose();
+        //    //    }
+        //    //    catch (Exception e)
+        //    //    {
+        //    //        Loghelper.WriteLog("报错了", e);
+
+
+        //    //    }
+        //    //}
+
+
+        //    //Bitmap allbitmap = Mat
+        //}
         private byte[] DoubleToByte(double value)
         {
             byte[] obuf = new byte[4];
@@ -501,108 +501,108 @@ namespace pcbaoi
                     e.Cancel = true; //这里才真正取消 
                     return;
                 }
-                run2();
+                //run2();
 
             }
 
         }
-        private void run2()
-        {
-            int xvalue = Convert.ToInt32(width);
-            int yvalue = Convert.ToInt32(height);
-            List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
-            List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
-            byte[] receiveData = new byte[255];
-            byte[] writeValueX = new byte[by.Count * 4];
-            byte[] writeValueY = new byte[by.Count * 4];
-            byte[] writeValue = new byte[4];
-            bool cantak = true;
-            while (cantak)
-            {
+        //private void run2()
+        //{
+        //    int xvalue = Convert.ToInt32(width);
+        //    int yvalue = Convert.ToInt32(height);
+        //    List<int> bx = Xycoordinate.bxcoordinate((int)Math.Ceiling((double)xvalue / (double)14), 14);
+        //    List<int> by = Xycoordinate.bycoordinate((int)Math.Ceiling((double)yvalue / (double)14), 14);
+        //    byte[] receiveData = new byte[255];
+        //    byte[] writeValueX = new byte[by.Count * 4];
+        //    byte[] writeValueY = new byte[by.Count * 4];
+        //    byte[] writeValue = new byte[4];
+        //    bool cantak = true;
+        //    while (cantak)
+        //    {
 
-                byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
-                double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+        //        byte[] newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+        //        int num = PLCController.Instance.ReadData(1131, 2, newreceiveData);
+        //        double newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
 
-                if (newvalue == 0.00)
-                {
-                    Thread.Sleep(100);
-                }
-                else
-                {
-
-
-
-                    for (int i = 0; i < bx.Count; i++)
-                    {
-                        if (i == bx.Count)
-                        {
-                            continue;
-                        }
-                        for (int n = 0; n < by.Count; n++)
-                        {
-                            byte[] ibuf = new byte[4];
-                            ibuf = DoubleToByte(bx[i]);
-                            writeValueX[n * 4] = ibuf[0];
-                            writeValueX[n * 4 + 1] = ibuf[1];
-                            writeValueX[n * 4 + 2] = ibuf[2];
-                            writeValueX[n * 4 + 3] = ibuf[3];
-
-                            //Thread.Sleep(50);
-                            ibuf = DoubleToByte(by[n]);
-                            writeValueY[n * 4] = ibuf[0];
-                            writeValueY[n * 4 + 1] = ibuf[1];
-                            writeValueY[n * 4 + 2] = ibuf[2];
-                            writeValueY[n * 4 + 3] = ibuf[3];
-
-
-                        }
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3400, by.Count * 2, writeValueX, receiveData);
-                        Thread.Sleep(50);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(3600, by.Count * 2, writeValueY, receiveData);
-                        writeValue = DoubleToByte(by.Count);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
-                        double value = 1.00;
-                        byte[] newwriteValue = new byte[2];
-                        newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
-                        newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(2146, 1, newwriteValue, receiveData);
-                        bool isrun = true;
-                        while (isrun)
-                        {
-
-                            //Thread.Sleep(50);
-                            newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-
-                            num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
+        //        if (newvalue == 0.00)
+        //        {
+        //            Thread.Sleep(100);
+        //        }
+        //        else
+        //        {
 
 
 
-                            newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
-                            if (newvalue == 1.00)
-                            {
+        //            for (int i = 0; i < bx.Count; i++)
+        //            {
+        //                if (i == bx.Count)
+        //                {
+        //                    continue;
+        //                }
+        //                for (int n = 0; n < by.Count; n++)
+        //                {
+        //                    byte[] ibuf = new byte[4];
+        //                    ibuf = DoubleToByte(bx[i]);
+        //                    writeValueX[n * 4] = ibuf[0];
+        //                    writeValueX[n * 4 + 1] = ibuf[1];
+        //                    writeValueX[n * 4 + 2] = ibuf[2];
+        //                    writeValueX[n * 4 + 3] = ibuf[3];
 
-                                isrun = false;
-                            }
-                        }
+        //                    //Thread.Sleep(50);
+        //                    ibuf = DoubleToByte(by[n]);
+        //                    writeValueY[n * 4] = ibuf[0];
+        //                    writeValueY[n * 4 + 1] = ibuf[1];
+        //                    writeValueY[n * 4 + 2] = ibuf[2];
+        //                    writeValueY[n * 4 + 3] = ibuf[3];
 
-                    }
-                    cantak = false;
 
-                }
+        //                }
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(3400, by.Count * 2, writeValueX, receiveData);
+        //                Thread.Sleep(50);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(3600, by.Count * 2, writeValueY, receiveData);
+        //                writeValue = DoubleToByte(by.Count);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
+        //                double value = 1.00;
+        //                byte[] newwriteValue = new byte[2];
+        //                newwriteValue[0] = (byte)(value / Math.Pow(256, 1));
+        //                newwriteValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+        //                if (PLCController.Instance.IsConnected)
+        //                    PLCController.Instance.WriteData(2146, 1, newwriteValue, receiveData);
+        //                bool isrun = true;
+        //                while (isrun)
+        //                {
 
-            }
-            double thenewvalue = 1.00;
-            byte[] thenewwriteValue = new byte[2];
-            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-            if (PLCController.Instance.IsConnected)
-                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
-        }
+        //                    //Thread.Sleep(50);
+        //                    newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+
+        //                    num = PLCController.Instance.ReadData(1133, 2, newreceiveData);
+
+
+
+        //                    newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+        //                    if (newvalue == 1.00)
+        //                    {
+
+        //                        isrun = false;
+        //                    }
+        //                }
+
+        //            }
+        //            cantak = false;
+
+        //        }
+
+        //    }
+        //    double thenewvalue = 1.00;
+        //    byte[] thenewwriteValue = new byte[2];
+        //    thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+        //    thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+        //    if (PLCController.Instance.IsConnected)
+        //        PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+        //}
 
         private void conn()
         {

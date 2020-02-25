@@ -298,6 +298,7 @@
     <Compile Include="Ngtype.cs" />
     <Compile Include="Operatorselect.cs" />
     <Compile Include="Pcb.cs" />
+    <Compile Include="Pcbinfo.cs" />
     <Compile Include="PcbName.cs" />
     <Compile Include="PickBox.cs" />
     <Compile Include="PingbiForm.cs">
