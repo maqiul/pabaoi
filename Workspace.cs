@@ -192,7 +192,7 @@ namespace pcbaoi
                 NewFile = path+projectSetting.Name+".db";
                 Settings.Default.dbpath = NewFile;
                 File.Copy(OrignFile, NewFile, true);
-                string insertsql = string.Format("INSERT INTO bad(badname, badwidth, badheight, badjiajin) VALUES ('{0}', '{1}', '{2}', '{3}')", projectSetting.Name,projectSetting.Width, projectSetting.Height,projectSetting.Nip);
+                string insertsql = string.Format("INSERT INTO bad(badname,carrierplatewidth, carrierplateheight,badwidth, badheight, badjiajin) VALUES ('{0}', '{1}', '{2}', '{3}','{4}','{5}')", projectSetting.Name,projectSetting.Carrierplatewidth,projectSetting.Carrierplateheight,projectSetting.Width, projectSetting.Height,projectSetting.Nip);
                 SQLiteHelper.ExecuteSql(insertsql);
                 isclose = false;
                 this.Close();

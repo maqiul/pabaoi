@@ -57,7 +57,7 @@ namespace pcbaoi.usercontrol
         public event MyEventHandle MyEvent;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "" || textBox5.Text == "")
+            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "" || textBox5.Text == "" || textBox6.Text == "" || textBox7.Text == "")
             {
 
                 MessageBox.Show("项目信息不能为空");
@@ -67,6 +67,8 @@ namespace pcbaoi.usercontrol
                 ProjectSetting projectSetting = new ProjectSetting();
                 projectSetting.Name = textBox1.Text;
                 projectSetting.Cname = textBox2.Text;
+                projectSetting.Carrierplatewidth = Convert.ToInt32(textBox7.Text);
+                projectSetting.Carrierplateheight = Convert.ToInt32(textBox6.Text);
                 projectSetting.Width = Convert.ToInt32(textBox3.Text);
                 projectSetting.Height = Convert.ToInt32(textBox4.Text);
                 projectSetting.Nip = Convert.ToInt32(textBox5.Text);
