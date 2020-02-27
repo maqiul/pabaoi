@@ -67,7 +67,7 @@ namespace pcbaoi
                 string[] combox = {  "边缘查找" };
                 comboBox1.Items.AddRange(combox);
                 Aiadd aiadd = new Aiadd(operatorselect);
-                operatorselect.Confidence = float.Parse(aiadd.Tag.ToString());
+                operatorselect.Confidence = aiadd.Tag.ToString();
                 aiadd.MyEvent += aiaddenvent;
                 panel6.Controls.Add(aiadd);
 
@@ -179,7 +179,7 @@ namespace pcbaoi
         }
         void aiaddenvent(object sender, EventArgs e)
         {
-            operatorselect.Confidence = float.Parse(sender.ToString());
+            operatorselect.Confidence = sender.ToString();
             if (MyEvent != null)
             {
                 MyEvent(operatorselect, e);

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using pcbaoi.Properties;
+using pcbaoi.Tools;
 using QTing.PLC;
 using RabbitMQ.Client;
 using System;
@@ -25,6 +26,7 @@ namespace pcbaoi
         BackgroundWorker backgroundWorker = null;
         BackgroundWorker backgroundWorker2 = null;
         bool isrunall = false;
+        List<Operatorselect> operatorselects = new List<Operatorselect>();
         int width;
         int height;
 
@@ -46,6 +48,18 @@ namespace pcbaoi
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Bitmap bitmap = (Bitmap)pictureBox1.Image.Clone();
+            Bitmap smallbitmap;
+            foreach (Operatorselect operatorselect in operatorselects) 
+            {
+                if (operatorselect.Operatorname == "mark")
+                {
+                    Rectangle rectangle = new Rectangle(operatorselect.Outstartx, operatorselect.Outstarty,operatorselect.Outwidth,operatorselect.Outheight);
+                    smallbitmap = ImageManger.CropImage(bitmap,rectangle);                                        
+                }
+            
+            
+            }
             #region
             //long i = snowflake.nextId();
             //CopyDir(@"f:\ftp\",@"f:\"+ i+"\\");                       
@@ -104,18 +118,18 @@ namespace pcbaoi
             //    }
             //}
             #endregion
-            button2.Enabled = true;
-            button1.Enabled = false;
-            isrunall = true;
-            if (!backgroundWorker.IsBusy)
-            {
-                backgroundWorker.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
-            }
+            //button2.Enabled = true;
+            //button1.Enabled = false;
+            //isrunall = true;
+            //if (!backgroundWorker.IsBusy)
+            //{
+            //    backgroundWorker.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
+            //}
 
-            if (!backgroundWorker2.IsBusy)
-            {
-                backgroundWorker2.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
-            }
+            //if (!backgroundWorker2.IsBusy)
+            //{
+            //    backgroundWorker2.RunWorkerAsync("object argument");//启动异步操作，有两种重载。将触发BackgroundWorker.DoWork事件
+            //}
 
 
         }
@@ -224,6 +238,10 @@ namespace pcbaoi
                     string zijibanfrontsql = "select *  from zijiban group by frontorside";
                     DataTable dataTable3 = SQLiteHelper.GetDataTable(zijibanfrontsql);
                     label8.Text = "子基板数:" + dataTable3.Rows.Count;
+                    string operatosql = "select * from operato";
+                    DataTable operatos = SQLiteHelper.GetDataTable(operatosql);
+                    operatorselects = DatatableUtils<Operatorselect>.ConvertToModel(operatos);
+
                 }
                 button1.Enabled = true;
                 

@@ -115,7 +115,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 12);
             this.label3.TabIndex = 5;
-            this.label3.Text = "百分比下限";
+            this.label3.Text = "一维码编码";
             // 
             // comboBox1
             // 
@@ -137,6 +137,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControl3";
             this.Size = new System.Drawing.Size(246, 234);

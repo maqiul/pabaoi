@@ -187,6 +187,10 @@ namespace pcbaoi
                 filehandler.AddRecentFile(path);
                 this.DialogResult = DialogResult.OK;
                 Settings.Default.path = path;
+                string Templatepath = path + "template";
+                if (!Directory.Exists(Templatepath)) {
+                    Directory.CreateDirectory(Templatepath);                
+                }
                 string OrignFile, NewFile;
                 OrignFile = @"demo.db";
                 NewFile = path+projectSetting.Name+".db";
@@ -205,12 +209,12 @@ namespace pcbaoi
 
         private void loadsetting() {
 
-            string picsettingsql = string.Format("select * from setting");
-            DataRowCollection picseeting = MySqlHelper.GetallRow(picsettingsql);
-            Setting.Projectpath = picseeting[0]["settingvalue"].ToString();
-            Setting.Completepicturepath = picseeting[1]["settingvalue"].ToString();
-            //Setting.Projectpath = "D:\\prosetting\\";
-            //Setting.Completepicturepath = "D:\\completepicturepath\\";
+            //string picsettingsql = string.Format("select * from setting");
+            //DataRowCollection picseeting = MySqlHelper.GetallRow(picsettingsql);
+            //Setting.Projectpath = picseeting[0]["settingvalue"].ToString();
+            //Setting.Completepicturepath = picseeting[1]["settingvalue"].ToString();
+            Setting.Projectpath = "D:\\prosetting\\";
+            Setting.Completepicturepath = "D:\\completepicturepath\\";
 
 
 

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LightsourceForm));
             this.titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
             this.Mainpicbox = new System.Windows.Forms.PictureBox();
@@ -67,6 +68,7 @@
             // 
             this.titlepanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.titlepanel.Controls.Add(this.Titlelabel);
+            this.titlepanel.Controls.Add(this.canelbt);
             this.titlepanel.Location = new System.Drawing.Point(0, 0);
             this.titlepanel.Margin = new System.Windows.Forms.Padding(0);
             this.titlepanel.Name = "titlepanel";
@@ -102,7 +104,6 @@
             this.leftpanel.Controls.Add(this.label2);
             this.leftpanel.Controls.Add(this.label1);
             this.leftpanel.Controls.Add(this.blowbt);
-            this.leftpanel.Controls.Add(this.canelbt);
             this.leftpanel.Controls.Add(this.savebt);
             this.leftpanel.Controls.Add(this.righttitlebt);
             this.leftpanel.Controls.Add(this.lefttitlebt);
@@ -185,19 +186,23 @@
             // 
             // canelbt
             // 
-            this.canelbt.Location = new System.Drawing.Point(151, 461);
+            this.canelbt.BackColor = System.Drawing.Color.Transparent;
+            this.canelbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("canelbt.BackgroundImage")));
+            this.canelbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.canelbt.FlatAppearance.BorderSize = 0;
+            this.canelbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.canelbt.Location = new System.Drawing.Point(804, 12);
             this.canelbt.Name = "canelbt";
-            this.canelbt.Size = new System.Drawing.Size(75, 23);
+            this.canelbt.Size = new System.Drawing.Size(27, 27);
             this.canelbt.TabIndex = 9;
-            this.canelbt.Text = "取消";
-            this.canelbt.UseVisualStyleBackColor = true;
+            this.canelbt.UseVisualStyleBackColor = false;
             this.canelbt.Click += new System.EventHandler(this.canelbt_Click);
             // 
             // savebt
             // 
-            this.savebt.Location = new System.Drawing.Point(45, 461);
+            this.savebt.Location = new System.Drawing.Point(69, 463);
             this.savebt.Name = "savebt";
-            this.savebt.Size = new System.Drawing.Size(75, 23);
+            this.savebt.Size = new System.Drawing.Size(138, 23);
             this.savebt.TabIndex = 8;
             this.savebt.Text = "保存";
             this.savebt.UseVisualStyleBackColor = true;
@@ -212,7 +217,7 @@
             this.righttitlebt.Name = "righttitlebt";
             this.righttitlebt.Size = new System.Drawing.Size(137, 25);
             this.righttitlebt.TabIndex = 7;
-            this.righttitlebt.Click += new System.EventHandler(this.panel2_Click);
+            this.righttitlebt.Click += new System.EventHandler(this.righttitlebt_Click);
             // 
             // sidelabel
             // 
@@ -232,7 +237,7 @@
             this.lefttitlebt.Name = "lefttitlebt";
             this.lefttitlebt.Size = new System.Drawing.Size(137, 25);
             this.lefttitlebt.TabIndex = 6;
-            this.lefttitlebt.Click += new System.EventHandler(this.panel1_Click);
+            this.lefttitlebt.Click += new System.EventHandler(this.lefttitlebt_Click);
             // 
             // frontlabel
             // 

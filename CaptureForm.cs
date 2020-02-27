@@ -212,13 +212,6 @@ namespace pcbaoi
             }
         }
 
-        /* Handles the click on the stop frame acquisition button. */
-        private void toolStripButtonStop_Click(object sender, EventArgs e)
-        {
-            Stop(); /* Stops the grabbing of images. */
-            CloseTheImageProvider();
-        }
-
         /* Handles the event related to the occurrence of an error while grabbing proceeds. */
         private void OnGrabErrorEventCallback(Exception grabException, string additionalErrorMessage)
         {
@@ -543,19 +536,17 @@ namespace pcbaoi
             //初始化AI检测SDK
             //bbox_t_container boxlist = new bbox_t_container();
             aidemo = new Aidemo();
-            int res = aidemo.sdkin();
-            if (res == -1)
-            {
-                MessageBox.Show("AI加载失败");
-            }
+            //int res = aidemo.sdkin();
+            //if (res == -1)
+            //{
+            //    MessageBox.Show("AI加载失败");
+            //}
             dicid = snowflake.nextId();
             //AITestSDK.detect_image_path("D:\\00.jpg", ref boxlist);
             //Bitmap bitTest = new Bitmap("D:\\3.jpg");
             //aidemo.savepic(bitTest, "D:\\3_res.jpg");
 
         }
-
-
         private void CaptureForm_Shown(object sender, EventArgs e)
         {
             if (from == 1)
@@ -582,7 +573,7 @@ namespace pcbaoi
                 R_backgroundWorker.RunWorkerAsync("线程启动");
             }
             savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
-            while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
+            while (Directory.Exists(savepath + captureCount.ToString()))
             {
                 captureCount++;
             }
@@ -607,7 +598,7 @@ namespace pcbaoi
             pbMainImg.MouseWheel += PbMainImg_MouseWheel;
             this.MouseWheel += PbMainImg_MouseWheel;
             //运行轨道至固定宽度
-            runplace();
+            Orbital();
 
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -687,6 +678,7 @@ namespace pcbaoi
 
         private void CaptureForm_SizeChanged(object sender, EventArgs e)
         {
+            Console.WriteLine(this.WindowState);
             if (this.WindowState == FormWindowState.Normal)
             {
                 this.Width = this.formStartX;
@@ -835,6 +827,23 @@ namespace pcbaoi
         {
             showponit((pbMainImg.Width - pbMainImg.Left * 2) / 2, (pbMainImg.Height - pbMainImg.Top * 2) / 2);
         }
+        private void pbMainImg_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxes.Count > 0)
+            {
+                foreach (PictureBox pictureBox in pictureBoxes)
+                {
+                    pictureBox.Refresh();
+                }
+                pictureBoxes.Clear();
+            }
+
+        }
+        private void pbMainImg_SizeChanged(object sender, EventArgs e)
+        {
+            asc.ControlAutoSize(pbMainImg);
+
+        }
         #endregion
 
         #region 菜单组
@@ -959,13 +968,27 @@ namespace pcbaoi
             SaveFileForm saveFileForm = new SaveFileForm();
             saveFileForm.ShowDialog();
         }
+
+        private void toolStripButtonStop_Click(object sender, EventArgs e)
+        {
+            Stop(); /* Stops the grabbing of images. */
+            CloseTheImageProvider();
+        }
+
+        //屏蔽页面
+        private void Shield_Click(object sender, EventArgs e)
+        {
+            PingbiForm pingbiForm = new PingbiForm();
+            pingbiForm.ShowDialog();
+
+        }
         #endregion
 
-
+        #region 左边菜单栏
         private void btnCamera_Click(object sender, EventArgs e)
         {
             //选择拍照面弹窗
-            Collectionform collectionform = new Collectionform(tbWidth.Text, tbLenth.Text,tbPcbWidth.Text,tbPcbLenth.Text);
+            Collectionform collectionform = new Collectionform(tbWidth.Text, tbLenth.Text, tbPcbWidth.Text, tbPcbLenth.Text);
             collectionform.ShowDialog();
             if (collectionform.DialogResult == System.Windows.Forms.DialogResult.OK)
             {
@@ -1053,6 +1076,124 @@ namespace pcbaoi
                 }
             }
         }
+        private void SububstrateAdd_Click(object sender, EventArgs e)
+        {
+
+            if (pbMainImg.Image == null)
+            {
+                MessageBox.Show("请先采集");
+                return;
+            }
+            //画子基板框
+            PictureBox pictureBox = new PictureBox();
+            pictureBox.Name = "zijiban" + Subsubstrate.ToString();
+            pictureBox.Location = new Point(200, 200);
+            pictureBox.Width = 70;
+            pictureBox.Height = 40;
+            pictureBox.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
+            pictureBox.Move += new EventHandler(pictureboxmove);
+            pictureBox.BackColor = Color.Transparent;
+            pictureBox.Parent = pbMainImg;
+            pictureBox.MouseClick += pictureboxclick;
+            pictureBox.PreviewKeyDown += picboxkey;
+            pictureBox.Paint += picbox_Panit;
+            pictureBox.BringToFront();
+            this.pbMainImg.Controls.Add(pictureBox);
+
+            pb.WireControl(pictureBox);
+            controlnew = pictureBox;
+            Subsubstrate++;
+            showSubsubstratenum();
+
+            asc = new AutoSizeFormClass();
+            asc.RenewControlRect(pbMainImg);
+            addpicturebox();
+        }
+        //进入加算法框界面
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (pbMainImg.Image == null)
+            {
+                MessageBox.Show("请先采集");
+                return;
+            }
+            string selectsvaesql = "select * from zijiban where isuse= '0'";
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectsvaesql);
+            if (dataTable.Rows.Count > 0)
+            {
+                MessageBox.Show("请先保存数据");
+                return;
+            }
+
+            Platmake platmake = new Platmake(pbMainImg.Image);
+            platmake.Show();
+            this.Hide();
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (pbMainImg.Image != null)
+                {
+                    oldlastheight = pbMainImg.Height;
+                    oldlastwidth = pbMainImg.Width;
+                    pbMainImg.Height = pbMainImg.Image.Height;
+                    pbMainImg.Width = pbMainImg.Image.Width;
+                    string selectall = "select zijiname from zijiban ";
+                    DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
+                    for (int i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        string name = dataTable.Rows[i]["zijiname"].ToString();
+                        foreach (Control control in pbMainImg.Controls)
+                        {
+                            if (control.Name == name)
+                            {
+                                string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'", control.Location.X, control.Location.Y, control.Width, control.Height, name);
+                                SQLiteHelper.ExecuteSql(updatesql);
+
+                            }
+
+                        }
+                    }
+                    pbMainImg.Height = oldlastheight;
+                    pbMainImg.Width = oldlastwidth;
+                    MessageBox.Show("保存成功");
+
+
+                }
+
+
+
+            }
+            catch
+            {
+
+
+            }
+
+
+
+        }
+        private void Runbt_Click(object sender, EventArgs e)
+        {
+            RunForm runForm = new RunForm();
+            runForm.Show();
+
+            this.Hide();
+        }
+        private void Testcheckbt_Click(object sender, EventArgs e)
+        {
+            Testform testform = new Testform(pbMainImg.Image);
+            testform.Show();
+            this.Hide();
+        }
+        //出板按钮
+        private void SubstrateOut_Click(object sender, EventArgs e)
+        {
+            substrateOut();
+        }
+        #endregion
 
         private void pbFrontImg_Click(object sender, EventArgs e)
         {
@@ -1193,45 +1334,8 @@ namespace pcbaoi
 
         }
 
-        private void SububstrateAdd_Click(object sender, EventArgs e)
-        {
 
-            if (pbMainImg.Image == null)
-            {
-                MessageBox.Show("请先采集");
-                return;
-            }
-            //画子基板框
-            PictureBox pictureBox = new PictureBox();
-            pictureBox.Name = "zijiban" + Subsubstrate.ToString();
-            pictureBox.Location = new Point(200, 200);
-            pictureBox.Width = 70;
-            pictureBox.Height = 40;
-            pictureBox.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox.SizeChanged += new EventHandler(pictureboxsizechange);
-            pictureBox.Move += new EventHandler(pictureboxmove);
-            pictureBox.BackColor = Color.Transparent;
-            pictureBox.Parent = pbMainImg;
-            pictureBox.MouseClick += pictureboxclick;
-            pictureBox.PreviewKeyDown += picboxkey;
-            pictureBox.Paint += picbox_Panit;
-            pictureBox.BringToFront();
-            this.pbMainImg.Controls.Add(pictureBox);
-
-            pb.WireControl(pictureBox);
-            controlnew = pictureBox;
-            Subsubstrate++;
-            showSubsubstratenum();
-
-            asc = new AutoSizeFormClass();
-            asc.RenewControlRect(pbMainImg);
-            addpicturebox();
-        }
-
-        private void PictureBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        #region 子基板方法
         //子基板移动方法
         private void pictureboxmove(object sender, EventArgs e)
         {
@@ -1307,19 +1411,6 @@ namespace pcbaoi
 
 
         }
-
-        private void pbMainImg_Click(object sender, EventArgs e)
-        {
-            if (pictureBoxes.Count > 0)
-            {
-                foreach (PictureBox pictureBox in pictureBoxes)
-                {
-                    pictureBox.Refresh();
-                }
-                pictureBoxes.Clear();
-            }
-
-        }
         //子基板的键盘事件监控
         private void picboxkey(object sender, PreviewKeyDownEventArgs e)
         {
@@ -1354,80 +1445,7 @@ namespace pcbaoi
             }
 
         }
-        //进入加算法框界面
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            if (pbMainImg.Image == null)
-            {
-                MessageBox.Show("请先采集");
-                return;
-            }
-            string selectsvaesql = "select * from zijiban where isuse= '0'";
-            DataTable dataTable = SQLiteHelper.GetDataTable(selectsvaesql);
-            if (dataTable.Rows.Count > 0)
-            {
-                MessageBox.Show("请先保存数据");
-                return;
-            }
 
-            Platmake platmake = new Platmake(pbMainImg.Image);
-            platmake.Show();
-            this.Hide();
-        }
-
-        private void pictureBox1_SizeChanged(object sender, EventArgs e)
-        {
-            asc.ControlAutoSize(pbMainImg);
-
-        }
-
-
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (pbMainImg.Image != null)
-                {
-                    oldlastheight = pbMainImg.Height;
-                    oldlastwidth = pbMainImg.Width;
-                    pbMainImg.Height = pbMainImg.Image.Height;
-                    pbMainImg.Width = pbMainImg.Image.Width;
-                    string selectall = "select zijiname from zijiban ";
-                    DataTable dataTable = SQLiteHelper.GetDataTable(selectall);
-                    for (int i = 0; i < dataTable.Rows.Count; i++)
-                    {
-                        string name = dataTable.Rows[i]["zijiname"].ToString();
-                        foreach (Control control in pbMainImg.Controls)
-                        {
-                            if (control.Name == name)
-                            {
-                                string updatesql = string.Format("update zijiban set startx='{0}',starty='{1}',width='{2}',height='{3}',isuse = 1 where zijiname='{4}'", control.Location.X, control.Location.Y, control.Width, control.Height, name);
-                                SQLiteHelper.ExecuteSql(updatesql);
-
-                            }
-
-                        }
-                    }
-                    pbMainImg.Height = oldlastheight;
-                    pbMainImg.Width = oldlastwidth;
-                    MessageBox.Show("保存成功");
-
-
-                }
-
-
-
-            }
-            catch
-            {
-
-
-            }
-
-
-
-        }
         //添加子基板框
         public void addpicturebox()
         {
@@ -1441,7 +1459,6 @@ namespace pcbaoi
             pbMainImg.Width = oldlastwidth;
 
         }
-
 
         //加载画框
         private void drawpicboxall()
@@ -1546,30 +1563,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         }
         #endregion
-        private void Runbt_Click(object sender, EventArgs e)
-        {
-            RunForm runForm = new RunForm();
-            runForm.Show();
+        #endregion
 
-            this.Hide();
-        }
-
-
-        private void Testcheckbt_Click(object sender, EventArgs e)
-        {
-            Testform testform = new Testform(pbMainImg.Image);
-            testform.Show();
-            this.Hide();
-        }
-
-
-        //屏蔽页面
-        private void Shield_Click(object sender, EventArgs e)
-        {
-            PingbiForm pingbiForm = new PingbiForm();
-            pingbiForm.ShowDialog();
-
-        }
 
 
         //计算全图画布大小
@@ -1644,6 +1639,153 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         }
 
 
+
+        private Bitmap cropBmp(Bitmap src, Rectangle cropRect)
+        {
+            Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+
+            using (Graphics g = Graphics.FromImage(target))
+            {
+                g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                      cropRect,
+                      GraphicsUnit.Pixel);
+            }
+            return target;
+        }
+
+        /// <summary>
+        /// 按照拍摄系统的物理参数，对每张拍摄的图片进行截断和缩放
+        /// </summary>
+        /// <param name="picPath"></param>
+        /// <param name="reSizePicPath"></param>
+        /// <param name="iSize"></param>
+        /// <param name="format"></param>
+        public Bitmap singleCaptureCropAndResize(Bitmap bitmap)
+        {
+            try
+            {
+                float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
+                int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
+
+                float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
+                float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
+                float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
+                int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
+
+                int marginX = (bitmap.Width - widthAfterCrop) / 2;
+                int marginY = (bitmap.Height - heightAfterCrop) / 2;
+                Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
+
+                //设置高质量插值法  
+                Bitmap cropedBmp = cropBmp(bitmap, cropRect);
+                int widthAfterResize = (int)(pixelNumPerMM * capturePointIntervalXInMM * 3);
+                int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM * 3);
+                Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
+                Graphics g = Graphics.FromImage(resizedBmp);
+                //设置高质量插值法  
+                //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                //设置高质量,低速度呈现平滑程度  
+                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                //消除锯齿
+                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
+                //resizedBmp.Save(reSizePicPath, format);
+                g.Dispose();
+                //originBmp.Dispose();
+                return resizedBmp;
+            }
+            catch
+            {
+                return null;
+
+            }
+
+
+        }
+
+        private void substrateOut()
+        {
+            byte[] receiveData = new byte[255];
+            byte[] writeValue = new byte[4];
+            writeValue = DoubleToByte(0);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
+            double thenewvalue = 1.00;
+            byte[] thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
+            receiveData = new byte[255];
+            writeValue = new byte[4];
+            writeValue = DoubleToByte(0);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
+            thenewvalue = 1.00;
+            thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+        }
+
+
+
+        //轨道宽度设置
+        private void Orbital()
+        {
+            double value = Convert.ToDouble(IniFile.iniRead("Kwidth", "kwidth")) + Convert.ToDouble(tbPcbWidth.Text) * 1562.5;
+            int registerAddress = 2124;
+            int wordBit = 32;
+            byte[] receiveData = new byte[255];
+            value = value;
+            if (wordBit == 32)
+            {
+                if (value > 0xffffffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+
+                byte[] writeValue = new byte[4];
+                writeValue = DoubleToByte(value);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
+            }
+
+            try
+            {
+
+                int[] registerBitall = { 5 };
+                foreach (int i in registerBitall)
+                {
+                    registerAddress = 2004;
+                    int registerBit = i;
+                    int newvalue = 1 << registerBit;
+
+                    int currentValue = 0;
+
+                    receiveData = new byte[255];
+
+                    if (registerAddress == 2004)
+                    {
+                        D2004 = newvalue;
+                        currentValue = D2004;
+                        SendValueToRegister(2004, D2004, receiveData);
+                    }
+                }
+
+            }
+            catch
+            {
+
+
+            }
+
+
+        }
+
         //单面运行主要方法
         private void run(SIDE side)
         {
@@ -1672,8 +1814,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
             int xvalue = Convert.ToInt32(Convert.ToInt32(tbPcbWidth.Text));
             int yvalue = Convert.ToInt32(Convert.ToInt32(tbPcbLenth.Text));
-            int xdifferencevalue = (Convert.ToInt32(tbWidth.Text) - Convert.ToInt32(tbPcbWidth.Text))/2-2;
-            int ydifferencevalue = (Convert.ToInt32(tbLenth.Text) - Convert.ToInt32(tbPcbLenth.Text)) / 2-2;
+            int xdifferencevalue = (Convert.ToInt32(tbWidth.Text) - Convert.ToInt32(tbPcbWidth.Text)) / 2 - 2;
+            int ydifferencevalue = (Convert.ToInt32(tbLenth.Text) - Convert.ToInt32(tbPcbLenth.Text)) / 2 - 2;
             List<int> x = new List<int>();
             List<int> y = new List<int>();
             //计算X,Y方向的运行点位和拍摄数量
@@ -1845,7 +1987,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         }
                     }
                     catch (Exception exp) {
-                        Loghelper.WriteLog("发送位置错误",exp);
+                        Loghelper.WriteLog("发送位置错误", exp);
 
                     }
 
@@ -1883,7 +2025,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
                             allbitmap.Save(savepath + captureCount.ToString() + "\\Ftotal.jpg", ImageFormat.Jpeg);
                             Amat.Dispose();
-                            allbitmap = KiResizeImage(allbitmap, 2);
+                            allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
                             Savepic(allbitmap, side);
 
                             Bitmap newbitmap;
@@ -1898,7 +2040,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             }
 
 
-                           // Savepic(newbitmap, side);
+                            // Savepic(newbitmap, side);
                             //SendresulttoOther(newbitmap, captureCount.ToString(), checkpics);
                             _image.Dispose();
                             allbitmap = null;
@@ -1932,7 +2074,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
                             allbitmap.Save(savepath + captureCount.ToString() + "\\Btotal.jpg", ImageFormat.Jpeg);
                             Bmat.Dispose();
-                            allbitmap = KiResizeImage(allbitmap, 2);
+                            allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
                             Bitmap newbitmap;
                             newbitmap = (Bitmap)allbitmap.Clone();
                             pbBackImg.Image = allbitmap;
@@ -2302,7 +2444,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             double or_vl = 0.065; // vertical
             double or_vu = 0.08;
             double dr_hu = 0.01; // upper bound for horizontal drift ratio
-            double dr_vu = 0.01; // 
+            double dr_vu = 0.01; //
             if (side == SIDE.FRONT)
             {
                 while (true)
@@ -2380,7 +2522,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                             AoiAi.stitchv2(Amat.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.right, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(img.Rows * or_vl), Convert.ToInt32(img.Rows * or_vu), Convert.ToInt32(img.Cols * dr_hu));
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         if (col == 0)
                                         {
                                             AoiAi.stitchv2(Amat.Ptr, roi0, img.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(img.Cols * or_vl), Convert.ToInt32(img.Cols * or_vu), Convert.ToInt32(img.Rows * dr_hu));
@@ -2526,7 +2669,8 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                             AoiAi.stitchv2(Bmat.Ptr, roi, img.Ptr, ref roi, (int)AoiAi.side.right, Convert.ToInt32(img.Cols * or_hl), Convert.ToInt32(img.Cols * or_hu), Convert.ToInt32(img.Rows * dr_vu), (int)AoiAi.side.up, Convert.ToInt32(img.Rows * or_vl), Convert.ToInt32(img.Rows * or_vu), Convert.ToInt32(img.Cols * dr_hu));
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         if (col == 0)
                                         {
                                             AoiAi.stitchv2(Bmat.Ptr, roi0, img.Ptr, ref roi0, (int)AoiAi.side.up, Convert.ToInt32(img.Cols * or_vl), Convert.ToInt32(img.Cols * or_vu), Convert.ToInt32(img.Rows * dr_hu));
@@ -2589,550 +2733,370 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
             }
         }
 
-                public void checkthread(object sender, System.ComponentModel.DoWorkEventArgs e) {
+        public void checkthread(object sender, System.ComponentModel.DoWorkEventArgs e) {
 
-                    while (true) {
-                        int thisnum = 0;
-                        while (!checkend) {
-                            try
-                            {
-                                // Console.WriteLine("当前条数:" + thisnum + "  " +Allnum);
-                                if (thisnum == Allnum && Allnum > 0)
-                                {
-                                    checkend = true;
-                                    break;
-
-                                }
-                                lock (pcbinfos)
-                                {
-                                    if (pcbinfos.Count > 0)
-                                    {
-                                        Pcbinfo pcbinfo = pcbinfos.Dequeue();
-                                        if ((SIDE)pcbinfo.Obj == SIDE.FRONT)
-                                        {
-                                            Checkpic checkpic = aidemo.savepic(pcbinfo.Bitmap, pcbinfo.Rectangle.X, pcbinfo.Rectangle.Y);
-                                            Acheckpics.Add(checkpic);
-
-                                        }
-                                        else
-                                        {
-                                            Checkpic checkpic = aidemo.savepic(pcbinfo.Bitmap, pcbinfo.Rectangle.X, pcbinfo.Rectangle.Y);
-                                            Bcheckpics.Add(checkpic);
-
-                                        }
-                                        thisnum++;
-                                    }
-                                }
-                            }
-                            catch (Exception ex) {
-                                Loghelper.WriteLog("检测错误", ex);
-
-                            }
-                            Thread.Sleep(10);
-                        }
-                    }
-                }
-
-
-
-                public Bitmap cropBmp(Bitmap src, Rectangle cropRect)
-                {
-                    Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
-
-                    using (Graphics g = Graphics.FromImage(target))
-                    {
-                        g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                              cropRect,
-                              GraphicsUnit.Pixel);
-                    }
-                    return target;
-                }
-
-                /// <summary>
-                /// 按照拍摄系统的物理参数，对每张拍摄的图片进行截断和缩放
-                /// </summary>
-                /// <param name="picPath"></param>
-                /// <param name="reSizePicPath"></param>
-                /// <param name="iSize"></param>
-                /// <param name="format"></param>
-                public Bitmap singleCaptureCropAndResize(Bitmap bitmap)
-                {
+            while (true) {
+                int thisnum = 0;
+                while (!checkend) {
                     try
                     {
-                        float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
-                        int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
-
-                        float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
-                        float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
-                        float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
-                        int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
-
-                        int marginX = (bitmap.Width - widthAfterCrop) / 2;
-                        int marginY = (bitmap.Height - heightAfterCrop) / 2;
-                        Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
-
-                        //设置高质量插值法  
-                        Bitmap cropedBmp = cropBmp(bitmap, cropRect);
-                        int widthAfterResize = (int)(pixelNumPerMM * capturePointIntervalXInMM * 3);
-                        int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM * 3);
-                        Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
-                        Graphics g = Graphics.FromImage(resizedBmp);
-                        //设置高质量插值法  
-                        //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                        //设置高质量,低速度呈现平滑程度  
-                        //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                        //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                        //消除锯齿
-                        //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                        g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
-                        //resizedBmp.Save(reSizePicPath, format);
-                        g.Dispose();
-                        //originBmp.Dispose();
-                        return resizedBmp;
-                    }
-                    catch
-                    {
-                        return null;
-
-                    }
-
-
-                }
-
-                private void substrateOut()
-                {
-                    byte[] receiveData = new byte[255];
-                    byte[] writeValue = new byte[4];
-                    writeValue = DoubleToByte(0);
-                    if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(5000, 2, writeValue, receiveData);
-                    double thenewvalue = 1.00;
-                    byte[] thenewwriteValue = new byte[2];
-                    thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-                    thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-                    if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
-                    receiveData = new byte[255];
-                    writeValue = new byte[4];
-                    writeValue = DoubleToByte(0);
-                    if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(5002, 2, writeValue, receiveData);
-                    thenewvalue = 1.00;
-                    thenewwriteValue = new byte[2];
-                    thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
-                    thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
-                    if (PLCController.Instance.IsConnected)
-                        PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
-                }
-
-                //出板按钮
-                private void SubstrateOut_Click(object sender, EventArgs e)
-                {
-                    substrateOut();
-                }
-
-                //轨道宽度设置
-                private void runplace()
-                {
-                    double value = Convert.ToDouble(IniFile.iniRead("Kwidth", "kwidth")) + Convert.ToDouble(tbWidth.Text) * 1562.5;
-                    int registerAddress = 2124;
-                    int wordBit = 32;
-                    byte[] receiveData = new byte[255];
-                    value = value;
-                    if (wordBit == 32)
-                    {
-                        if (value > 0xffffffff)
+                        // Console.WriteLine("当前条数:" + thisnum + "  " +Allnum);
+                        if (thisnum == Allnum && Allnum > 0)
                         {
-                            MessageBox.Show("超出设置范围");
-                            return;
+                            checkend = true;
+                            break;
+
                         }
-
-                        byte[] writeValue = new byte[4];
-                        writeValue = DoubleToByte(value);
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
-                    }
-
-                    try
-                    {
-
-                        int[] registerBitall = { 5 };
-                        foreach (int i in registerBitall)
+                        lock (pcbinfos)
                         {
-                            registerAddress = 2004;
-                            int registerBit = i;
-                            int newvalue = 1 << registerBit;
-
-                            int currentValue = 0;
-
-                            receiveData = new byte[255];
-
-                            if (registerAddress == 2004)
+                            if (pcbinfos.Count > 0)
                             {
-                                D2004 = newvalue;
-                                currentValue = D2004;
-                                SendValueToRegister(2004, D2004, receiveData);
+                                Pcbinfo pcbinfo = pcbinfos.Dequeue();
+                                if ((SIDE)pcbinfo.Obj == SIDE.FRONT)
+                                {
+                                    Checkpic checkpic = aidemo.savepic(pcbinfo.Bitmap, pcbinfo.Rectangle.X, pcbinfo.Rectangle.Y);
+                                    Acheckpics.Add(checkpic);
+
+                                }
+                                else
+                                {
+                                    Checkpic checkpic = aidemo.savepic(pcbinfo.Bitmap, pcbinfo.Rectangle.X, pcbinfo.Rectangle.Y);
+                                    Bcheckpics.Add(checkpic);
+
+                                }
+                                thisnum++;
                             }
                         }
+                    }
+                    catch (Exception ex) {
+                        Loghelper.WriteLog("检测错误", ex);
 
                     }
-                    catch
-                    {
-
-
-                    }
-
-
-                }
-                //16位写入plc方法
-                private void SendValueToRegister(int registerAddress, int value, byte[] receiveData)
-                {
-                    try
-                    {
-                        byte[] writeValue = new byte[2] { (byte)(value / 256), (byte)(value % 256) };
-                        //byte[] receiveData = new byte[255];
-                        if (PLCController.Instance.IsConnected)
-                            PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
-                    }
-                    catch (Exception exp)
-                    {
-
-                    }
-                }
-                //保存图片
-                private void Savepic(Bitmap bitmap, SIDE Side)
-                {
-                    long i = dicid;
-                    string directory = "d:\\ftpimage\\" + i.ToString();
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-                    //CopyDir(@"f:\ftp\", @"f:\" + i + "\\");
-                    if (Side == SIDE.FRONT)
-                    {
-                        bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\front.jpg", ImageFormat.Jpeg);
-                    }
-                    else
-                    {
-                        bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\back.jpg", ImageFormat.Jpeg);
-                    }
-
-                }
-                private void SendresulttoOther(string path, List<Checkpic> acheckpics, List<Checkpic> bcheckpics, SIDE side)
-                {
-                    try
-                    {
-                        long i = dicid;
-                        //本机要上传的目录的父目录
-                        string localPath = @"d:\\ftpimage\\";
-                        //要上传的目录名
-                        string fileName = @i.ToString();
-                        Ftp.UploadDirectory(localPath, fileName);
-                        //Checkpic checkpic = aidemo.savepic(bitmap);
-                        JsonData<Pcb> jsonData = new JsonData<Pcb>();
-                        List<Result> results = new List<Result>();
-                        Snowflake snowflake2 = new Snowflake(3);
-                        Pcb pcb = new Pcb();
-                        pcb.Id = i.ToString();
-                        pcb.PcbNumber = path;
-                        pcb.PcbName = path;
-                        pcb.PcbWidth = Int32.Parse(tbWidth.Text);
-                        pcb.PcbHeight = Int32.Parse(tbLenth.Text);
-
-                        pcb.PcbChildenNumber = 1;
-                        if (side == SIDE.DOUBle)
-                            pcb.SurfaceNumber = 2;
-                        else
-                            pcb.SurfaceNumber = 1;
-                        pcb.PcbPath = i.ToString();
-                        pcb.IsError = 0;
-                        pcb.CreateTime = DateTime.Now;
-                        for (int k = 0; k < acheckpics.Count; k++)
-                        {
-                            Checkpic checkpic = acheckpics[k];
-                            if (checkpic.IsNg)
-                            {
-                                if (Directory.Exists(savepath + captureCount.ToString())) {
-                                    Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString() + "-Ng");
-                                }
-
-                                for (int n = 0; n < checkpic.Lists.Count; n++)
-                                {
-                                    string idstring = snowflake2.nextId().ToString();
-                                    Result result = new Result();
-                                    result.Id = idstring;
-                                    result.IsBack = 0;
-                                    result.PcbId = i.ToString();
-                                    result.Area = "";
-                                    result.Region = (picwidth - checkpic.Lists[n].x - checkpic.Lists[n].w) / 2 + "," + (picheight - checkpic.Lists[n].y - checkpic.Lists[n].h) / 2 + "," + checkpic.Lists[n].w / 2 + "," + checkpic.Lists[n].h / 2;
-                                    result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
-                                    result.PartImagePath = idstring + ".jpg";
-                                    result.CreateTime = DateTime.Now;
-                                    results.Add(result);
-                                }
-                                pcb.IsError = 1;
-
-                            }
-
-                        }
-                        for (int k = 0; k < bcheckpics.Count; k++)
-                        {
-                            Checkpic checkpic = bcheckpics[k];
-                            if (checkpic.IsNg)
-                            {
-                                if (Directory.Exists(savepath + captureCount.ToString()))
-                                {
-                                    Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString() + "-Ng");
-                                }
-
-                                for (int n = 0; n < checkpic.Lists.Count; n++)
-                                {
-                                    string idstring = snowflake2.nextId().ToString();
-                                    Result result = new Result();
-                                    result.Id = idstring;
-                                    result.IsBack = 1;
-                                    result.PcbId = i.ToString();
-                                    result.Area = "";
-                                    result.Region =  checkpic.Lists[n].x / 2 + "," + (picheight-checkpic.Lists[n].y - checkpic.Lists[n].h) / 2 + "," + checkpic.Lists[n].w / 2 + "," + checkpic.Lists[n].h / 2;
-                                    result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
-                                    result.PartImagePath = idstring + ".jpg";
-                                    result.CreateTime = DateTime.Now;
-                                    results.Add(result);
-                                }
-                                pcb.IsError = 1;
-
-                            }
-
-                        }
-                        pcb.results = results;
-                        jsonData.data = pcb;
-                        string jo = JsonConvert.SerializeObject(jsonData);
-                        var factory = new ConnectionFactory();
-                        factory.AutomaticRecoveryEnabled = true;
-                        factory.HostName = @IniFile.iniRead("Factory", "hostName"); // RabbitMQ服务在本地运行
-                        factory.UserName = @IniFile.iniRead("Factory", "userName"); // 用户名
-                        factory.Password = @IniFile.iniRead("Factory", "password"); // 密码
-                        factory.VirtualHost = "my_vhost";
-
-                        using (var connection = factory.CreateConnection())
-                        {
-                            using (var channel = connection.CreateModel())
-                            {
-                                // 将消息标记为持久性。
-                                var properties = channel.CreateBasicProperties();
-                                properties.Persistent = true;
-                                channel.QueueDeclare("work", true, false, false, null); // 创建一个名称为hello的消息队列
-                                string message = jo; // 传递的消息内容
-                                var body = Encoding.UTF8.GetBytes(message);
-
-                                channel.BasicPublish("", "work", properties, body); // 开始传递
-                                                                                    //MessageBox.Show("已发送： {0}", message);
-                            }
-                        }
-                        Loghelper.WriteLog("发送内容为：" + jo);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Loghelper.WriteLog("发送至输出端出错", ex);
-                    }
-
-
-
-                }
-
-                //所有相机初始化
-                private void Camerasinitialization()
-                {
-
-                    #region camera
-
-                    m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
-                    m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
-                    m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
-                    m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
-                    m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
-                    m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
-                    m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
-                    m_imageProvider.CameraId = cameraAid;
-                    uint id = m_imageProvider.GetDevice(cameraAid);
-                    if (id == 99)
-                    {
-                        MessageBox.Show("未连接相机");
-                    }
-                    else
-                    {
-                        m_imageProvider.Open(id);
-                        //Thread.Sleep(100);
-                        m_imageProvider.ContinuousShot();
-                        Loghelper.WriteLog("连接相机A:" + id.ToString());
-                    }
-
-                    #endregion
-
-                    #region camera
-
-                    m_imageProviderB.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
-                    m_imageProviderB.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallbackB);
-                    m_imageProviderB.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
-                    m_imageProviderB.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
-                    m_imageProviderB.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
-                    m_imageProviderB.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallbackB);
-                    m_imageProviderB.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
-                    m_imageProviderB.CameraId = cameraBid;
-                    id = m_imageProviderB.GetDevice(cameraBid);
-                    if (id == 99)
-                    {
-                        MessageBox.Show("未连接相机");
-                    }
-                    else
-                    {
-                        m_imageProviderB.Open(id);
-                        //Thread.Sleep(100);
-                        m_imageProviderB.ContinuousShot();
-                        Loghelper.WriteLog("连接相机B:" + id.ToString());
-                    }
-
-                    #endregion
-
-                }
-
-                //检测结果发送
-                private void Getendstatus(object sender, System.ComponentModel.DoWorkEventArgs e)
-                {
-                    while (true)
-                    {
-                        Thread.Sleep(200);
-                        if (!R_backgroundWorker.CancellationPending)
-                        {
-
-                            if (isdoubleside)
-                            {
-                                if (Aend && Bend && checkend)
-                                {
-
-                                    SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
-                                    Bcheckpics.Clear();
-                                    Acheckpics.Clear();
-                                    dicid = snowflake.nextId();
-                                    captureCount++;
-                                    savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
-                                    while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
-                                    {
-                                        captureCount++;
-                                    }
-                                    Directory.CreateDirectory(savepath + captureCount.ToString());
-                                    Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
-                                    Aend = false;
-                                    Bend = false;
-                                    Aimagenum = 0;
-                                    Bimagenum = 0;
-                                    Allnum = 0;
-                                    isruna = true;
-                                    isrunb = true;
-                                    checkend = false;
-                                    isAok = false;
-                                    isBok = false;
-
-                                }
-                            }
-                            else
-                            {
-                                if (Aend && checkend)
-                                {
-                                    SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
-                                    Bcheckpics.Clear();
-                                    Acheckpics.Clear();
-                                    dicid = snowflake.nextId();
-                                    captureCount++;
-                                    savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
-                                    while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
-                                    {
-                                        captureCount++;
-                                    }
-                                    Directory.CreateDirectory(savepath + captureCount.ToString());
-                                    Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
-                                    Aend = false;
-                                    Bend = false;
-                                    Aimagenum = 0;
-                                    Bimagenum = 0;
-                                    Allnum = 0;
-                                    isruna = true;
-                                    checkend = false;
-                                    isAok = false;
-                                    isBok = false;
-                                }
-                                if (Bend && checkend)
-                                {
-                                    SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
-                                    Bcheckpics.Clear();
-                                    Acheckpics.Clear();
-                                    dicid = snowflake.nextId();
-                                    captureCount++;
-                                    savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
-                                    while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
-                                    {
-                                        captureCount++;
-                                    }
-                                    Directory.CreateDirectory(savepath + captureCount.ToString());
-                                    Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
-                                    Aimagenum = 0;
-                                    Bimagenum = 0;
-                                    Allnum = 0;
-                                    isrunb = true;
-                                    checkend = false;
-                                    isAok = false;
-                                    isBok = false;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            e.Cancel = true;
-                            Aend = false;
-                            Bend = false;
-                            return;
-
-                        }
-
-
-                    }
-
-
-                }
-                ///
-                /// Resize图片
-                ///
-                /// 原始Bitmap
-                /// 新的宽度
-                /// 新的高度
-                /// 保留着，暂时未用
-                /// 处理以后的图片
-                public static Bitmap KiResizeImage(Bitmap bmp, int Mode)
-                {
-                    try
-                    {
-                        int newW = bmp.Width / Mode;
-                        int newH = bmp.Height / Mode;
-                        Bitmap b = new Bitmap(newW, newH);
-                        Graphics g = Graphics.FromImage(b);
-
-                        // 插值算法的质量
-                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                        g.DrawImage(bmp, new Rectangle(0, 0, newW, newH), new Rectangle(0, 0, bmp.Width, bmp.Height), GraphicsUnit.Pixel);
-                        g.Dispose();
-                        Console.WriteLine("图片缩小成功");
-                        return b;
-                    }
-                    catch
-                    {
-                        Console.WriteLine("图片缩小失败");
-                        return null;
-                    }
+                    Thread.Sleep(10);
                 }
             }
+        }
+
+        //16位写入plc方法
+        private void SendValueToRegister(int registerAddress, int value, byte[] receiveData)
+        {
+            try
+            {
+                byte[] writeValue = new byte[2] { (byte)(value / 256), (byte)(value % 256) };
+                //byte[] receiveData = new byte[255];
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
+            }
+            catch (Exception exp)
+            {
+
+            }
+        }
+        //保存图片
+        private void Savepic(Bitmap bitmap, SIDE Side)
+        {
+            long i = dicid;
+            string directory = "d:\\ftpimage\\" + i.ToString();
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            //CopyDir(@"f:\ftp\", @"f:\" + i + "\\");
+            if (Side == SIDE.FRONT)
+            {
+                bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\front.jpg", ImageFormat.Jpeg);
+            }
+            else
+            {
+                bitmap.Save("d:\\ftpimage\\" + i.ToString() + "\\back.jpg", ImageFormat.Jpeg);
+            }
+
+        }
+        private void SendresulttoOther(string path, List<Checkpic> acheckpics, List<Checkpic> bcheckpics, SIDE side)
+        {
+            try
+            {
+                long i = dicid;
+                //本机要上传的目录的父目录
+                string localPath = @"d:\\ftpimage\\";
+                //要上传的目录名
+                string fileName = @i.ToString();
+                Ftp.UploadDirectory(localPath, fileName);
+                //Checkpic checkpic = aidemo.savepic(bitmap);
+                JsonData<Pcb> jsonData = new JsonData<Pcb>();
+                List<Result> results = new List<Result>();
+                Snowflake snowflake2 = new Snowflake(3);
+                Pcb pcb = new Pcb();
+                pcb.Id = i.ToString();
+                pcb.PcbNumber = path;
+                pcb.PcbName = path;
+                pcb.PcbWidth = Int32.Parse(tbWidth.Text);
+                pcb.PcbHeight = Int32.Parse(tbLenth.Text);
+
+                pcb.PcbChildenNumber = 1;
+                if (side == SIDE.DOUBle)
+                    pcb.SurfaceNumber = 2;
+                else
+                    pcb.SurfaceNumber = 1;
+                pcb.PcbPath = i.ToString();
+                pcb.IsError = 0;
+                pcb.CreateTime = DateTime.Now;
+                for (int k = 0; k < acheckpics.Count; k++)
+                {
+                    Checkpic checkpic = acheckpics[k];
+                    if (checkpic.IsNg)
+                    {
+                        if (Directory.Exists(savepath + captureCount.ToString())) {
+                            Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString() + "-Ng");
+                        }
+
+                        for (int n = 0; n < checkpic.Lists.Count; n++)
+                        {
+                            string idstring = snowflake2.nextId().ToString();
+                            Result result = new Result();
+                            result.Id = idstring;
+                            result.IsBack = 0;
+                            result.PcbId = i.ToString();
+                            result.Area = "";
+                            result.Region = (picwidth - checkpic.Lists[n].x - checkpic.Lists[n].w) / 2 + "," + (picheight - checkpic.Lists[n].y - checkpic.Lists[n].h) / 2 + "," + checkpic.Lists[n].w / 2 + "," + checkpic.Lists[n].h / 2;
+                            result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
+                            result.PartImagePath = idstring + ".jpg";
+                            result.CreateTime = DateTime.Now;
+                            results.Add(result);
+                        }
+                        pcb.IsError = 1;
+
+                    }
+
+                }
+                for (int k = 0; k < bcheckpics.Count; k++)
+                {
+                    Checkpic checkpic = bcheckpics[k];
+                    if (checkpic.IsNg)
+                    {
+                        if (Directory.Exists(savepath + captureCount.ToString()))
+                        {
+                            Directory.Move(savepath + captureCount.ToString(), savepath + captureCount.ToString() + "-Ng");
+                        }
+
+                        for (int n = 0; n < checkpic.Lists.Count; n++)
+                        {
+                            string idstring = snowflake2.nextId().ToString();
+                            Result result = new Result();
+                            result.Id = idstring;
+                            result.IsBack = 1;
+                            result.PcbId = i.ToString();
+                            result.Area = "";
+                            result.Region = checkpic.Lists[n].x / 2 + "," + (picheight - checkpic.Lists[n].y - checkpic.Lists[n].h) / 2 + "," + checkpic.Lists[n].w / 2 + "," + checkpic.Lists[n].h / 2;
+                            result.NgType = Ngtype.IntConvertToEnum((int)(checkpic.Lists[n].obj_id));
+                            result.PartImagePath = idstring + ".jpg";
+                            result.CreateTime = DateTime.Now;
+                            results.Add(result);
+                        }
+                        pcb.IsError = 1;
+
+                    }
+
+                }
+                pcb.results = results;
+                jsonData.data = pcb;
+                string jo = JsonConvert.SerializeObject(jsonData);
+                var factory = new ConnectionFactory();
+                factory.AutomaticRecoveryEnabled = true;
+                factory.HostName = @IniFile.iniRead("Factory", "hostName"); // RabbitMQ服务在本地运行
+                factory.UserName = @IniFile.iniRead("Factory", "userName"); // 用户名
+                factory.Password = @IniFile.iniRead("Factory", "password"); // 密码
+                factory.VirtualHost = "my_vhost";
+
+                using (var connection = factory.CreateConnection())
+                {
+                    using (var channel = connection.CreateModel())
+                    {
+                        // 将消息标记为持久性。
+                        var properties = channel.CreateBasicProperties();
+                        properties.Persistent = true;
+                        channel.QueueDeclare("work", true, false, false, null); // 创建一个名称为hello的消息队列
+                        string message = jo; // 传递的消息内容
+                        var body = Encoding.UTF8.GetBytes(message);
+
+                        channel.BasicPublish("", "work", properties, body); // 开始传递
+                                                                            //MessageBox.Show("已发送： {0}", message);
+                    }
+                }
+                Loghelper.WriteLog("发送内容为：" + jo);
+
+            }
+            catch (Exception ex)
+            {
+                Loghelper.WriteLog("发送至输出端出错", ex);
+            }
+
+
+
+        }
+
+        //所有相机初始化
+        private void Camerasinitialization()
+        {
+
+            #region camera
+
+            m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+            m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+            m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+            m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+            m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+            m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+            m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+            m_imageProvider.CameraId = cameraAid;
+            uint id = m_imageProvider.GetDevice(cameraAid);
+            if (id == 99)
+            {
+                MessageBox.Show("未连接相机");
+            }
+            else
+            {
+                m_imageProvider.Open(id);
+                //Thread.Sleep(100);
+                m_imageProvider.ContinuousShot();
+                Loghelper.WriteLog("连接相机A:" + id.ToString());
+            }
+
+            #endregion
+
+            #region camera
+
+            m_imageProviderB.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+            m_imageProviderB.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallbackB);
+            m_imageProviderB.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+            m_imageProviderB.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+            m_imageProviderB.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+            m_imageProviderB.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallbackB);
+            m_imageProviderB.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+            m_imageProviderB.CameraId = cameraBid;
+            id = m_imageProviderB.GetDevice(cameraBid);
+            if (id == 99)
+            {
+                MessageBox.Show("未连接相机");
+            }
+            else
+            {
+                m_imageProviderB.Open(id);
+                //Thread.Sleep(100);
+                m_imageProviderB.ContinuousShot();
+                Loghelper.WriteLog("连接相机B:" + id.ToString());
+            }
+
+            #endregion
+
+        }
+
+        //检测结果发送
+        private void Getendstatus(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Thread.Sleep(200);
+                if (!R_backgroundWorker.CancellationPending)
+                {
+
+                    if (isdoubleside)
+                    {
+                        if (Aend && Bend && checkend)
+                        {
+
+                            SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
+                            Bcheckpics.Clear();
+                            Acheckpics.Clear();
+                            dicid = snowflake.nextId();
+                            captureCount++;
+                            savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
+                            while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
+                            {
+                                captureCount++;
+                            }
+                            Directory.CreateDirectory(savepath + captureCount.ToString());
+                            Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
+                            Aend = false;
+                            Bend = false;
+                            Aimagenum = 0;
+                            Bimagenum = 0;
+                            Allnum = 0;
+                            isruna = true;
+                            isrunb = true;
+                            checkend = false;
+                            isAok = false;
+                            isBok = false;
+
+                        }
+                    }
+                    else
+                    {
+                        if (Aend && checkend)
+                        {
+                            SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
+                            Bcheckpics.Clear();
+                            Acheckpics.Clear();
+                            dicid = snowflake.nextId();
+                            captureCount++;
+                            savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
+                            while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
+                            {
+                                captureCount++;
+                            }
+                            Directory.CreateDirectory(savepath + captureCount.ToString());
+                            Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
+                            Aend = false;
+                            Bend = false;
+                            Aimagenum = 0;
+                            Bimagenum = 0;
+                            Allnum = 0;
+                            isruna = true;
+                            checkend = false;
+                            isAok = false;
+                            isBok = false;
+                        }
+                        if (Bend && checkend)
+                        {
+                            SendresulttoOther(captureCount.ToString(), Acheckpics, Bcheckpics, SIDE.DOUBle);
+                            Bcheckpics.Clear();
+                            Acheckpics.Clear();
+                            dicid = snowflake.nextId();
+                            captureCount++;
+                            savepath = "d:\\SavedPerCameraImages\\" + DateTime.Now.ToString("M.d") + "\\";
+                            while (Directory.Exists(savepath + captureCount.ToString()) || Directory.Exists(savepath + captureCount.ToString() + "-Ng"))
+                            {
+                                captureCount++;
+                            }
+                            Directory.CreateDirectory(savepath + captureCount.ToString());
+                            Loghelper.WriteLog("创建目录：" + savepath + captureCount.ToString());
+                            Aimagenum = 0;
+                            Bimagenum = 0;
+                            Allnum = 0;
+                            isrunb = true;
+                            checkend = false;
+                            isAok = false;
+                            isBok = false;
+                        }
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                    Aend = false;
+                    Bend = false;
+                    return;
+
+                }
+
+
+            }
+
+
+        }
+
+    } 
+}
         
     
-}
+

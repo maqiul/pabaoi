@@ -24,7 +24,7 @@ namespace pcbaoi
         public Login()
         {
             InitializeComponent();
-            conn();
+            //conn();
             Electrify();
             Runspeed();
             Runstart();
@@ -34,24 +34,24 @@ namespace pcbaoi
 
         void startLogin()
         {
-            string username = textBox1.Text;
-            string password = textBox2.Text;
-            string haveusersql = string.Format("select count(*) as count from users where username = '{0}' and password = '{1}'", username, GenerateMD5(password));
-            int usernum = MySqlHelper.GetCount(haveusersql);
-            if (usernum == 1)
-            {
-                Loghelper.WriteLog(textBox1.Text + " 用户登录成功");
-                this.DialogResult = DialogResult.OK;
-                //this.Close();
-            }
-            else
-            {
+            //string username = textBox1.Text;
+            //string password = textBox2.Text;
+            //string haveusersql = string.Format("select count(*) as count from users where username = '{0}' and password = '{1}'", username, GenerateMD5(password));
+            //int usernum = MySqlHelper.GetCount(haveusersql);
+            //if (usernum == 1)
+            //{
+            //    Loghelper.WriteLog(textBox1.Text + " 用户登录成功");
+            //    this.DialogResult = DialogResult.OK;
+            //    //this.Close();
+            //}
+            //else
+            //{
 
 
-                MessageBox.Show("用户名 密码错误");
+            //    MessageBox.Show("用户名 密码错误");
 
-            }
-            //this.DialogResult = DialogResult.OK;
+            //}
+            this.DialogResult = DialogResult.OK;
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {

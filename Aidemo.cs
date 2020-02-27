@@ -45,7 +45,7 @@ namespace pcbaoi
         {
             Checkpic checkpic = new Checkpic();
             bbox_t_container boxlist = new bbox_t_container();
-            bool ng;
+            //bool ng;
             //byte[] byteImg = Bitmap2Byte(bitmap);
             long intime = DateTimeUtil.DateTimeToLongTimeStamp();
             int n = AITestSDK.detect_opencv_mat(byteImg, byteImg.Length, ref boxlist);

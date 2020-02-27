@@ -63,5 +63,15 @@ namespace pcbaoi
         /// <returns></returns>
         [DllImport("power_aoi.dll", EntryPoint = "add_patch", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int addPatch(IntPtr img, IntPtr patch, int x, int y);
+        /// <summary>
+        /// 图像比较
+        /// </summary>
+        /// <param name="img">比较图片</param>
+        /// <param name="templ">模板图片</param>
+        /// <param name="point">坐标值</param>
+        /// <param name="binarize"></param>
+        /// <returns></returns>
+        [DllImport("aoi.dll", EntryPoint = "image_match", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern double image_match(IntPtr img, IntPtr templ, Point point, bool binarize);
     }
 }

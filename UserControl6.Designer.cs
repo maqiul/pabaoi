@@ -278,6 +278,7 @@
             this.Controls.Add(this.rangeTrackBarControl3);
             this.Controls.Add(this.rangeTrackBarControl2);
             this.Controls.Add(this.rangeTrackBarControl1);
+            this.DoubleBuffered = true;
             this.Name = "UserControl6";
             this.Size = new System.Drawing.Size(242, 237);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.UserControl6_Paint);

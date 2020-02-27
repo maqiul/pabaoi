@@ -25,13 +25,19 @@ namespace pcbaoi
         [STAThread]
         static void Main()
         {
+            if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1)
+            {
+                MessageBox.Show("已有另一个程序在运行");
+                Application.Exit();
+                Environment.Exit(0);
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             bw_MonitorMotionController = new BackgroundWorker();
             bw_MonitorMotionController.DoWork += Bw_MonitorMotionController_DoWork;
             //bw_MonitorMotionController.RunWorkerCompleted += Bw_MonitorMotionController_RunWorkerCompleted;
             bw_MonitorMotionController.WorkerReportsProgress = true;
-            conn();
+            //conn();
             IsMonitor = true;
             if (!bw_MonitorMotionController.IsBusy)
             {

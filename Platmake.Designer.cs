@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Platmake));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button16 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.Leftpanel = new System.Windows.Forms.Panel();
+            this.Exit = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
+            this.AddAlgorithmBox = new System.Windows.Forms.Button();
+            this.Sidepanel = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
@@ -60,19 +60,19 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Rightpanel = new System.Windows.Forms.Panel();
+            this.RtDg = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel6 = new System.Windows.Forms.Panel();
+            this.Rttpanel = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel9 = new System.Windows.Forms.Panel();
+            this.Userpanel = new System.Windows.Forms.Panel();
+            this.Centerpanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.PbMain = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,108 +95,108 @@
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel6.SuspendLayout();
-            this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.Leftpanel.SuspendLayout();
+            this.Sidepanel.SuspendLayout();
+            this.Rightpanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RtDg)).BeginInit();
+            this.Rttpanel.SuspendLayout();
+            this.Centerpanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // Leftpanel
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel1.Controls.Add(this.button14);
-            this.panel1.Controls.Add(this.button16);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(0, 28);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(106, 860);
-            this.panel1.TabIndex = 0;
+            this.Leftpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Leftpanel.Controls.Add(this.Exit);
+            this.Leftpanel.Controls.Add(this.Save);
+            this.Leftpanel.Controls.Add(this.AddAlgorithmBox);
+            this.Leftpanel.Location = new System.Drawing.Point(0, 28);
+            this.Leftpanel.Name = "Leftpanel";
+            this.Leftpanel.Size = new System.Drawing.Size(106, 860);
+            this.Leftpanel.TabIndex = 0;
             // 
-            // button14
+            // Exit
             // 
-            this.button14.BackColor = System.Drawing.Color.Transparent;
-            this.button14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button14.BackgroundImage")));
-            this.button14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button14.FlatAppearance.BorderSize = 0;
-            this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button14.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
-            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button14.Location = new System.Drawing.Point(28, 134);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(38, 38);
-            this.button14.TabIndex = 16;
-            this.button14.UseVisualStyleBackColor = false;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.Exit.BackColor = System.Drawing.Color.Transparent;
+            this.Exit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Exit.BackgroundImage")));
+            this.Exit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Exit.FlatAppearance.BorderSize = 0;
+            this.Exit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.Exit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.Exit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Exit.Location = new System.Drawing.Point(28, 134);
+            this.Exit.Name = "Exit";
+            this.Exit.Size = new System.Drawing.Size(38, 38);
+            this.Exit.TabIndex = 16;
+            this.Exit.UseVisualStyleBackColor = false;
+            this.Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
-            // button16
+            // Save
             // 
-            this.button16.BackColor = System.Drawing.Color.Transparent;
-            this.button16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button16.BackgroundImage")));
-            this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button16.FlatAppearance.BorderSize = 0;
-            this.button16.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button16.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
-            this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button16.Location = new System.Drawing.Point(28, 74);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(38, 38);
-            this.button16.TabIndex = 14;
-            this.button16.UseVisualStyleBackColor = false;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
+            this.Save.BackColor = System.Drawing.Color.Transparent;
+            this.Save.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Save.BackgroundImage")));
+            this.Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Save.FlatAppearance.BorderSize = 0;
+            this.Save.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.Save.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Save.Location = new System.Drawing.Point(28, 74);
+            this.Save.Name = "Save";
+            this.Save.Size = new System.Drawing.Size(38, 38);
+            this.Save.TabIndex = 14;
+            this.Save.UseVisualStyleBackColor = false;
+            this.Save.Click += new System.EventHandler(this.Save_Click);
             // 
-            // button1
+            // AddAlgorithmBox
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(28, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(38, 38);
-            this.button1.TabIndex = 0;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AddAlgorithmBox.BackColor = System.Drawing.Color.Transparent;
+            this.AddAlgorithmBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddAlgorithmBox.BackgroundImage")));
+            this.AddAlgorithmBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AddAlgorithmBox.FlatAppearance.BorderSize = 0;
+            this.AddAlgorithmBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
+            this.AddAlgorithmBox.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.AddAlgorithmBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddAlgorithmBox.Location = new System.Drawing.Point(28, 17);
+            this.AddAlgorithmBox.Name = "AddAlgorithmBox";
+            this.AddAlgorithmBox.Size = new System.Drawing.Size(38, 38);
+            this.AddAlgorithmBox.TabIndex = 0;
+            this.AddAlgorithmBox.UseVisualStyleBackColor = false;
+            this.AddAlgorithmBox.Click += new System.EventHandler(this.AddAlgorithmBox_Click);
             // 
-            // panel2
+            // Sidepanel
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.button6);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.button8);
-            this.panel2.Controls.Add(this.button9);
-            this.panel2.Controls.Add(this.button10);
-            this.panel2.Controls.Add(this.button11);
-            this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.button13);
-            this.panel2.Controls.Add(this.label18);
-            this.panel2.Controls.Add(this.label17);
-            this.panel2.Controls.Add(this.label16);
-            this.panel2.Controls.Add(this.label15);
-            this.panel2.Controls.Add(this.label14);
-            this.panel2.Controls.Add(this.button18);
-            this.panel2.Controls.Add(this.button17);
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Controls.Add(this.button15);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Location = new System.Drawing.Point(1, 891);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1422, 100);
-            this.panel2.TabIndex = 1;
+            this.Sidepanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Sidepanel.Controls.Add(this.button5);
+            this.Sidepanel.Controls.Add(this.label3);
+            this.Sidepanel.Controls.Add(this.button6);
+            this.Sidepanel.Controls.Add(this.label4);
+            this.Sidepanel.Controls.Add(this.label5);
+            this.Sidepanel.Controls.Add(this.label6);
+            this.Sidepanel.Controls.Add(this.label7);
+            this.Sidepanel.Controls.Add(this.label8);
+            this.Sidepanel.Controls.Add(this.button7);
+            this.Sidepanel.Controls.Add(this.button8);
+            this.Sidepanel.Controls.Add(this.button9);
+            this.Sidepanel.Controls.Add(this.button10);
+            this.Sidepanel.Controls.Add(this.button11);
+            this.Sidepanel.Controls.Add(this.button4);
+            this.Sidepanel.Controls.Add(this.label1);
+            this.Sidepanel.Controls.Add(this.button13);
+            this.Sidepanel.Controls.Add(this.label18);
+            this.Sidepanel.Controls.Add(this.label17);
+            this.Sidepanel.Controls.Add(this.label16);
+            this.Sidepanel.Controls.Add(this.label15);
+            this.Sidepanel.Controls.Add(this.label14);
+            this.Sidepanel.Controls.Add(this.button18);
+            this.Sidepanel.Controls.Add(this.button17);
+            this.Sidepanel.Controls.Add(this.button2);
+            this.Sidepanel.Controls.Add(this.button15);
+            this.Sidepanel.Controls.Add(this.button3);
+            this.Sidepanel.Location = new System.Drawing.Point(1, 891);
+            this.Sidepanel.Name = "Sidepanel";
+            this.Sidepanel.Size = new System.Drawing.Size(1422, 100);
+            this.Sidepanel.TabIndex = 1;
             // 
             // button5
             // 
@@ -550,35 +550,34 @@
             this.button3.TabIndex = 12;
             this.button3.UseVisualStyleBackColor = false;
             // 
-            // panel4
+            // Rightpanel
             // 
-            this.panel4.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel4.Controls.Add(this.dataGridView1);
-            this.panel4.Controls.Add(this.panel6);
-            this.panel4.Location = new System.Drawing.Point(1074, 28);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(349, 861);
-            this.panel4.TabIndex = 3;
+            this.Rightpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Rightpanel.Controls.Add(this.RtDg);
+            this.Rightpanel.Controls.Add(this.Rttpanel);
+            this.Rightpanel.Location = new System.Drawing.Point(1074, 28);
+            this.Rightpanel.Name = "Rightpanel";
+            this.Rightpanel.Size = new System.Drawing.Size(349, 861);
+            this.Rightpanel.TabIndex = 3;
             // 
-            // dataGridView1
+            // RtDg
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.RtDg.AllowUserToAddRows = false;
+            this.RtDg.AllowUserToDeleteRows = false;
+            this.RtDg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RtDg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
             this.Column3,
             this.Column4});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 47);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(349, 814);
-            this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint);
-            this.dataGridView1.Click += new System.EventHandler(this.dataGridView1_Click);
+            this.RtDg.Location = new System.Drawing.Point(0, 47);
+            this.RtDg.Name = "RtDg";
+            this.RtDg.ReadOnly = true;
+            this.RtDg.RowTemplate.Height = 23;
+            this.RtDg.Size = new System.Drawing.Size(349, 814);
+            this.RtDg.TabIndex = 1;
+            this.RtDg.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RtDg_CellClick);
+            this.RtDg.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.RtDg_RowPostPaint);
             // 
             // Column1
             // 
@@ -608,14 +607,14 @@
             this.Column4.ReadOnly = true;
             this.Column4.Visible = false;
             // 
-            // panel6
+            // Rttpanel
             // 
-            this.panel6.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel6.Controls.Add(this.label2);
-            this.panel6.Location = new System.Drawing.Point(0, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(349, 48);
-            this.panel6.TabIndex = 0;
+            this.Rttpanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Rttpanel.Controls.Add(this.label2);
+            this.Rttpanel.Location = new System.Drawing.Point(0, 0);
+            this.Rttpanel.Name = "Rttpanel";
+            this.Rttpanel.Size = new System.Drawing.Size(349, 48);
+            this.Rttpanel.TabIndex = 0;
             // 
             // label2
             // 
@@ -627,23 +626,24 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "区域类型";
             // 
-            // panel7
+            // Userpanel
             // 
-            this.panel7.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel7.Location = new System.Drawing.Point(109, 619);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(962, 269);
-            this.panel7.TabIndex = 4;
+            this.Userpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Userpanel.Location = new System.Drawing.Point(109, 619);
+            this.Userpanel.Name = "Userpanel";
+            this.Userpanel.Size = new System.Drawing.Size(962, 269);
+            this.Userpanel.TabIndex = 4;
             // 
-            // panel9
+            // Centerpanel
             // 
-            this.panel9.Controls.Add(this.tableLayoutPanel2);
-            this.panel9.Controls.Add(this.tableLayoutPanel1);
-            this.panel9.Controls.Add(this.pictureBox1);
-            this.panel9.Location = new System.Drawing.Point(109, 28);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(962, 586);
-            this.panel9.TabIndex = 5;
+            this.Centerpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Centerpanel.Controls.Add(this.tableLayoutPanel2);
+            this.Centerpanel.Controls.Add(this.tableLayoutPanel1);
+            this.Centerpanel.Controls.Add(this.PbMain);
+            this.Centerpanel.Location = new System.Drawing.Point(109, 28);
+            this.Centerpanel.Name = "Centerpanel";
+            this.Centerpanel.Size = new System.Drawing.Size(962, 586);
+            this.Centerpanel.TabIndex = 5;
             // 
             // tableLayoutPanel2
             // 
@@ -671,21 +671,21 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1, 583);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // pictureBox1
+            // PbMain
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(962, 583);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            this.PbMain.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.PbMain.Location = new System.Drawing.Point(0, 0);
+            this.PbMain.Margin = new System.Windows.Forms.Padding(0);
+            this.PbMain.Name = "PbMain";
+            this.PbMain.Size = new System.Drawing.Size(962, 583);
+            this.PbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PbMain.TabIndex = 0;
+            this.PbMain.TabStop = false;
+            this.PbMain.SizeChanged += new System.EventHandler(this.PbMain_SizeChanged);
+            this.PbMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseClick);
+            this.PbMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseDown);
+            this.PbMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseMove);
+            this.PbMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseUp);
             // 
             // menuStrip1
             // 
@@ -865,25 +865,25 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1424, 990);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.panel9);
-            this.Controls.Add(this.panel7);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.Centerpanel);
+            this.Controls.Add(this.Userpanel);
+            this.Controls.Add(this.Rightpanel);
+            this.Controls.Add(this.Sidepanel);
+            this.Controls.Add(this.Leftpanel);
             this.Name = "Platmake";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Q smart";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Platmake_FormClosing);
             this.Shown += new System.EventHandler(this.Platmake_Shown);
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
-            this.panel9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Leftpanel.ResumeLayout(false);
+            this.Sidepanel.ResumeLayout(false);
+            this.Sidepanel.PerformLayout();
+            this.Rightpanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RtDg)).EndInit();
+            this.Rttpanel.ResumeLayout(false);
+            this.Rttpanel.PerformLayout();
+            this.Centerpanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -893,18 +893,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button16;
-        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel Leftpanel;
+        private System.Windows.Forms.Panel Sidepanel;
+        private System.Windows.Forms.Panel Rightpanel;
+        private System.Windows.Forms.Button AddAlgorithmBox;
+        private System.Windows.Forms.Button Exit;
+        private System.Windows.Forms.Button Save;
+        private System.Windows.Forms.Panel Rttpanel;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.DataGridView RtDg;
+        private System.Windows.Forms.Panel Userpanel;
+        private System.Windows.Forms.Panel Centerpanel;
+        private System.Windows.Forms.PictureBox PbMain;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;

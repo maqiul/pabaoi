@@ -15,7 +15,7 @@ namespace pcbaoi
 	//////////////////////////////////////////////////////////////////
 
 	private const int BOX_SIZE =8;
-	private Color BOX_COLOR = Color.Transparent;
+	private Color BOX_COLOR = Color.FromArgb(0, 235, 6);
 	private ContainerControl m_container;
     public Control m_control;
 	private Label[] lbl = new Label[8];
@@ -39,7 +39,7 @@ namespace pcbaoi
             lbl[i].BackColor = Color.Transparent;
 			lbl[i].TabIndex = i;
 			lbl[i].FlatStyle = 0 ;
-			lbl[i].BorderStyle = BorderStyle.FixedSingle;
+			lbl[i].BorderStyle = BorderStyle.None;
 			lbl[i].BackColor = BOX_COLOR;
 			lbl[i].Cursor = arrArrow[i];
 			lbl[i].Text = "";
@@ -196,6 +196,8 @@ namespace pcbaoi
 	}
 
 	private void ctl_MouseDown(object sender, MouseEventArgs e) {
+		Control control = (Control)sender;
+		control.Refresh();
         dragging = true;
 		startx = e.X;
 		starty = e.Y;
@@ -203,6 +205,8 @@ namespace pcbaoi
 	}
 	private void ctl_MouseMove(object sender, MouseEventArgs e) {
         if (dragging) {
+			Control control = (Control)sender;
+			control.Refresh();
 			int l =  m_control.Left + e.X - startx;
 			int t = m_control.Top + e.Y - starty;
             int w = m_control.Width;
@@ -216,6 +220,8 @@ namespace pcbaoi
 		}
 	}
 	private void ctl_MouseUp(object sender, MouseEventArgs e) {
+		Control control = (Control)sender;
+		control.Refresh();
 		dragging = false;
 		MoveHandles();
 		ShowHandles();

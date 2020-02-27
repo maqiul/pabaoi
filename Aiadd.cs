@@ -17,7 +17,7 @@ namespace pcbaoi
         {
             InitializeComponent();
             operatorselect = (Operatorselect)op;
-            if (operatorselect.Confidence > 0) {
+            if (float.Parse(operatorselect.Confidence) > 0) {
                 textBox2.Text = operatorselect.Confidence.ToString();
                        
             }

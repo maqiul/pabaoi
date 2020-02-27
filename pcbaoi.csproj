@@ -347,6 +347,7 @@
     <Compile Include="Tools\BaslerCamera.cs" />
     <Compile Include="Tools\BitmapFactory.cs" />
     <Compile Include="Tools\DeviceEnumerator.cs" />
+    <Compile Include="Tools\ImageManger.cs" />
     <Compile Include="Tools\ImageProvider.cs" />
     <Compile Include="Tools\MySmartThreadPool.cs" />
     <Compile Include="tool\PLCController.cs" />

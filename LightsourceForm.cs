@@ -26,17 +26,17 @@ namespace pcbaoi
         public static string cameraAid;
         public static string cameraBid;
         string thisbad ="A";
-        //BaslerCamera aa;
-        #region camera
-        private Tools.ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
-        private Bitmap m_bitmap = null;
-       
+
         private int D2001 = 0;
         private int D2002 = 0;
         private int D2003 = 0;
         private int D2004 = 0;
 
-
+        #region 相机使用模块 初始化两个相机
+        private ImageProvider m_imageProvider = new ImageProvider(); /* Create one image provider. */
+        private Bitmap m_bitmap = null;
+        private ImageProvider m_imageProviderB = new ImageProvider(); /* Create one image provider. */
+        private Bitmap m_bitmapB = null;
         /* Stops the image provider and handles exceptions. */
         public void Stop()
         {
@@ -44,6 +44,27 @@ namespace pcbaoi
             try
             {
                 m_imageProvider.Stop();
+                m_imageProviderB.Stop();
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
+        }
+        public void Stop(string cameraid)
+        {
+            /* Stop the grabbing. */
+            try
+            {
+                if (cameraid == cameraAid)
+                {
+                    m_imageProvider.Stop();
+                }
+                else
+                {
+                    m_imageProviderB.Stop();
+                }
+
             }
             catch (Exception e)
             {
@@ -58,6 +79,28 @@ namespace pcbaoi
             try
             {
                 m_imageProvider.Close();
+                m_imageProviderB.Close();
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
+        }
+        /* Closes the image provider and handles exceptions. */
+        private void CloseTheImageProvider(string cameraid)
+        {
+            /* Close the image provider. */
+            try
+            {
+                if (cameraid == cameraAid)
+                {
+                    m_imageProvider.Close();
+                }
+                else
+                {
+                    m_imageProviderB.Close();
+                }
+
             }
             catch (Exception e)
             {
@@ -69,6 +112,7 @@ namespace pcbaoi
         private void toolStripButtonStop_Click(object sender, EventArgs e)
         {
             Stop(); /* Stops the grabbing of images. */
+            CloseTheImageProvider();
         }
 
         /* Handles the event related to the occurrence of an error while grabbing proceeds. */
@@ -85,6 +129,7 @@ namespace pcbaoi
         }
 
         /* Handles the event related to the removal of a currently open device. */
+        //A相机方法
         private void OnDeviceRemovedEventCallback()
         {
             if (InvokeRequired)
@@ -94,9 +139,23 @@ namespace pcbaoi
                 return;
             }
             /* Stops the grabbing of images. */
-            Stop();
+            Stop(cameraAid);
             /* Close the image provider. */
-            CloseTheImageProvider();
+            CloseTheImageProvider(cameraAid);
+        }
+        //B相机方法
+        private void OnDeviceRemovedEventCallbackB()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallbackB));
+                return;
+            }
+            /* Stops the grabbing of images. */
+            Stop(cameraBid);
+            /* Close the image provider. */
+            CloseTheImageProvider(cameraBid);
         }
 
         /* Handles the event related to a device being open. */
@@ -133,7 +192,7 @@ namespace pcbaoi
 
         }
 
-        /* Handles the event related to an image having been taken and waiting for processing. */
+        /* Handles the event related to an image having been taken and waiting for processing. A面拍照 */
         private void OnImageReadyEventCallback()
         {
             if (InvokeRequired)
@@ -151,14 +210,30 @@ namespace pcbaoi
                 /* Check if the image has been removed in the meantime. */
                 if (image != null)
                 {
+
                     /* Check if the image is compatible with the currently used bitmap. */
                     if (BitmapFactory.IsCompatible(m_bitmap, image.Width, image.Height, image.Color))
                     {
                         /* Update the bitmap with the image data. */
                         BitmapFactory.UpdateBitmap(m_bitmap, image.Buffer, image.Width, image.Height, image.Color);
                         /* To show the new image, request the display control to update itself. */
-                        Mainpicbox.Image = m_bitmap;
+                        if (m_imageProvider.CameraId == cameraAid)
+                        {
 
+
+                            //listbitmap.Dispose();
+                            
+                            if (thisbad=="A")
+                            {
+                                Mainpicbox.Image = m_bitmap;
+                            }
+
+
+                            //listbitmap.Dispose();
+                            //m_bitmap.Save("d:\\pic\\test" + ".bmp", ImageFormat.Bmp);
+                            //Abitmaps[Abitmaps.Count - 1].Save("d:\\pic\\test2" + ".bmp", ImageFormat.Bmp);
+                            //;
+                        }
                     }
                     else /* A new bitmap is required. */
                     {
@@ -167,8 +242,15 @@ namespace pcbaoi
                         /* We have to dispose the bitmap after assigning the new one to the display control. */
                         Bitmap bitmap = Mainpicbox.Image as Bitmap;
                         /* Provide the display control with the new bitmap. This action automatically updates the display. */
-                        Mainpicbox.Image = m_bitmap;
+                        if (m_imageProvider.CameraId == cameraAid)
+                        {
 
+                            if (thisbad == "A")
+                            {
+                                Mainpicbox.Image = m_bitmap;
+                            }
+
+                        }
                         if (bitmap != null)
                         {
                             /* Dispose the bitmap. */
@@ -184,6 +266,75 @@ namespace pcbaoi
             catch (Exception e)
             {
                 Loghelper.WriteLog(m_imageProvider.GetLastErrorMessage(), e);
+            }
+        }
+
+
+        /* Handles the event related to an image having been taken and waiting for processing. B面拍照 */
+        private void OnImageReadyEventCallbackB()
+        {
+            if (InvokeRequired)
+            {
+                /* If called from a different thread, we must use the Invoke method to marshal the call to the proper thread. */
+                BeginInvoke(new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallbackB));
+                return;
+            }
+
+            try
+            {
+                /* Acquire the image from the image provider. Only show the latest image. The camera may acquire images faster than images can be displayed*/
+                ImageProvider.Image image = m_imageProviderB.GetLatestImage();
+
+                /* Check if the image has been removed in the meantime. */
+                if (image != null)
+                {
+
+                    /* Check if the image is compatible with the currently used bitmap. */
+                    if (BitmapFactory.IsCompatible(m_bitmapB, image.Width, image.Height, image.Color))
+                    {
+                        /* Update the bitmap with the image data. */
+                        BitmapFactory.UpdateBitmap(m_bitmapB, image.Buffer, image.Width, image.Height, image.Color);
+                        /* To show the new image, request the display control to update itself. */
+
+                        if (thisbad == "B")
+                        {
+                            Mainpicbox.Image = m_bitmap;
+                        }
+
+                        //listbitmap.Dispose();
+                        //m_bitmap.Save("d:\\pic\\" + DateTimeUtil.DateTimeToLongTimeStamp().ToString() + ".bmp", ImageFormat.Bmp);
+
+
+                    }
+                    else /* A new bitmap is required. */
+                    {
+                        BitmapFactory.CreateBitmap(out m_bitmapB, image.Width, image.Height, image.Color);
+                        BitmapFactory.UpdateBitmap(m_bitmapB, image.Buffer, image.Width, image.Height, image.Color);
+                        /* We have to dispose the bitmap after assigning the new one to the display control. */
+                        Bitmap bitmap = Mainpicbox.Image as Bitmap;
+
+                        if (thisbad == "B")
+                        {
+                            Mainpicbox.Image = m_bitmap;
+                        }
+                        //listbitmap.Dispose();
+
+
+                        if (bitmap != null)
+                        {
+                            /* Dispose the bitmap. */
+                            bitmap.Dispose();
+                        }
+                    }
+                    /* The processing of the image is done. Release the image buffer. */
+                    // 
+                    m_imageProviderB.ReleaseImage();
+                    /* The buffer can be used for the next image grabs. */
+                }
+            }
+            catch (Exception e)
+            {
+                Loghelper.WriteLog(m_imageProviderB.GetLastErrorMessage(), e);
             }
         }
 
@@ -206,10 +357,11 @@ namespace pcbaoi
             cameraAid = IniFile.iniRead("CameraA", "SerialNumber");
             cameraBid = IniFile.iniRead("CameraB", "SerialNumber");
             conn();
-            panel1_Click(lefttitlebt, null);
+            Camerasinitialization();
+            lefttitlebt_Click(lefttitlebt, null);
         }
 
-        private void panel1_Click(object sender, EventArgs e)
+        private void lefttitlebt_Click(object sender, EventArgs e)
         {
             try
             {
@@ -230,41 +382,16 @@ namespace pcbaoi
                 Closelight();
                 thisbad = "A";
                 Openlight();
-                if (m_imageProvider.CameraId == cameraBid)
-                {
-                    Stop();
-                    CloseTheImageProvider();
-
-                }
-                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
-                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
-                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
-                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
-                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
-                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
-                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
-                m_imageProvider.CameraId = cameraAid;
-                uint id = m_imageProvider.GetDevice(cameraAid);
-                if (id == 99)
-                {
-                    MessageBox.Show("未连接相机");
-                }
-                else
-                {
-                    m_imageProvider.newOpen(id);
-                    m_imageProvider.ContinuousShot();
-                }
-
             }
-            catch {
-
+            catch (Exception ex){
+                Loghelper.WriteLog("光源界面 切换A面错误：", ex );
 
             }
 
 
         }
 
-        private void panel2_Click(object sender, EventArgs e)
+        private void righttitlebt_Click(object sender, EventArgs e)
         {
             try
             {
@@ -285,33 +412,10 @@ namespace pcbaoi
                 Closelight();
                 thisbad = "B";
                 Openlight();
-                if (m_imageProvider.CameraId == cameraAid)
-                {
-                    Stop();
-                    CloseTheImageProvider();
-
-                }
-                m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
-                m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
-                m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
-                m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
-                m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
-                m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
-                m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
-                m_imageProvider.CameraId = cameraBid;
-                uint id = m_imageProvider.GetDevice(cameraBid);
-                if (id == 99)
-                {
-                    MessageBox.Show("未连接相机");
-                }
-                else
-                {
-                    m_imageProvider.newOpen(id);
-                    m_imageProvider.ContinuousShot();
-                }
             }
-            catch {
-
+            catch (Exception ex)
+            {
+                Loghelper.WriteLog("光源界面 切换B面错误：", ex);
 
             }
 
@@ -430,7 +534,7 @@ namespace pcbaoi
             Closelight();
             this.Close();
         }
-
+        //连接光源控制器
         private void conn()
         {
             try { 
@@ -653,6 +757,7 @@ namespace pcbaoi
 
                 IniFile.iniWrite("AB", "value",BtrackBar.Value.ToString());
                 IniFile.iniWrite("AW2", "value", WftrackBar.Value.ToString());
+
             }
             else {
                 IniFile.iniWrite("BW1", "value", WotrackBar.Value.ToString());
@@ -811,6 +916,62 @@ namespace pcbaoi
             {
 
             }
+        }
+
+        //所有相机初始化
+        private void Camerasinitialization()
+        {
+
+            #region cameraA
+
+            m_imageProvider.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+            m_imageProvider.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallback);
+            m_imageProvider.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+            m_imageProvider.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+            m_imageProvider.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+            m_imageProvider.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallback);
+            m_imageProvider.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+            m_imageProvider.CameraId = cameraAid;
+            uint id = m_imageProvider.GetDevice(cameraAid);
+            if (id == 99)
+            {
+                MessageBox.Show("未连接相机");
+            }
+            else
+            {
+                m_imageProvider.Open(id);
+                //Thread.Sleep(100);
+                m_imageProvider.ContinuousShot();
+                Loghelper.WriteLog("连接相机A:" + id.ToString());
+            }
+
+            #endregion
+
+            #region cameraB
+
+            m_imageProviderB.GrabErrorEvent += new ImageProvider.GrabErrorEventHandler(OnGrabErrorEventCallback);
+            m_imageProviderB.DeviceRemovedEvent += new ImageProvider.DeviceRemovedEventHandler(OnDeviceRemovedEventCallbackB);
+            m_imageProviderB.DeviceOpenedEvent += new ImageProvider.DeviceOpenedEventHandler(OnDeviceOpenedEventCallback);
+            m_imageProviderB.DeviceClosedEvent += new ImageProvider.DeviceClosedEventHandler(OnDeviceClosedEventCallback);
+            m_imageProviderB.GrabbingStartedEvent += new ImageProvider.GrabbingStartedEventHandler(OnGrabbingStartedEventCallback);
+            m_imageProviderB.ImageReadyEvent += new ImageProvider.ImageReadyEventHandler(OnImageReadyEventCallbackB);
+            m_imageProviderB.GrabbingStoppedEvent += new ImageProvider.GrabbingStoppedEventHandler(OnGrabbingStoppedEventCallback);
+            m_imageProviderB.CameraId = cameraBid;
+            id = m_imageProviderB.GetDevice(cameraBid);
+            if (id == 99)
+            {
+                MessageBox.Show("未连接相机");
+            }
+            else
+            {
+                m_imageProviderB.Open(id);
+                //Thread.Sleep(100);
+                m_imageProviderB.ContinuousShot();
+                Loghelper.WriteLog("连接相机B:" + id.ToString());
+            }
+
+            #endregion
+
         }
     }
 }
