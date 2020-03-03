@@ -61,15 +61,18 @@
             this.button3 = new System.Windows.Forms.Button();
             this.Rightpanel = new System.Windows.Forms.Panel();
             this.RtDg = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Rttpanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Rttpanel = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.Userpanel = new System.Windows.Forms.Panel();
             this.Centerpanel = new System.Windows.Forms.Panel();
-            this.imgBoxWorkSpace = new Cyotek.Windows.Forms.Demo.ImageBoxEx();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,8 +100,6 @@
             this.Rightpanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RtDg)).BeginInit();
             this.Rttpanel.SuspendLayout();
-            this.Centerpanel.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Leftpanel
@@ -115,6 +116,7 @@
             // Exit
             // 
             this.Exit.BackColor = System.Drawing.Color.Transparent;
+            this.Exit.BackgroundImage = global::pcbaoi.Properties.Resources.退出__1_;
             this.Exit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Exit.FlatAppearance.BorderSize = 0;
             this.Exit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -130,6 +132,7 @@
             // Save
             // 
             this.Save.BackColor = System.Drawing.Color.Transparent;
+            this.Save.BackgroundImage = global::pcbaoi.Properties.Resources.保存_线性;
             this.Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Save.FlatAppearance.BorderSize = 0;
             this.Save.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -145,6 +148,7 @@
             // AddAlgorithmBox
             // 
             this.AddAlgorithmBox.BackColor = System.Drawing.Color.Transparent;
+            this.AddAlgorithmBox.BackgroundImage = global::pcbaoi.Properties.Resources.添加;
             this.AddAlgorithmBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.AddAlgorithmBox.FlatAppearance.BorderSize = 0;
             this.AddAlgorithmBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -545,18 +549,64 @@
             this.RtDg.AllowUserToDeleteRows = false;
             this.RtDg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.RtDg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4});
             this.RtDg.Location = new System.Drawing.Point(0, 47);
             this.RtDg.Name = "RtDg";
             this.RtDg.ReadOnly = true;
             this.RtDg.RowTemplate.Height = 23;
             this.RtDg.Size = new System.Drawing.Size(349, 814);
-            this.RtDg.TabIndex = 1;
+            this.RtDg.TabIndex = 2;
             this.RtDg.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.RtDg_CellClick);
-            this.RtDg.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.RtDg_RowPostPaint);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "缺陷名";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 300;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "pcitureboxname";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "parent";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "算法";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Visible = false;
+            // 
+            // Rttpanel
+            // 
+            this.Rttpanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Rttpanel.Controls.Add(this.label2);
+            this.Rttpanel.Location = new System.Drawing.Point(0, 0);
+            this.Rttpanel.Name = "Rttpanel";
+            this.Rttpanel.Size = new System.Drawing.Size(349, 48);
+            this.Rttpanel.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Bold);
+            this.label2.Location = new System.Drawing.Point(139, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 15);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "区域类型";
             // 
             // Column1
             // 
@@ -586,25 +636,6 @@
             this.Column4.ReadOnly = true;
             this.Column4.Visible = false;
             // 
-            // Rttpanel
-            // 
-            this.Rttpanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Rttpanel.Controls.Add(this.label2);
-            this.Rttpanel.Location = new System.Drawing.Point(0, 0);
-            this.Rttpanel.Name = "Rttpanel";
-            this.Rttpanel.Size = new System.Drawing.Size(349, 48);
-            this.Rttpanel.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(139, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 15);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "区域类型";
-            // 
             // Userpanel
             // 
             this.Userpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -616,33 +647,17 @@
             // Centerpanel
             // 
             this.Centerpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Centerpanel.Controls.Add(this.imgBoxWorkSpace);
             this.Centerpanel.Location = new System.Drawing.Point(109, 28);
             this.Centerpanel.Name = "Centerpanel";
             this.Centerpanel.Size = new System.Drawing.Size(962, 586);
             this.Centerpanel.TabIndex = 5;
             // 
-            // imgBoxWorkSpace
-            // 
-            this.imgBoxWorkSpace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imgBoxWorkSpace.Location = new System.Drawing.Point(0, 0);
-            this.imgBoxWorkSpace.Name = "imgBoxWorkSpace";
-            this.imgBoxWorkSpace.SelectionMode = Cyotek.Windows.Forms.ImageBoxSelectionMode.Rectangle;
-            this.imgBoxWorkSpace.Size = new System.Drawing.Size(962, 586);
-            this.imgBoxWorkSpace.TabIndex = 3;
-            // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem9,
-            this.toolStripMenuItem10,
-            this.toolStripMenuItem11,
-            this.toolStripMenuItem12});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip1.Size = new System.Drawing.Size(1424, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1424, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -826,9 +841,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RtDg)).EndInit();
             this.Rttpanel.ResumeLayout(false);
             this.Rttpanel.PerformLayout();
-            this.Centerpanel.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -844,7 +856,6 @@
         private System.Windows.Forms.Button Save;
         private System.Windows.Forms.Panel Rttpanel;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView RtDg;
         private System.Windows.Forms.Panel Userpanel;
         private System.Windows.Forms.Panel Centerpanel;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -899,6 +910,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private Cyotek.Windows.Forms.Demo.ImageBoxEx imgBoxWorkSpace;
+        private System.Windows.Forms.DataGridView RtDg;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        //private Cyotek.Windows.Forms.Demo.ImageBoxEx imgBoxWorkSpace;
     }
 }

@@ -474,7 +474,7 @@
       <DependentUpon>Platmake.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -545,6 +545,67 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\重做.png" />
+    <None Include="Resources\运行.png" />
+    <None Include="Resources\运行 %282%29.png" />
+    <None Include="Resources\运行 %281%29.png" />
+    <None Include="Resources\芯片.png" />
+    <None Include="Resources\文件夹.png" />
+    <None Include="Resources\微信图片_20191224111044.png" />
+    <None Include="Resources\微信图片_20191224110902.png" />
+    <None Include="Resources\退出.png" />
+    <None Include="Resources\退出 %281%29.png" />
+    <None Include="Resources\统计.png" />
+    <None Include="Resources\统计 %282%29.png" />
+    <None Include="Resources\统计 %281%29.png" />
+    <None Include="Resources\停止.png" />
+    <None Include="Resources\添加.png" />
+    <None Include="Resources\添加 %281%29.png" />
+    <None Include="Resources\缩小.png" />
+    <None Include="Resources\搜索文件夹.png" />
+    <None Include="Resources\水平对称.png" />
+    <None Include="Resources\设置.png" />
+    <None Include="Resources\删除.png" />
+    <None Include="Resources\三维.png" />
+    <None Include="Resources\任务.png" />
+    <None Include="Resources\全屏.png" />
+    <None Include="Resources\拍照.png" />
+    <None Include="Resources\拍照 %283%29.png" />
+    <None Include="Resources\拍照 %282%29.png" />
+    <None Include="Resources\拍照 %281%29.png" />
+    <None Include="Resources\检测2.png" />
+    <None Include="Resources\检测.png" />
+    <None Include="Resources\关  闭.png" />
+    <None Include="Resources\关  闭 %281%29.png" />
+    <None Include="Resources\分支.png" />
+    <None Include="Resources\放大.png" />
+    <None Include="Resources\放大 %281%29.png" />
+    <None Include="Resources\方向-向右-粗.png" />
+    <None Include="Resources\方向-向右-粗 %283%29.png" />
+    <None Include="Resources\方向-向右-粗 %282%29.png" />
+    <None Include="Resources\方向-向右-粗 %281%29.png" />
+    <None Include="Resources\定位.png" />
+    <None Include="Resources\导入CAD.png" />
+    <None Include="Resources\导入.png" />
+    <None Include="Resources\导出.png" />
+    <None Include="Resources\代码-分支.png" />
+    <None Include="Resources\代码-分支 %283%29.png" />
+    <None Include="Resources\代码-分支 %282%29.png" />
+    <None Include="Resources\代码-分支 %281%29.png" />
+    <None Include="Resources\垂直对称.png" />
+    <None Include="Resources\撤销.png" />
+    <None Include="Resources\查看.png" />
+    <None Include="Resources\查看 %283%29.png" />
+    <None Include="Resources\查看 %282%29.png" />
+    <None Include="Resources\查看 %281%29.png" />
+    <None Include="Resources\测量.png" />
+    <None Include="Resources\保存.png" />
+    <None Include="Resources\保存 线性.png" />
+    <None Include="Resources\保存 %281%29.png" />
+    <None Include="Resources\cad.png" />
+    <None Include="Resources\cad %281%29.png" />
+    <None Include="Resources\3格.png" />
+    <None Include="Resources\2格.png" />
     <None Include="Resources\front.jpg" />
     <None Include="image\添加.png" />
     <Content Include="License-LGPL.txt" />

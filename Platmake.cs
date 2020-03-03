@@ -1,4 +1,5 @@
-﻿using pcbaoi.Algorithms;
+﻿using Cyotek.Windows.Forms.Demo;
+using pcbaoi.Algorithms;
 using pcbaoi.Algorithms.Model;
 using pcbaoi.Model;
 using pcbaoi.Properties;
@@ -29,9 +30,16 @@ namespace pcbaoi
         RTree<object> tree = new RTree<object>();
 
         AiDetectRect workingAiRegion = new AiDetectRect();
+        ImageBoxEx imgBoxWorkSpace = new ImageBoxEx();
         public Platmake(Image image)
         {
             InitializeComponent();
+            imgBoxWorkSpace.Location = new System.Drawing.Point(0,0);
+            imgBoxWorkSpace.Width = Centerpanel.Width;
+            imgBoxWorkSpace.Height = Centerpanel.Height;
+            imgBoxWorkSpace.BackColor = Color.Black;
+            Centerpanel.Controls.Add(imgBoxWorkSpace);
+            imgBoxWorkSpace.SelectionMode = Cyotek.Windows.Forms.ImageBoxSelectionMode.Rectangle;
             imgBoxWorkSpace.Image = image;
             imgBoxWorkSpace.Selected += ImgBoxWorkSpace_Selected;
             imgBoxWorkSpace.MouseClick += ImgBoxWorkSpace_MouseClick;
@@ -236,67 +244,58 @@ namespace pcbaoi
        
         private void RtDg_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                //Addopera = new Operatorselect();
-                //if (e.ColumnIndex != -1)
-                //{
-                //    DataGridViewColumn column = RtDg.Columns[e.ColumnIndex];
-                //    string picboxname = RtDg.CurrentRow.Cells[1].Value.ToString();
-                //    foreach (Control control in PbMain.Controls)
-                //    {
-                //        if (control.Name == picboxname)
-                //        {
-                //            control.Visible = true;
-                //            control.BringToFront();
-                //            thiscontrol = control;
+            //try
+            //{
+            //    Addopera = new OperatorSelect();
+            //    if (e.ColumnIndex != -1)
+            //    {
+            //        DataGridViewColumn column = RtDg.Columns[e.ColumnIndex];
+            //        string picboxname = RtDg.CurrentRow.Cells[1].Value.ToString();
+            //        foreach (Control control in PbMain.Controls)
+            //        {
+            //            if (control.Name == picboxname)
+            //            {
+            //                control.Visible = true;
+            //                control.BringToFront();
+            //                thiscontrol = control;
 
-                //        }
-                //        else
-                //        {
-                //            control.Visible = false;
-                //        }
+            //            }
+            //            else
+            //            {
+            //                control.Visible = false;
+            //            }
 
 
-                //    }
-                //    foreach (Control control1 in Userpanel.Controls)
-                //    {
-                //        if (control1 is UserControl1)
-                //        {
-                //            Userpanel.Controls.Remove(control1);
+            //        }
+            //        foreach (Control control1 in Userpanel.Controls)
+            //        {
+            //            if (control1 is OperatorSelection)
+            //            {
+            //                Userpanel.Controls.Remove(control1);
 
-                //        }
+            //            }
 
-                //    }
-                //    UserControl1 userControl1 = new UserControl1(RtDg.CurrentRow.Cells[3].Value);
-                //    userControl1.MyEvent += updatedatagrade;
-                //    Addopera = userControl1.Tag as Operatorselect;
-                //    Userpanel.Controls.Add(userControl1);
+            //        }
+            //        OperatorSelection userControl1 = new OperatorSelection(RtDg.CurrentRow.Cells[3].Value);
+            //        userControl1.MyEvent += updatedatagrade;
+            //        Addopera = userControl1.Tag as OperatorSelect;
+            //        Userpanel.Controls.Add(userControl1);
 
-                //}
+            //    }
 
-            }
-            catch (Exception ex)
-            {
-                Loghelper.WriteLog("Platmake界面---选择框错误",ex);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Loghelper.WriteLog("Platmake界面---选择框错误", ex);
 
+
+            //}
 
         }
 
         private void RtDg_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            //自动编号，与数据无关
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(e.RowBounds.Location.X,
-               e.RowBounds.Location.Y,
-               RtDg.RowHeadersWidth - 4,
-               e.RowBounds.Height);
-            TextRenderer.DrawText(e.Graphics,
-                  (e.RowIndex + 1).ToString(),
-                   RtDg.RowHeadersDefaultCellStyle.Font,
-                   rectangle,
-                   RtDg.RowHeadersDefaultCellStyle.ForeColor,
-                   TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
+
         }
 
 
@@ -322,14 +321,6 @@ namespace pcbaoi
 
 
         }
-        private void otherpicbox_Panit(object sender, PaintEventArgs e)
-        {            
-            //Pen pp = new Pen(Color.FromArgb(0, 235, 6));
-            //e.Graphics.DrawRectangle(pp, e.ClipRectangle.X, e.ClipRectangle.Y,
-            //e.ClipRectangle.X + e.ClipRectangle.Width - 1,
-            //e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
-        }
 
-      
     }
 }
