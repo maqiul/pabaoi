@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Platmake));
             this.Leftpanel = new System.Windows.Forms.Panel();
             this.Exit = new System.Windows.Forms.Button();
             this.Save = new System.Windows.Forms.Button();
@@ -70,9 +69,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Userpanel = new System.Windows.Forms.Panel();
             this.Centerpanel = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.PbMain = new System.Windows.Forms.PictureBox();
+            this.imgBoxWorkSpace = new Cyotek.Windows.Forms.Demo.ImageBoxEx();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,7 +98,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.RtDg)).BeginInit();
             this.Rttpanel.SuspendLayout();
             this.Centerpanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,7 +115,6 @@
             // Exit
             // 
             this.Exit.BackColor = System.Drawing.Color.Transparent;
-            this.Exit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Exit.BackgroundImage")));
             this.Exit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Exit.FlatAppearance.BorderSize = 0;
             this.Exit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -135,7 +130,6 @@
             // Save
             // 
             this.Save.BackColor = System.Drawing.Color.Transparent;
-            this.Save.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Save.BackgroundImage")));
             this.Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Save.FlatAppearance.BorderSize = 0;
             this.Save.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -151,7 +145,6 @@
             // AddAlgorithmBox
             // 
             this.AddAlgorithmBox.BackColor = System.Drawing.Color.Transparent;
-            this.AddAlgorithmBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddAlgorithmBox.BackgroundImage")));
             this.AddAlgorithmBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.AddAlgorithmBox.FlatAppearance.BorderSize = 0;
             this.AddAlgorithmBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -201,7 +194,6 @@
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.Transparent;
-            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
             this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -227,7 +219,6 @@
             // button6
             // 
             this.button6.BackColor = System.Drawing.Color.Transparent;
-            this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
             this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button6.Enabled = false;
             this.button6.FlatAppearance.BorderSize = 0;
@@ -298,7 +289,6 @@
             // button7
             // 
             this.button7.BackColor = System.Drawing.Color.Transparent;
-            this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
             this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button7.Enabled = false;
             this.button7.FlatAppearance.BorderSize = 0;
@@ -314,7 +304,6 @@
             // button8
             // 
             this.button8.BackColor = System.Drawing.Color.Transparent;
-            this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
             this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button8.Enabled = false;
             this.button8.FlatAppearance.BorderSize = 0;
@@ -330,7 +319,6 @@
             // button9
             // 
             this.button9.BackColor = System.Drawing.Color.Transparent;
-            this.button9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button9.BackgroundImage")));
             this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button9.Enabled = false;
             this.button9.FlatAppearance.BorderSize = 0;
@@ -346,7 +334,6 @@
             // button10
             // 
             this.button10.BackColor = System.Drawing.Color.Transparent;
-            this.button10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button10.BackgroundImage")));
             this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button10.Enabled = false;
             this.button10.FlatAppearance.BorderSize = 0;
@@ -362,7 +349,6 @@
             // button11
             // 
             this.button11.BackColor = System.Drawing.Color.Transparent;
-            this.button11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button11.BackgroundImage")));
             this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button11.FlatAppearance.BorderSize = 0;
             this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -377,7 +363,6 @@
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
             this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -403,7 +388,6 @@
             // button13
             // 
             this.button13.BackColor = System.Drawing.Color.Transparent;
-            this.button13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button13.BackgroundImage")));
             this.button13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button13.Enabled = false;
             this.button13.FlatAppearance.BorderSize = 0;
@@ -474,7 +458,6 @@
             // button18
             // 
             this.button18.BackColor = System.Drawing.Color.Transparent;
-            this.button18.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button18.BackgroundImage")));
             this.button18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button18.Enabled = false;
             this.button18.FlatAppearance.BorderSize = 0;
@@ -490,7 +473,6 @@
             // button17
             // 
             this.button17.BackColor = System.Drawing.Color.Transparent;
-            this.button17.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button17.BackgroundImage")));
             this.button17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button17.Enabled = false;
             this.button17.FlatAppearance.BorderSize = 0;
@@ -506,7 +488,6 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button2.Enabled = false;
             this.button2.FlatAppearance.BorderSize = 0;
@@ -522,7 +503,6 @@
             // button15
             // 
             this.button15.BackColor = System.Drawing.Color.Transparent;
-            this.button15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button15.BackgroundImage")));
             this.button15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button15.Enabled = false;
             this.button15.FlatAppearance.BorderSize = 0;
@@ -538,7 +518,6 @@
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -637,55 +616,20 @@
             // Centerpanel
             // 
             this.Centerpanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Centerpanel.Controls.Add(this.tableLayoutPanel2);
-            this.Centerpanel.Controls.Add(this.tableLayoutPanel1);
-            this.Centerpanel.Controls.Add(this.PbMain);
+            this.Centerpanel.Controls.Add(this.imgBoxWorkSpace);
             this.Centerpanel.Location = new System.Drawing.Point(109, 28);
             this.Centerpanel.Name = "Centerpanel";
             this.Centerpanel.Size = new System.Drawing.Size(962, 586);
             this.Centerpanel.TabIndex = 5;
             // 
-            // tableLayoutPanel2
+            // imgBoxWorkSpace
             // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Red;
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 292);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(962, 1);
-            this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Red;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(481, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1, 583);
-            this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // PbMain
-            // 
-            this.PbMain.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.PbMain.Location = new System.Drawing.Point(0, 0);
-            this.PbMain.Margin = new System.Windows.Forms.Padding(0);
-            this.PbMain.Name = "PbMain";
-            this.PbMain.Size = new System.Drawing.Size(962, 583);
-            this.PbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PbMain.TabIndex = 0;
-            this.PbMain.TabStop = false;
-            this.PbMain.SizeChanged += new System.EventHandler(this.PbMain_SizeChanged);
-            this.PbMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseClick);
-            this.PbMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseDown);
-            this.PbMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseMove);
-            this.PbMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbMain_MouseUp);
+            this.imgBoxWorkSpace.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imgBoxWorkSpace.Location = new System.Drawing.Point(0, 0);
+            this.imgBoxWorkSpace.Name = "imgBoxWorkSpace";
+            this.imgBoxWorkSpace.SelectionMode = Cyotek.Windows.Forms.ImageBoxSelectionMode.Rectangle;
+            this.imgBoxWorkSpace.Size = new System.Drawing.Size(962, 586);
+            this.imgBoxWorkSpace.TabIndex = 3;
             // 
             // menuStrip1
             // 
@@ -863,7 +807,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1424, 990);
+            this.ClientSize = new System.Drawing.Size(1424, 954);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.Centerpanel);
             this.Controls.Add(this.Userpanel);
@@ -883,7 +827,6 @@
             this.Rttpanel.ResumeLayout(false);
             this.Rttpanel.PerformLayout();
             this.Centerpanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -904,7 +847,6 @@
         private System.Windows.Forms.DataGridView RtDg;
         private System.Windows.Forms.Panel Userpanel;
         private System.Windows.Forms.Panel Centerpanel;
-        private System.Windows.Forms.PictureBox PbMain;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
@@ -953,11 +895,10 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private Cyotek.Windows.Forms.Demo.ImageBoxEx imgBoxWorkSpace;
     }
 }
