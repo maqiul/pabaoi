@@ -10,7 +10,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>pcbaoi</RootNamespace>
     <AssemblyName>pcbaoi</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -57,6 +57,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cyotek.Windows.Forms.ImageBox, Version=1.2.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>packages\CyotekImageBox.1.2.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Charts.v19.2.Core, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\x64\Debug\DevExpress.Charts.v19.2.Core.dll</HintPath>
@@ -185,6 +188,9 @@
     <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>packages\RabbitMQ.Client.5.1.2\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
+    <Reference Include="RTree, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\RTree.1.1.0\lib\netstandard2.0\RTree.dll</HintPath>
+    </Reference>
     <Reference Include="SmartThreadPool, Version=2.2.6.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
       <HintPath>packages\SmartThreadPool.dll.2.2.6\lib\net46\SmartThreadPool.dll</HintPath>
     </Reference>
@@ -216,6 +222,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\AiDetectRect.cs" />
+    <Compile Include="Algorithms\BaseAoiAlgorithms.cs" />
+    <Compile Include="Algorithms\BaseDetectRect.cs" />
+    <Compile Include="Algorithms\Pars\AiPars.cs" />
+    <Compile Include="Model\DetectFrameImage.cs" />
     <Compile Include="PopupForm\Addmark.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -413,6 +424,12 @@
     <Compile Include="Usercontrols\SaveControl.Designer.cs">
       <DependentUpon>SaveControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="usercontrol\ImageBox\DragHandle.cs" />
+    <Compile Include="usercontrol\ImageBox\DragHandleAnchor.cs" />
+    <Compile Include="usercontrol\ImageBox\DragHandleCollection.cs" />
+    <Compile Include="usercontrol\ImageBox\ImageBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Workspace.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -456,7 +473,6 @@
     <EmbeddedResource Include="Platmake.resx">
       <DependentUpon>Platmake.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -529,6 +545,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\front.jpg" />
+    <None Include="image\添加.png" />
     <Content Include="License-LGPL.txt" />
   </ItemGroup>
   <ItemGroup />
