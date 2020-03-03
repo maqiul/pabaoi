@@ -608,6 +608,7 @@
     <None Include="Resources\2格.png" />
     <None Include="Resources\front.jpg" />
     <None Include="image\添加.png" />
+    <None Include="image\色彩空间.jpg" />
     <Content Include="License-LGPL.txt" />
   </ItemGroup>
   <ItemGroup />
