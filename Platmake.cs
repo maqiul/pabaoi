@@ -20,8 +20,8 @@ namespace pcbaoi
 {
     public partial class Platmake : Form
     {
-        Operatorselect Addopera;
-        Operatorselect useroperatoe = new Operatorselect();
+        OperatorSelect Addopera;
+        OperatorSelect useroperatoe = new OperatorSelect();
 
         bool isAi = true;
         object oldRegion;
@@ -97,7 +97,7 @@ namespace pcbaoi
 
         private void AddAlgorithmBox_Click(object sender, EventArgs e)
         {
-            Addopera = new Operatorselect();
+            Addopera = new OperatorSelect();
             AlgorithmSelect algorithmSelect = new AlgorithmSelect();
             algorithmSelect.ShowDialog();
             if (algorithmSelect.DialogResult == DialogResult.OK)
@@ -107,7 +107,7 @@ namespace pcbaoi
                 //panel7.Controls.Add(userControl1);
                 foreach (Control control in Userpanel.Controls)
                 {
-                    if (control is UserControl1)
+                    if (control is OperatorSelection)
                     {
                         Userpanel.Controls.Remove(control);
                     }
@@ -302,7 +302,7 @@ namespace pcbaoi
 
         void updatedatagrade(object sender, EventArgs e)
         {
-            Operatorselect operatorselect = (Operatorselect)sender;
+            OperatorSelect operatorselect = (OperatorSelect)sender;
             //operatorselect1 = operatorselect;
             RtDg.CurrentRow.Cells[3].Value = operatorselect;
 
