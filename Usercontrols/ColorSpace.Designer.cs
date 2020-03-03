@@ -61,7 +61,6 @@
             DevExpress.XtraEditors.Repository.TrackBarLabel trackBarLabel31 = new DevExpress.XtraEditors.Repository.TrackBarLabel();
             DevExpress.XtraEditors.Repository.TrackBarLabel trackBarLabel32 = new DevExpress.XtraEditors.Repository.TrackBarLabel();
             DevExpress.XtraEditors.Repository.TrackBarLabel trackBarLabel33 = new DevExpress.XtraEditors.Repository.TrackBarLabel();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorSpace));
             this.RrangTrackBar = new DevExpress.XtraEditors.RangeTrackBarControl();
             this.GrangTrackBar = new DevExpress.XtraEditors.RangeTrackBarControl();
             this.BrangTrackBar = new DevExpress.XtraEditors.RangeTrackBarControl();
@@ -256,7 +255,7 @@
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Image = global::pcbaoi.Properties.Resources.色彩空间;
             this.pictureBox1.Location = new System.Drawing.Point(39, 75);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
@@ -265,7 +264,7 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
-            // UserControl6
+            // ColorSpace
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -279,7 +278,7 @@
             this.Controls.Add(this.GrangTrackBar);
             this.Controls.Add(this.RrangTrackBar);
             this.DoubleBuffered = true;
-            this.Name = "UserControl6";
+            this.Name = "ColorSpace";
             this.Size = new System.Drawing.Size(242, 237);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.UserControl6_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.RrangTrackBar.Properties)).EndInit();
