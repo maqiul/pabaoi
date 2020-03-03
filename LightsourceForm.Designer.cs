@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LightsourceForm));
             this.titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
+            this.canelbt = new System.Windows.Forms.Button();
             this.Mainpicbox = new System.Windows.Forms.PictureBox();
             this.leftpanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -38,8 +39,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.blowbt = new System.Windows.Forms.Button();
-            this.canelbt = new System.Windows.Forms.Button();
+            this.Blowbt = new System.Windows.Forms.Button();
             this.savebt = new System.Windows.Forms.Button();
             this.righttitlebt = new System.Windows.Forms.Panel();
             this.sidelabel = new System.Windows.Forms.Label();
@@ -85,6 +85,20 @@
             this.Titlelabel.TabIndex = 0;
             this.Titlelabel.Text = "光源设置";
             // 
+            // canelbt
+            // 
+            this.canelbt.BackColor = System.Drawing.Color.Transparent;
+            this.canelbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("canelbt.BackgroundImage")));
+            this.canelbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.canelbt.FlatAppearance.BorderSize = 0;
+            this.canelbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.canelbt.Location = new System.Drawing.Point(804, 12);
+            this.canelbt.Name = "canelbt";
+            this.canelbt.Size = new System.Drawing.Size(27, 27);
+            this.canelbt.TabIndex = 9;
+            this.canelbt.UseVisualStyleBackColor = false;
+            this.canelbt.Click += new System.EventHandler(this.canelbt_Click);
+            // 
             // Mainpicbox
             // 
             this.Mainpicbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -103,7 +117,7 @@
             this.leftpanel.Controls.Add(this.label3);
             this.leftpanel.Controls.Add(this.label2);
             this.leftpanel.Controls.Add(this.label1);
-            this.leftpanel.Controls.Add(this.blowbt);
+            this.leftpanel.Controls.Add(this.Blowbt);
             this.leftpanel.Controls.Add(this.savebt);
             this.leftpanel.Controls.Add(this.righttitlebt);
             this.leftpanel.Controls.Add(this.lefttitlebt);
@@ -174,29 +188,15 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "白";
             // 
-            // blowbt
+            // Blowbt
             // 
-            this.blowbt.Location = new System.Drawing.Point(157, 275);
-            this.blowbt.Name = "blowbt";
-            this.blowbt.Size = new System.Drawing.Size(75, 23);
-            this.blowbt.TabIndex = 10;
-            this.blowbt.Text = "吹气测试";
-            this.blowbt.UseVisualStyleBackColor = true;
-            this.blowbt.Click += new System.EventHandler(this.blowbt_Click);
-            // 
-            // canelbt
-            // 
-            this.canelbt.BackColor = System.Drawing.Color.Transparent;
-            this.canelbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("canelbt.BackgroundImage")));
-            this.canelbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.canelbt.FlatAppearance.BorderSize = 0;
-            this.canelbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.canelbt.Location = new System.Drawing.Point(804, 12);
-            this.canelbt.Name = "canelbt";
-            this.canelbt.Size = new System.Drawing.Size(27, 27);
-            this.canelbt.TabIndex = 9;
-            this.canelbt.UseVisualStyleBackColor = false;
-            this.canelbt.Click += new System.EventHandler(this.canelbt_Click);
+            this.Blowbt.Location = new System.Drawing.Point(157, 275);
+            this.Blowbt.Name = "Blowbt";
+            this.Blowbt.Size = new System.Drawing.Size(75, 23);
+            this.Blowbt.TabIndex = 10;
+            this.Blowbt.Text = "吹气测试";
+            this.Blowbt.UseVisualStyleBackColor = true;
+            this.Blowbt.Click += new System.EventHandler(this.Blowbt_Click);
             // 
             // savebt
             // 
@@ -373,7 +373,7 @@
         private System.Windows.Forms.Button savebt;
         private System.Windows.Forms.Label sidelabel;
         private System.Windows.Forms.Label frontlabel;
-        private System.Windows.Forms.Button blowbt;
+        private System.Windows.Forms.Button Blowbt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;

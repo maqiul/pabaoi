@@ -18,7 +18,7 @@ namespace pcbaoi
     {
         string path;
         bool isclose = true;
-        FileHandler filehandler;
+        FileHandler filehandler; 
 
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
@@ -30,11 +30,9 @@ namespace pcbaoi
         public const int HTCAPTION = 0x0002;
 
         FileInfo FileInfonew;
-        CaptureForm aa;
         public Workspace(CaptureForm form1)
         {
             InitializeComponent();
-            aa = form1;
             filehandler = new FileHandler();
             loadsetting();
             this.MouseDown += Workspace_MouseDown;
@@ -47,23 +45,7 @@ namespace pcbaoi
             SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
         }
 
-        private void textBox3_Click(object sender, EventArgs e)
-        {
-            //System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
-            //dialog.Description = "请选择保存图片文件夹";
-            //if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            //{
-            //    if (string.IsNullOrEmpty(dialog.SelectedPath))
-            //    {
-            //        MessageBox.Show(this, "文件夹路径不能为空", "提示");
-            //        return;
-            //    }
-            //    textBox3.Text = dialog.SelectedPath + "\\";
-            //}
-            
-        }
-
-        private void button2_Click(object sender, EventArgs e)
+        private void OpenPjbt_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
             //dialog.RootFolder = Environment.SpecialFolder.Windows;
@@ -138,7 +120,7 @@ namespace pcbaoi
             History history = new History();
             history.MyEvent += workhistor;
             
-            panel1.Controls.Add(history);
+            Showpanel.Controls.Add(history);
         }
 
         void workhistor(object sender, EventArgs e) {
@@ -166,12 +148,12 @@ namespace pcbaoi
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CreatePjbt_Click(object sender, EventArgs e)
         {
-            panel1.Controls.RemoveAt(0);
+            Showpanel.Controls.RemoveAt(0);
             Savecontrol savecontrol = new Savecontrol();
             savecontrol.MyEvent += projectsettingall;
-            panel1.Controls.Add(savecontrol);
+            Showpanel.Controls.Add(savecontrol);
         }
         void projectsettingall(object sender, EventArgs e) {
             ProjectSetting projectSetting = (ProjectSetting)sender;
@@ -221,15 +203,5 @@ namespace pcbaoi
 
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-           // aa.dododo();
-        }
-
-        private void btnCloseCamera_Click(object sender, EventArgs e)
-        {
-            //aa.closeCamera();
-            aa.Stop();
-        }
     }
 }

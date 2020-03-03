@@ -210,7 +210,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
-
+                Loghelper.WriteLog("运动控制界面 错误--", exp);
             }
         }
 

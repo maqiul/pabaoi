@@ -28,45 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.CreatePjbt = new System.Windows.Forms.Button();
+            this.OpenPjbt = new System.Windows.Forms.Button();
+            this.Showpanel = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // CreatePjbt
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(54, 82);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(108, 54);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "创建项目";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.CreatePjbt.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.CreatePjbt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CreatePjbt.Location = new System.Drawing.Point(54, 82);
+            this.CreatePjbt.Name = "CreatePjbt";
+            this.CreatePjbt.Size = new System.Drawing.Size(108, 54);
+            this.CreatePjbt.TabIndex = 0;
+            this.CreatePjbt.Text = "创建项目";
+            this.CreatePjbt.UseVisualStyleBackColor = false;
+            this.CreatePjbt.Click += new System.EventHandler(this.CreatePjbt_Click);
             // 
-            // button2
+            // OpenPjbt
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(54, 154);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(108, 54);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "打开项目";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.OpenPjbt.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.OpenPjbt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.OpenPjbt.Location = new System.Drawing.Point(54, 154);
+            this.OpenPjbt.Name = "OpenPjbt";
+            this.OpenPjbt.Size = new System.Drawing.Size(108, 54);
+            this.OpenPjbt.TabIndex = 1;
+            this.OpenPjbt.Text = "打开项目";
+            this.OpenPjbt.UseVisualStyleBackColor = false;
+            this.OpenPjbt.Click += new System.EventHandler(this.OpenPjbt_Click);
             // 
-            // panel1
+            // Showpanel
             // 
-            this.panel1.Location = new System.Drawing.Point(281, 82);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(517, 543);
-            this.panel1.TabIndex = 2;
+            this.Showpanel.Location = new System.Drawing.Point(281, 82);
+            this.Showpanel.Margin = new System.Windows.Forms.Padding(0);
+            this.Showpanel.Name = "Showpanel";
+            this.Showpanel.Size = new System.Drawing.Size(517, 543);
+            this.Showpanel.TabIndex = 2;
             // 
             // panel2
             // 
@@ -97,9 +97,9 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(850, 659);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Showpanel);
+            this.Controls.Add(this.OpenPjbt);
+            this.Controls.Add(this.CreatePjbt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -116,9 +116,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button CreatePjbt;
+        private System.Windows.Forms.Button OpenPjbt;
+        private System.Windows.Forms.Panel Showpanel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
     }

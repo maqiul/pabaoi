@@ -65,42 +65,42 @@
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.PbMain = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.Runbt = new System.Windows.Forms.Button();
+            this.Stopbt = new System.Windows.Forms.Button();
+            this.Exitbt = new System.Windows.Forms.Button();
+            this.Checkbt = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.PbFront = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.PbSide = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
+            this.SelectFilebt = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.PcbNamelb = new System.Windows.Forms.Label();
+            this.PcbWidthlb = new System.Windows.Forms.Label();
+            this.SideNumlb = new System.Windows.Forms.Label();
+            this.SubNumlb = new System.Windows.Forms.Label();
+            this.PcbLenthlb = new System.Windows.Forms.Label();
+            this.BadNumberlb = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbFront)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbSide)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -461,7 +461,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlText;
-            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.PbMain);
             this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Location = new System.Drawing.Point(0, 294);
@@ -470,16 +470,16 @@
             this.panel1.Size = new System.Drawing.Size(1424, 469);
             this.panel1.TabIndex = 4;
             // 
-            // pictureBox1
+            // PbMain
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(163, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1139, 469);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.PbMain.Image = ((System.Drawing.Image)(resources.GetObject("PbMain.Image")));
+            this.PbMain.Location = new System.Drawing.Point(163, 0);
+            this.PbMain.Margin = new System.Windows.Forms.Padding(0);
+            this.PbMain.Name = "PbMain";
+            this.PbMain.Size = new System.Drawing.Size(1139, 469);
+            this.PbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PbMain.TabIndex = 2;
+            this.PbMain.TabStop = false;
             // 
             // panel4
             // 
@@ -523,44 +523,44 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "正   面";
             // 
-            // button1
+            // Runbt
             // 
-            this.button1.Location = new System.Drawing.Point(281, 806);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 25);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "运行";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Runbt.Location = new System.Drawing.Point(281, 806);
+            this.Runbt.Name = "Runbt";
+            this.Runbt.Size = new System.Drawing.Size(95, 25);
+            this.Runbt.TabIndex = 5;
+            this.Runbt.Text = "运行";
+            this.Runbt.UseVisualStyleBackColor = true;
+            this.Runbt.Click += new System.EventHandler(this.Runbt_Click);
             // 
-            // button2
+            // Stopbt
             // 
-            this.button2.Location = new System.Drawing.Point(478, 806);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(95, 25);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "停止运行";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Stopbt.Location = new System.Drawing.Point(478, 806);
+            this.Stopbt.Name = "Stopbt";
+            this.Stopbt.Size = new System.Drawing.Size(95, 25);
+            this.Stopbt.TabIndex = 6;
+            this.Stopbt.Text = "停止运行";
+            this.Stopbt.UseVisualStyleBackColor = true;
+            this.Stopbt.Click += new System.EventHandler(this.Stopbt_Click);
             // 
-            // button3
+            // Exitbt
             // 
-            this.button3.Location = new System.Drawing.Point(668, 806);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 25);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "退出运行模式";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.Exitbt.Location = new System.Drawing.Point(672, 806);
+            this.Exitbt.Name = "Exitbt";
+            this.Exitbt.Size = new System.Drawing.Size(95, 25);
+            this.Exitbt.TabIndex = 7;
+            this.Exitbt.Text = "退出运行模式";
+            this.Exitbt.UseVisualStyleBackColor = true;
+            this.Exitbt.Click += new System.EventHandler(this.Exitbt_Click);
             // 
-            // button4
+            // Checkbt
             // 
-            this.button4.Location = new System.Drawing.Point(876, 806);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(95, 25);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "校验";
-            this.button4.UseVisualStyleBackColor = true;
+            this.Checkbt.Location = new System.Drawing.Point(876, 806);
+            this.Checkbt.Name = "Checkbt";
+            this.Checkbt.Size = new System.Drawing.Size(95, 25);
+            this.Checkbt.TabIndex = 8;
+            this.Checkbt.Text = "校验";
+            this.Checkbt.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -574,15 +574,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1, 265);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // pictureBox2
+            // PbFront
             // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(775, 74);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(281, 155);
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
+            this.PbFront.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PbFront.Location = new System.Drawing.Point(775, 74);
+            this.PbFront.Margin = new System.Windows.Forms.Padding(0);
+            this.PbFront.Name = "PbFront";
+            this.PbFront.Size = new System.Drawing.Size(281, 155);
+            this.PbFront.TabIndex = 10;
+            this.PbFront.TabStop = false;
             // 
             // panel5
             // 
@@ -622,15 +622,15 @@
             this.label5.TabIndex = 1;
             this.label5.Text = "反面";
             // 
-            // pictureBox3
+            // PbSide
             // 
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Location = new System.Drawing.Point(1114, 74);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(281, 155);
-            this.pictureBox3.TabIndex = 13;
-            this.pictureBox3.TabStop = false;
+            this.PbSide.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PbSide.Location = new System.Drawing.Point(1114, 74);
+            this.PbSide.Margin = new System.Windows.Forms.Padding(0);
+            this.PbSide.Name = "PbSide";
+            this.PbSide.Size = new System.Drawing.Size(281, 155);
+            this.PbSide.TabIndex = 13;
+            this.PbSide.TabStop = false;
             // 
             // textBox1
             // 
@@ -640,15 +640,15 @@
             this.textBox1.Size = new System.Drawing.Size(162, 21);
             this.textBox1.TabIndex = 15;
             // 
-            // button5
+            // SelectFilebt
             // 
-            this.button5.Location = new System.Drawing.Point(258, 40);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 16;
-            this.button5.Text = "选择文件";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.SelectFilebt.Location = new System.Drawing.Point(258, 40);
+            this.SelectFilebt.Name = "SelectFilebt";
+            this.SelectFilebt.Size = new System.Drawing.Size(75, 23);
+            this.SelectFilebt.TabIndex = 16;
+            this.SelectFilebt.Text = "选择文件";
+            this.SelectFilebt.UseVisualStyleBackColor = true;
+            this.SelectFilebt.Click += new System.EventHandler(this.SelectFilebt_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -674,60 +674,60 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(700, 1);
             this.tableLayoutPanel3.TabIndex = 18;
             // 
-            // label6
+            // PcbNamelb
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(71, 139);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 12);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "pcb名称";
+            this.PcbNamelb.AutoSize = true;
+            this.PcbNamelb.Location = new System.Drawing.Point(71, 139);
+            this.PcbNamelb.Name = "PcbNamelb";
+            this.PcbNamelb.Size = new System.Drawing.Size(47, 12);
+            this.PcbNamelb.TabIndex = 19;
+            this.PcbNamelb.Text = "pcb名称";
             // 
-            // label7
+            // PcbWidthlb
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(71, 181);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(47, 12);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "pcb板宽";
+            this.PcbWidthlb.AutoSize = true;
+            this.PcbWidthlb.Location = new System.Drawing.Point(71, 181);
+            this.PcbWidthlb.Name = "PcbWidthlb";
+            this.PcbWidthlb.Size = new System.Drawing.Size(47, 12);
+            this.PcbWidthlb.TabIndex = 20;
+            this.PcbWidthlb.Text = "pcb板宽";
             // 
-            // label8
+            // SideNumlb
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(402, 139);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 12);
-            this.label8.TabIndex = 21;
-            this.label8.Text = "面数";
+            this.SideNumlb.AutoSize = true;
+            this.SideNumlb.Location = new System.Drawing.Point(402, 139);
+            this.SideNumlb.Name = "SideNumlb";
+            this.SideNumlb.Size = new System.Drawing.Size(29, 12);
+            this.SideNumlb.TabIndex = 21;
+            this.SideNumlb.Text = "面数";
             // 
-            // label9
+            // SubNumlb
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(402, 181);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 12);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "子基板数";
+            this.SubNumlb.AutoSize = true;
+            this.SubNumlb.Location = new System.Drawing.Point(402, 181);
+            this.SubNumlb.Name = "SubNumlb";
+            this.SubNumlb.Size = new System.Drawing.Size(53, 12);
+            this.SubNumlb.TabIndex = 22;
+            this.SubNumlb.Text = "子基板数";
             // 
-            // label10
+            // PcbLenthlb
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(71, 218);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(47, 12);
-            this.label10.TabIndex = 23;
-            this.label10.Text = "pcb板长";
+            this.PcbLenthlb.AutoSize = true;
+            this.PcbLenthlb.Location = new System.Drawing.Point(71, 218);
+            this.PcbLenthlb.Name = "PcbLenthlb";
+            this.PcbLenthlb.Size = new System.Drawing.Size(47, 12);
+            this.PcbLenthlb.TabIndex = 23;
+            this.PcbLenthlb.Text = "pcb板长";
             // 
-            // label11
+            // BadNumberlb
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(69, 74);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 19);
-            this.label11.TabIndex = 24;
-            this.label11.Text = "板号";
+            this.BadNumberlb.AutoSize = true;
+            this.BadNumberlb.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BadNumberlb.Location = new System.Drawing.Point(69, 74);
+            this.BadNumberlb.Name = "BadNumberlb";
+            this.BadNumberlb.Size = new System.Drawing.Size(49, 19);
+            this.BadNumberlb.TabIndex = 24;
+            this.BadNumberlb.Text = "板号";
             // 
             // RunForm
             // 
@@ -735,25 +735,25 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1424, 990);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.BadNumberlb);
+            this.Controls.Add(this.PcbLenthlb);
+            this.Controls.Add(this.SubNumlb);
+            this.Controls.Add(this.SideNumlb);
+            this.Controls.Add(this.PcbWidthlb);
+            this.Controls.Add(this.PcbNamelb);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel2);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.SelectFilebt);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel6);
-            this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.PbSide);
             this.Controls.Add(this.panel5);
-            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.PbFront);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Checkbt);
+            this.Controls.Add(this.Exitbt);
+            this.Controls.Add(this.Stopbt);
+            this.Controls.Add(this.Runbt);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
@@ -766,15 +766,15 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbMain)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbFront)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PbSide)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -818,31 +818,31 @@
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button Runbt;
+        private System.Windows.Forms.Button Stopbt;
+        private System.Windows.Forms.Button Exitbt;
+        private System.Windows.Forms.Button Checkbt;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox PbMain;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox PbFront;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox PbSide;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button SelectFilebt;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label PcbNamelb;
+        private System.Windows.Forms.Label PcbWidthlb;
+        private System.Windows.Forms.Label SideNumlb;
+        private System.Windows.Forms.Label SubNumlb;
+        private System.Windows.Forms.Label PcbLenthlb;
+        private System.Windows.Forms.Label BadNumberlb;
     }
 }

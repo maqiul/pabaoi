@@ -44,8 +44,8 @@
             this.button11 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Exitbt = new System.Windows.Forms.Button();
+            this.Editbt = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -298,31 +298,31 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel4.Controls.Add(this.button2);
-            this.panel4.Controls.Add(this.button1);
+            this.panel4.Controls.Add(this.Exitbt);
+            this.panel4.Controls.Add(this.Editbt);
             this.panel4.Location = new System.Drawing.Point(874, 17);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(496, 376);
             this.panel4.TabIndex = 3;
             // 
-            // button2
+            // Exitbt
             // 
-            this.button2.Location = new System.Drawing.Point(292, 159);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(143, 41);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "退出";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Exitbt.Location = new System.Drawing.Point(292, 159);
+            this.Exitbt.Name = "Exitbt";
+            this.Exitbt.Size = new System.Drawing.Size(143, 41);
+            this.Exitbt.TabIndex = 5;
+            this.Exitbt.Text = "退出";
+            this.Exitbt.UseVisualStyleBackColor = true;
+            this.Exitbt.Click += new System.EventHandler(this.Exitbt_Click);
             // 
-            // button1
+            // Editbt
             // 
-            this.button1.Location = new System.Drawing.Point(65, 159);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(143, 41);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "编辑元件";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Editbt.Location = new System.Drawing.Point(65, 159);
+            this.Editbt.Name = "Editbt";
+            this.Editbt.Size = new System.Drawing.Size(143, 41);
+            this.Editbt.TabIndex = 4;
+            this.Editbt.Text = "编辑元件";
+            this.Editbt.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -721,7 +721,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Editbt;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
@@ -756,7 +756,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Exitbt;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel6;

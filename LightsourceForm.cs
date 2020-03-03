@@ -366,7 +366,7 @@ namespace pcbaoi
             try
             {
                 righttitlebt.BackColor = Color.Gray;
-                blowbt.Hide();
+                Blowbt.Hide();
                 Panel panel = (Panel)sender;
                 panel.BackColor = Color.White;
                 wopassway = Convert.ToInt32(IniFile.iniRead("AW1", "passageway"));
@@ -396,7 +396,7 @@ namespace pcbaoi
             try
             {
                 lefttitlebt.BackColor = Color.Gray;
-                blowbt.Show();
+                Blowbt.Show();
                 Panel panel = (Panel)sender;
                 panel.BackColor = Color.White;
                 wopassway = Convert.ToInt32(IniFile.iniRead("BW1", "passageway"));
@@ -518,13 +518,14 @@ namespace pcbaoi
                     }
                     else
                     {
-                        Loghelper.WriteLog("串口连接失败");
+                        Loghelper.WriteLog("光源调整界面 串口连接失败");
                         MessageBox.Show("串口未连接,请连接串口");
                     }
 
                 }
                 catch (Exception exp)
                 {
+                    Loghelper.WriteLog("光源调整界面 错误--",exp);
 
                 }
 
@@ -557,7 +558,7 @@ namespace pcbaoi
 
         }
 
-        private void blowbt_Click(object sender,EventArgs e) {
+        private void Blowbt_Click(object sender,EventArgs e) {
 
 
         }
@@ -596,7 +597,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
-
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
             }
         }
 
@@ -632,6 +633,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
 
             }
 
@@ -669,7 +671,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
-
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
             }
 
         }
@@ -706,6 +708,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
 
             }
         }
@@ -742,6 +745,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
 
             }
         }
@@ -914,7 +918,7 @@ namespace pcbaoi
             }
             catch (Exception exp)
             {
-
+                Loghelper.WriteLog("光源调整界面 错误--", exp);
             }
         }
 

@@ -36,7 +36,7 @@
             this.projectsavepath = new System.Windows.Forms.TextBox();
             this.allpicpath = new System.Windows.Forms.TextBox();
             this.fillpicpath = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.Savecheck = new System.Windows.Forms.CheckBox();
             this.Canelbt = new System.Windows.Forms.Button();
             this.Savebt = new System.Windows.Forms.Button();
             this.Titlepanel.SuspendLayout();
@@ -126,14 +126,14 @@
             this.fillpicpath.Click += new System.EventHandler(this.fillpicpath_Click);
             this.fillpicpath.MouseHover += new System.EventHandler(this.fillpicpath_MouseHover);
             // 
-            // checkBox1
+            // Savecheck
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(51, 153);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.Savecheck.AutoSize = true;
+            this.Savecheck.Location = new System.Drawing.Point(51, 153);
+            this.Savecheck.Name = "Savecheck";
+            this.Savecheck.Size = new System.Drawing.Size(15, 14);
+            this.Savecheck.TabIndex = 7;
+            this.Savecheck.UseVisualStyleBackColor = true;
             // 
             // Canelbt
             // 
@@ -163,7 +163,7 @@
             this.ClientSize = new System.Drawing.Size(502, 375);
             this.Controls.Add(this.Canelbt);
             this.Controls.Add(this.Savebt);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.Savecheck);
             this.Controls.Add(this.fillpicpath);
             this.Controls.Add(this.allpicpath);
             this.Controls.Add(this.projectsavepath);
@@ -192,7 +192,7 @@
         private System.Windows.Forms.TextBox projectsavepath;
         private System.Windows.Forms.TextBox allpicpath;
         private System.Windows.Forms.TextBox fillpicpath;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox Savecheck;
         private System.Windows.Forms.Button Canelbt;
         private System.Windows.Forms.Button Savebt;
     }

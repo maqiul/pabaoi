@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using System.Threading;
 using pcbaoi.Properties;
 using pcbaoi.Tools;
-
 using QTing.PLC;
 using PylonC.NETSupportLibrary;
 using System.Drawing.Imaging;
@@ -119,21 +118,39 @@ namespace pcbaoi
         long dicid;
         //保存图片路径
         string savepath;
+        //A面队列
         public Queue<Bitmap> Amats = new Queue<Bitmap>();
+        //B面队列
         public Queue<Bitmap> Bmats = new Queue<Bitmap>();
-        public Queue<Pcbinfo> pcbinfos = new Queue<Pcbinfo>();
+        //检测队列
+        public Queue<PcbInfo> pcbinfos = new Queue<PcbInfo>();
+        //A面大图
         public Mat Amat;
+        //B面大图
         public Mat Bmat;
+        //A面拍摄当前数量
         public int Aimagenum = 0;
+        //B面拍摄当前数量
         public int Bimagenum = 0;
+        //A面用作拍摄完成检测
         public int Arun = 0;
+        //B面用作拍摄完成检测
         public int Brun = 0;
+        //A面拼图完成检测
         public bool isAok = false;
+        //B面拼图完成检测
         public bool isBok = false;
+        //所有拍摄数量 用检测时数量比较
         public int Allnum = 0;
+        //Ai检测是否完成
         public bool checkend = false;
-        object obj = new object();
+        //A面使用 用作lock
+        object objA = new object();
+        //b面使用 用作lock
+        object objB = new object();
+        //拍摄的宽 用作翻转后计算坐标
         public int picwidth;
+        //拍摄的长 用作翻转后计算坐标
         public int picheight;
 
         #region 相机使用模块 初始化两个相机
@@ -341,7 +358,7 @@ namespace pcbaoi
                             //;
                         }
                         Aimagenum++;
-                        lock (obj) {
+                        lock (objA) {
                             Arun++;
                         }
 
@@ -377,7 +394,7 @@ namespace pcbaoi
                             bitmap.Dispose();
                         }
                         Aimagenum++;
-                        lock (obj)
+                        lock (objA)
                         {
                             Arun++;
                         }
@@ -436,7 +453,7 @@ namespace pcbaoi
                             pbMainImg.Image = m_bitmapB;
                         }
                         Bimagenum++;
-                        lock (obj)
+                        lock (objB)
                         {
                             Brun++;
                         }
@@ -471,7 +488,7 @@ namespace pcbaoi
                             bitmap.Dispose();
                         }
                         Bimagenum++;
-                        lock (obj)
+                        lock (objB)
                         {
                             Brun++;
                         }
@@ -501,6 +518,10 @@ namespace pcbaoi
         }
 
         #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"> 用作判断是否软件为刚打开</param>
         public CaptureForm(int i)
         {
             InitializeComponent();
@@ -601,7 +622,7 @@ namespace pcbaoi
             Orbital();
 
         }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void CaptureForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
             {
@@ -609,6 +630,7 @@ namespace pcbaoi
             }
             catch (Exception er)
             {
+                Loghelper.WriteLog("",er);
 
             }
             string deletesql = "delete from zijiban where isuse = 0";
@@ -978,7 +1000,7 @@ namespace pcbaoi
         //屏蔽页面
         private void Shield_Click(object sender, EventArgs e)
         {
-            PingbiForm pingbiForm = new PingbiForm();
+            ShieldForm pingbiForm = new ShieldForm();
             pingbiForm.ShowDialog();
 
         }
@@ -995,8 +1017,8 @@ namespace pcbaoi
                 if (!Check_backgroudWorker.IsBusy) {
                     Check_backgroudWorker.RunWorkerAsync("object argument");
                 }
-                collection collection = new collection();
-                collection = collectionform.Tag as collection;
+                Collection collection = new Collection();
+                collection = collectionform.Tag as Collection;
                 //根据选择面选择运行任务
                 if (collection.Type == "正面")
                 {
@@ -1640,69 +1662,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
 
 
 
-        private Bitmap cropBmp(Bitmap src, Rectangle cropRect)
-        {
-            Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
 
-            using (Graphics g = Graphics.FromImage(target))
-            {
-                g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                      cropRect,
-                      GraphicsUnit.Pixel);
-            }
-            return target;
-        }
-
-        /// <summary>
-        /// 按照拍摄系统的物理参数，对每张拍摄的图片进行截断和缩放
-        /// </summary>
-        /// <param name="picPath"></param>
-        /// <param name="reSizePicPath"></param>
-        /// <param name="iSize"></param>
-        /// <param name="format"></param>
-        public Bitmap singleCaptureCropAndResize(Bitmap bitmap)
-        {
-            try
-            {
-                float cropRatioInWidth = capturePointIntervalXInMM / singleCaptureWidthInMM;
-                int widthAfterCrop = (int)((float)(bitmap.Width) * cropRatioInWidth);
-
-                float imageRatio = (float)(bitmap.Height) / (float)(bitmap.Width);
-                float singleCaptureHeightInMM = singleCaptureWidthInMM * imageRatio;
-                float cropRatioInHeight = capturePointIntervalYInMM / singleCaptureHeightInMM;
-                int heightAfterCrop = (int)((float)(bitmap.Height) * cropRatioInHeight);
-
-                int marginX = (bitmap.Width - widthAfterCrop) / 2;
-                int marginY = (bitmap.Height - heightAfterCrop) / 2;
-                Rectangle cropRect = new Rectangle(marginX, marginY, widthAfterCrop, heightAfterCrop);
-
-                //设置高质量插值法  
-                Bitmap cropedBmp = cropBmp(bitmap, cropRect);
-                int widthAfterResize = (int)(pixelNumPerMM * capturePointIntervalXInMM * 3);
-                int heightAfterResize = (int)(pixelNumPerMM * capturePointIntervalYInMM * 3);
-                Bitmap resizedBmp = new Bitmap(widthAfterResize, heightAfterResize, PixelFormat.Format24bppRgb);
-                Graphics g = Graphics.FromImage(resizedBmp);
-                //设置高质量插值法  
-                //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                //设置高质量,低速度呈现平滑程度  
-                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                //g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                //消除锯齿
-                //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawImage(cropedBmp, new Rectangle(0, 0, widthAfterResize, heightAfterResize), new Rectangle(0, 0, cropedBmp.Width, cropedBmp.Height), GraphicsUnit.Pixel);
-                //resizedBmp.Save(reSizePicPath, format);
-                g.Dispose();
-                //originBmp.Dispose();
-                return resizedBmp;
-            }
-            catch
-            {
-                return null;
-
-            }
-
-
-        }
 
         private void substrateOut()
         {
@@ -2483,7 +2443,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                     //AoiAi.addPatch(dst.Ptr,img.Ptr, roi.X, roi.Y);
                                     AoiAi.copy_to(Amat.Ptr, img.Ptr, roi);
 
-                                    Pcbinfo pcbinfo = new Pcbinfo();
+                                    PcbInfo pcbinfo = new PcbInfo();
                                     pcbinfo.Bitmap = Aidemo.Bitmap2Byte(bitmap);
                                     pcbinfo.Obj = side;
                                     pcbinfo.Rectangle = roi;
@@ -2538,7 +2498,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                     //std::cout << n_cols * row + col << "\n";
 
                                     AoiAi.copy_to(Amat.Ptr, img.Ptr, roi);
-                                    Pcbinfo pcbinfo = new Pcbinfo();
+                                    PcbInfo pcbinfo = new PcbInfo();
                                     pcbinfo.Bitmap = Aidemo.Bitmap2Byte(bitmap);
                                     pcbinfo.Obj = side;
                                     pcbinfo.Rectangle = roi;
@@ -2628,7 +2588,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                     }
                                     //AoiAi.addPatch(dst.Ptr,img.Ptr, roi.X, roi.Y);
                                     AoiAi.copy_to(Bmat.Ptr, img.Ptr, roi);
-                                    Pcbinfo pcbinfo = new Pcbinfo();
+                                    PcbInfo pcbinfo = new PcbInfo();
                                     pcbinfo.Bitmap = Aidemo.Bitmap2Byte(bitmap);
                                     pcbinfo.Obj = side;
                                     pcbinfo.Rectangle = roi;
@@ -2684,7 +2644,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                                     }
 
                                     AoiAi.copy_to(Bmat.Ptr, img.Ptr, roi);
-                                    Pcbinfo pcbinfo = new Pcbinfo();
+                                    PcbInfo pcbinfo = new PcbInfo();
                                     pcbinfo.Bitmap = Aidemo.Bitmap2Byte(bitmap);
                                     pcbinfo.Obj = side;
                                     pcbinfo.Rectangle = roi;
@@ -2751,7 +2711,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         {
                             if (pcbinfos.Count > 0)
                             {
-                                Pcbinfo pcbinfo = pcbinfos.Dequeue();
+                                PcbInfo pcbinfo = pcbinfos.Dequeue();
                                 if ((SIDE)pcbinfo.Obj == SIDE.FRONT)
                                 {
                                     Checkpic checkpic = aidemo.savepic(pcbinfo.Bitmap, pcbinfo.Rectangle.X, pcbinfo.Rectangle.Y);

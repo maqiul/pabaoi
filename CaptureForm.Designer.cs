@@ -1217,7 +1217,7 @@
             this.Name = "CaptureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Q smart";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CaptureForm_FormClosing);
             this.Load += new System.EventHandler(this.CaptureForm_Load);
             this.Shown += new System.EventHandler(this.CaptureForm_Shown);
             this.SizeChanged += new System.EventHandler(this.CaptureForm_SizeChanged);

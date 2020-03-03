@@ -216,72 +216,72 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Addmark.cs">
+    <Compile Include="PopupForm\Addmark.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Addmark.Designer.cs">
+    <Compile Include="PopupForm\Addmark.Designer.cs">
       <DependentUpon>Addmark.cs</DependentUpon>
     </Compile>
-    <Compile Include="Addelement.cs">
+    <Compile Include="PopupForm\Addelement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Addelement.Designer.cs">
+    <Compile Include="PopupForm\Addelement.Designer.cs">
       <DependentUpon>Addelement.cs</DependentUpon>
     </Compile>
-    <Compile Include="Aiadd.cs">
+    <Compile Include="Usercontrols\Aiadd.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Aiadd.Designer.cs">
+    <Compile Include="Usercontrols\Aiadd.Designer.cs">
       <DependentUpon>Aiadd.cs</DependentUpon>
     </Compile>
-    <Compile Include="Aidemo.cs" />
-    <Compile Include="AITestSDK.cs" />
-    <Compile Include="AlgorithmSelect.cs">
+    <Compile Include="Tools\AiUtils\Aidemo.cs" />
+    <Compile Include="Tools\AiUtils\AITestSDK.cs" />
+    <Compile Include="PopupForm\AlgorithmSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AlgorithmSelect.Designer.cs">
+    <Compile Include="PopupForm\AlgorithmSelect.Designer.cs">
       <DependentUpon>AlgorithmSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Algorithmtype.cs" />
-    <Compile Include="AoiAi.cs" />
-    <Compile Include="AutoSizeFormClass.cs" />
-    <Compile Include="Checkpic.cs" />
-    <Compile Include="class_Broad.cs" />
-    <Compile Include="DateTimeUtil.cs" />
-    <Compile Include="Enumall.cs" />
-    <Compile Include="FormControlnew.cs" />
-    <Compile Include="Autosize.cs" />
-    <Compile Include="Barchart.cs">
+    <Compile Include="Models\Algorithmtype.cs" />
+    <Compile Include="Tools\AiUtils\AoiAi.cs" />
+    <Compile Include="Tools\FormUtils\AutoSizeFormClass.cs" />
+    <Compile Include="Models\Checkpic.cs" />
+    <Compile Include="Tools\PeripheralUtils\class_Broad.cs" />
+    <Compile Include="Tools\SystemUtils\DateTimeUtil.cs" />
+    <Compile Include="Tools\PeripheralUtils\Enumall.cs" />
+    <Compile Include="Tools\FormUtils\FormControlnew.cs" />
+    <Compile Include="Tools\FormUtils\Autosize.cs" />
+    <Compile Include="Usercontrols\Barchart.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Barchart.Designer.cs">
+    <Compile Include="Usercontrols\Barchart.Designer.cs">
       <DependentUpon>Barchart.cs</DependentUpon>
     </Compile>
-    <Compile Include="collection.cs" />
-    <Compile Include="Collectionform.cs">
+    <Compile Include="Models\Collection.cs" />
+    <Compile Include="PopupForm\Collectionform.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Collectionform.Designer.cs">
+    <Compile Include="PopupForm\Collectionform.Designer.cs">
       <DependentUpon>Collectionform.cs</DependentUpon>
     </Compile>
-    <Compile Include="Element.cs" />
-    <Compile Include="FileHandler.cs" />
+    <Compile Include="Models\Element.cs" />
+    <Compile Include="Tools\SystemUtils\FileHandler.cs" />
     <Compile Include="CaptureForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CaptureForm.Designer.cs">
       <DependentUpon>CaptureForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ftp.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="JsonData.cs" />
+    <Compile Include="Tools\SystemUtils\Ftp.cs" />
+    <Compile Include="Tools\SystemUtils\IniFile.cs" />
+    <Compile Include="Models\JsonData.cs" />
     <Compile Include="LightsourceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LightsourceForm.Designer.cs">
       <DependentUpon>LightsourceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Loghelper.cs" />
+    <Compile Include="Tools\SystemUtils\Loghelper.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,18 +294,18 @@
     <Compile Include="Motioncontrol.Designer.cs">
       <DependentUpon>Motioncontrol.cs</DependentUpon>
     </Compile>
-    <Compile Include="MysqlHelper.cs" />
-    <Compile Include="Ngtype.cs" />
-    <Compile Include="Operatorselect.cs" />
-    <Compile Include="Pcb.cs" />
-    <Compile Include="Pcbinfo.cs" />
-    <Compile Include="PcbName.cs" />
-    <Compile Include="PickBox.cs" />
-    <Compile Include="PingbiForm.cs">
+    <Compile Include="Tools\DatabaseUtils\MysqlHelper.cs" />
+    <Compile Include="Models\Ngtype.cs" />
+    <Compile Include="Models\OperatorSelect.cs" />
+    <Compile Include="Models\Pcb.cs" />
+    <Compile Include="Models\PcbInfo.cs" />
+    <Compile Include="Models\PcbName.cs" />
+    <Compile Include="Tools\FormUtils\PickBox.cs" />
+    <Compile Include="ShieldForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PingbiForm.Designer.cs">
-      <DependentUpon>PingbiForm.cs</DependentUpon>
+    <Compile Include="ShieldForm.Designer.cs">
+      <DependentUpon>ShieldForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Platmake.cs">
       <SubType>Form</SubType>
@@ -314,13 +314,13 @@
       <DependentUpon>Platmake.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectSetting.cs" />
+    <Compile Include="Models\ProjectSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Result.cs" />
-    <Compile Include="Ruleresult.cs">
+    <Compile Include="Models\Result.cs" />
+    <Compile Include="PopupForm\Ruleresult.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ruleresult.Designer.cs">
+    <Compile Include="PopupForm\Ruleresult.Designer.cs">
       <DependentUpon>Ruleresult.cs</DependentUpon>
     </Compile>
     <Compile Include="RunForm.cs">
@@ -335,82 +335,83 @@
     <Compile Include="SaveFileForm.Designer.cs">
       <DependentUpon>SaveFileForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Setting.cs" />
-    <Compile Include="Snowflake.cs" />
-    <Compile Include="SqlLiteHeper.cs" />
+    <Compile Include="Models\Setting.cs" />
+    <Compile Include="Tools\SystemUtils\Snowflake.cs" />
+    <Compile Include="Tools\DatabaseUtils\SqlLiteHeper.cs" />
     <Compile Include="Testform.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Testform.Designer.cs">
       <DependentUpon>Testform.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\BaslerCamera.cs" />
-    <Compile Include="Tools\BitmapFactory.cs" />
-    <Compile Include="Tools\DeviceEnumerator.cs" />
+    <Compile Include="Tools\CameraUtils\BaslerCamera.cs" />
+    <Compile Include="Tools\CameraUtils\BitmapFactory.cs" />
+    <Compile Include="Tools\DatabaseUtils\DatatableUtils.cs" />
+    <Compile Include="Tools\CameraUtils\DeviceEnumerator.cs" />
     <Compile Include="Tools\ImageManger.cs" />
-    <Compile Include="Tools\ImageProvider.cs" />
+    <Compile Include="Tools\CameraUtils\ImageProvider.cs" />
     <Compile Include="Tools\MySmartThreadPool.cs" />
-    <Compile Include="tool\PLCController.cs" />
-    <Compile Include="tool\SingleTon.cs" />
+    <Compile Include="Tools\PeripheralUtils\PLCController.cs" />
+    <Compile Include="Tools\PeripheralUtils\SingleTon.cs" />
     <Compile Include="TrackForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TrackForm.Designer.cs">
       <DependentUpon>TrackForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl1.cs">
+    <Compile Include="Usercontrols\OperatorSelection.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
+    <Compile Include="Usercontrols\OperatorSelection.Designer.cs">
+      <DependentUpon>OperatorSelection.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl2.cs">
+    <Compile Include="Usercontrols\PercentageA.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl2.Designer.cs">
-      <DependentUpon>UserControl2.cs</DependentUpon>
+    <Compile Include="Usercontrols\PercentageA.Designer.cs">
+      <DependentUpon>PercentageA.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl3.cs">
+    <Compile Include="Usercontrols\Code.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl3.Designer.cs">
-      <DependentUpon>UserControl3.cs</DependentUpon>
+    <Compile Include="Usercontrols\Code.Designer.cs">
+      <DependentUpon>Code.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl4.cs">
+    <Compile Include="Usercontrols\PercentageB.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl4.Designer.cs">
-      <DependentUpon>UserControl4.cs</DependentUpon>
+    <Compile Include="Usercontrols\PercentageB.Designer.cs">
+      <DependentUpon>PercentageB.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl5.cs">
+    <Compile Include="Usercontrols\Ocr.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl5.Designer.cs">
-      <DependentUpon>UserControl5.cs</DependentUpon>
+    <Compile Include="Usercontrols\Ocr.Designer.cs">
+      <DependentUpon>Ocr.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl6.cs">
+    <Compile Include="Usercontrols\ColorSpace.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl6.Designer.cs">
-      <DependentUpon>UserControl6.cs</DependentUpon>
+    <Compile Include="Usercontrols\ColorSpace.Designer.cs">
+      <DependentUpon>ColorSpace.cs</DependentUpon>
     </Compile>
-    <Compile Include="usercontrol\History.cs">
+    <Compile Include="Usercontrols\History.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="usercontrol\History.Designer.cs">
+    <Compile Include="Usercontrols\History.Designer.cs">
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
-    <Compile Include="usercontrol\HistoryTab.cs">
+    <Compile Include="Usercontrols\HistoryTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="usercontrol\HistoryTab.Designer.cs">
+    <Compile Include="Usercontrols\HistoryTab.Designer.cs">
       <DependentUpon>HistoryTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="usercontrol\Savecontrol.cs">
+    <Compile Include="Usercontrols\SaveControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="usercontrol\Savecontrol.Designer.cs">
-      <DependentUpon>Savecontrol.cs</DependentUpon>
+    <Compile Include="Usercontrols\SaveControl.Designer.cs">
+      <DependentUpon>SaveControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Workspace.cs">
       <SubType>Form</SubType>
@@ -418,23 +419,23 @@
     <Compile Include="Workspace.Designer.cs">
       <DependentUpon>Workspace.cs</DependentUpon>
     </Compile>
-    <Compile Include="Xycoordinate.cs" />
-    <EmbeddedResource Include="Addmark.resx">
+    <Compile Include="Tools\Xycoordinate.cs" />
+    <EmbeddedResource Include="PopupForm\Addmark.resx">
       <DependentUpon>Addmark.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Addelement.resx">
+    <EmbeddedResource Include="PopupForm\Addelement.resx">
       <DependentUpon>Addelement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Aiadd.resx">
+    <EmbeddedResource Include="Usercontrols\Aiadd.resx">
       <DependentUpon>Aiadd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AlgorithmSelect.resx">
+    <EmbeddedResource Include="PopupForm\AlgorithmSelect.resx">
       <DependentUpon>AlgorithmSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Barchart.resx">
+    <EmbeddedResource Include="Usercontrols\Barchart.resx">
       <DependentUpon>Barchart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Collectionform.resx">
+    <EmbeddedResource Include="PopupForm\Collectionform.resx">
       <DependentUpon>Collectionform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CaptureForm.resx">
@@ -449,12 +450,13 @@
     <EmbeddedResource Include="Motioncontrol.resx">
       <DependentUpon>Motioncontrol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PingbiForm.resx">
-      <DependentUpon>PingbiForm.cs</DependentUpon>
+    <EmbeddedResource Include="ShieldForm.resx">
+      <DependentUpon>ShieldForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Platmake.resx">
       <DependentUpon>Platmake.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -465,7 +467,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Ruleresult.resx">
+    <EmbeddedResource Include="PopupForm\Ruleresult.resx">
       <DependentUpon>Ruleresult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RunForm.resx">
@@ -480,32 +482,32 @@
     <EmbeddedResource Include="TrackForm.resx">
       <DependentUpon>TrackForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl1.resx">
-      <DependentUpon>UserControl1.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\OperatorSelection.resx">
+      <DependentUpon>OperatorSelection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl2.resx">
-      <DependentUpon>UserControl2.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\PercentageA.resx">
+      <DependentUpon>PercentageA.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl3.resx">
-      <DependentUpon>UserControl3.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\Code.resx">
+      <DependentUpon>Code.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl4.resx">
-      <DependentUpon>UserControl4.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\PercentageB.resx">
+      <DependentUpon>PercentageB.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl5.resx">
-      <DependentUpon>UserControl5.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\Ocr.resx">
+      <DependentUpon>Ocr.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl6.resx">
-      <DependentUpon>UserControl6.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\ColorSpace.resx">
+      <DependentUpon>ColorSpace.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="usercontrol\History.resx">
+    <EmbeddedResource Include="Usercontrols\History.resx">
       <DependentUpon>History.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="usercontrol\HistoryTab.resx">
+    <EmbeddedResource Include="Usercontrols\HistoryTab.resx">
       <DependentUpon>HistoryTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="usercontrol\Savecontrol.resx">
-      <DependentUpon>Savecontrol.cs</DependentUpon>
+    <EmbeddedResource Include="Usercontrols\SaveControl.resx">
+      <DependentUpon>SaveControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Workspace.resx">
       <DependentUpon>Workspace.cs</DependentUpon>
@@ -529,6 +531,7 @@
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

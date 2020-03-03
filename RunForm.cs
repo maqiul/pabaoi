@@ -26,7 +26,7 @@ namespace pcbaoi
         BackgroundWorker backgroundWorker = null;
         BackgroundWorker backgroundWorker2 = null;
         bool isrunall = false;
-        List<Operatorselect> operatorselects = new List<Operatorselect>();
+        List<OperatorSelect> operatorselects = new List<OperatorSelect>();
         int width;
         int height;
 
@@ -42,15 +42,15 @@ namespace pcbaoi
             backgroundWorker2.WorkerReportsProgress = true;
             backgroundWorker2.WorkerSupportsCancellation = true;
             backgroundWorker2.DoWork += new DoWorkEventHandler(getstatus2);
-            button1.Enabled = false;
-            button2.Enabled = false;
+            Runbt.Enabled = false;
+            Stopbt.Enabled = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Runbt_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = (Bitmap)pictureBox1.Image.Clone();
+            Bitmap bitmap = (Bitmap)PbMain.Image.Clone();
             Bitmap smallbitmap;
-            foreach (Operatorselect operatorselect in operatorselects) 
+            foreach (OperatorSelect operatorselect in operatorselects) 
             {
                 if (operatorselect.Operatorname == "mark")
                 {
@@ -190,7 +190,7 @@ namespace pcbaoi
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void SelectFilebt_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
             //dialog.RootFolder = Environment.SpecialFolder.Windows;
@@ -225,30 +225,30 @@ namespace pcbaoi
                     DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
                     if (dataTable.Rows.Count > 0)
                     {
-                        label6.Text = "pcb名称:"+dataTable.Rows[0]["badname"].ToString();
-                        label7.Text = "pcb板宽:"+dataTable.Rows[0]["badwidth"].ToString();
+                        PcbNamelb.Text = "pcb名称:"+dataTable.Rows[0]["badname"].ToString();
+                        PcbWidthlb.Text = "pcb板宽:"+dataTable.Rows[0]["badwidth"].ToString();
                         width = (int)dataTable.Rows[0]["badwidth"];
-                        label10.Text = "pcb板长:" + dataTable.Rows[0]["badheight"].ToString();
+                        PcbLenthlb.Text = "pcb板长:" + dataTable.Rows[0]["badheight"].ToString();
                         height = (int)dataTable.Rows[0]["badheight"];
                     }
                     string zijibansql = "select *  from zijiban";
                     DataTable dataTable2 = SQLiteHelper.GetDataTable(zijibansql);
-                    label9.Text = "子基板数:" + dataTable2.Rows.Count;
+                    SubNumlb.Text = "子基板数:" + dataTable2.Rows.Count;
 
                     string zijibanfrontsql = "select *  from zijiban group by frontorside";
                     DataTable dataTable3 = SQLiteHelper.GetDataTable(zijibanfrontsql);
-                    label8.Text = "子基板数:" + dataTable3.Rows.Count;
+                    SideNumlb.Text = "子基板数:" + dataTable3.Rows.Count;
                     string operatosql = "select * from operato";
                     DataTable operatos = SQLiteHelper.GetDataTable(operatosql);
-                    operatorselects = DatatableUtils<Operatorselect>.ConvertToModel(operatos);
+                    operatorselects = DatatableUtils<OperatorSelect>.ConvertToModel(operatos);
 
                 }
-                button1.Enabled = true;
+                Runbt.Enabled = true;
                 
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Exitbt_Click(object sender, EventArgs e)
         {
             try
             {
@@ -637,12 +637,12 @@ namespace pcbaoi
             PLCController.Instance.CloseConnection();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Stopbt_Click(object sender, EventArgs e)
         {
             try
             {
-                button2.Enabled = false;
-                button1.Enabled = true;
+                Stopbt.Enabled = false;
+                Runbt.Enabled = true;
                 isrunall = true;
                 if (!backgroundWorker.IsBusy)
                 {

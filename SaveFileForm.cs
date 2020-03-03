@@ -104,7 +104,7 @@ namespace pcbaoi
 
         private void Savebt_Click(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
+            if (Savecheck.Checked)
             {
 
 
@@ -119,7 +119,7 @@ namespace pcbaoi
 
         private void allpicpath_TextChanged(object sender, EventArgs e)
         {
-            checkBox1.Enabled = true;
+            Savecheck.Enabled = true;
 
         }
     }

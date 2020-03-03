@@ -24,11 +24,7 @@ namespace pcbaoi
         {
             InitializeComponent();
             bigimage = image;
-
-            
-
-
-
+           
         }
 
         private void panel6_Click(object sender, EventArgs e)
@@ -211,7 +207,7 @@ namespace pcbaoi
             return bmp;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Exitbt_Click(object sender, EventArgs e)
         {
             CaptureForm form1 = new CaptureForm(2);
             form1.Show();
@@ -225,5 +221,7 @@ namespace pcbaoi
  e.ClipRectangle.X + e.ClipRectangle.Width - 1,
 e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
         }
+
+
     }
 }
