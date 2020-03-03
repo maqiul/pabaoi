@@ -310,7 +310,7 @@
             // button13
             // 
             this.button13.BackColor = System.Drawing.Color.Transparent;
-            this.button13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button13.BackgroundImage")));
+            this.button13.BackgroundImage = global::pcbaoi.Properties.Resources.微信图片_20191224110902;
             this.button13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button13.Enabled = false;
             this.button13.FlatAppearance.BorderSize = 0;
@@ -381,7 +381,7 @@
             // button18
             // 
             this.button18.BackColor = System.Drawing.Color.Transparent;
-            this.button18.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button18.BackgroundImage")));
+            this.button18.BackgroundImage = global::pcbaoi.Properties.Resources.统计__2_;
             this.button18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button18.Enabled = false;
             this.button18.FlatAppearance.BorderSize = 0;
@@ -397,7 +397,7 @@
             // button17
             // 
             this.button17.BackColor = System.Drawing.Color.Transparent;
-            this.button17.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button17.BackgroundImage")));
+            this.button17.BackgroundImage = global::pcbaoi.Properties.Resources.运行;
             this.button17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button17.Enabled = false;
             this.button17.FlatAppearance.BorderSize = 0;
@@ -414,7 +414,7 @@
             // button16
             // 
             this.button16.BackColor = System.Drawing.Color.Transparent;
-            this.button16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button16.BackgroundImage")));
+            this.button16.BackgroundImage = global::pcbaoi.Properties.Resources.查看__3_;
             this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button16.Enabled = false;
             this.button16.FlatAppearance.BorderSize = 0;
@@ -430,7 +430,7 @@
             // button15
             // 
             this.button15.BackColor = System.Drawing.Color.Transparent;
-            this.button15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button15.BackgroundImage")));
+            this.button15.BackgroundImage = global::pcbaoi.Properties.Resources.代码_分支__3_;
             this.button15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button15.Enabled = false;
             this.button15.FlatAppearance.BorderSize = 0;
@@ -446,7 +446,7 @@
             // button14
             // 
             this.button14.BackColor = System.Drawing.Color.Transparent;
-            this.button14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button14.BackgroundImage")));
+            this.button14.BackgroundImage = global::pcbaoi.Properties.Resources.拍照__3_;
             this.button14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button14.FlatAppearance.BorderSize = 0;
             this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LightsourceForm));
             this.titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
             this.canelbt = new System.Windows.Forms.Button();
@@ -88,7 +87,7 @@
             // canelbt
             // 
             this.canelbt.BackColor = System.Drawing.Color.Transparent;
-            this.canelbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("canelbt.BackgroundImage")));
+            this.canelbt.BackgroundImage = global::pcbaoi.Properties.Resources.关__闭;
             this.canelbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.canelbt.FlatAppearance.BorderSize = 0;
             this.canelbt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

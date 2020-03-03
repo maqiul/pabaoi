@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaptureForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -345,7 +344,7 @@
             // Runbt
             // 
             this.Runbt.BackColor = System.Drawing.Color.Transparent;
-            this.Runbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Runbt.BackgroundImage")));
+            this.Runbt.BackgroundImage = global::pcbaoi.Properties.Resources.检测2;
             this.Runbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Runbt.FlatAppearance.BorderSize = 0;
             this.Runbt.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -361,7 +360,7 @@
             // Testcheckbt
             // 
             this.Testcheckbt.BackColor = System.Drawing.Color.Transparent;
-            this.Testcheckbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Testcheckbt.BackgroundImage")));
+            this.Testcheckbt.BackgroundImage = global::pcbaoi.Properties.Resources.任务;
             this.Testcheckbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Testcheckbt.FlatAppearance.BorderSize = 0;
             this.Testcheckbt.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -389,7 +388,7 @@
             // SubstrateOut
             // 
             this.SubstrateOut.BackColor = System.Drawing.Color.Transparent;
-            this.SubstrateOut.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SubstrateOut.BackgroundImage")));
+            this.SubstrateOut.BackgroundImage = global::pcbaoi.Properties.Resources.导出;
             this.SubstrateOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.SubstrateOut.FlatAppearance.BorderSize = 0;
             this.SubstrateOut.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -405,7 +404,7 @@
             // SubstrateIn
             // 
             this.SubstrateIn.BackColor = System.Drawing.Color.Transparent;
-            this.SubstrateIn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SubstrateIn.BackgroundImage")));
+            this.SubstrateIn.BackgroundImage = global::pcbaoi.Properties.Resources.导入;
             this.SubstrateIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.SubstrateIn.FlatAppearance.BorderSize = 0;
             this.SubstrateIn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -420,7 +419,7 @@
             // Rulerbt
             // 
             this.Rulerbt.BackColor = System.Drawing.Color.Transparent;
-            this.Rulerbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Rulerbt.BackgroundImage")));
+            this.Rulerbt.BackgroundImage = global::pcbaoi.Properties.Resources.测量;
             this.Rulerbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Rulerbt.FlatAppearance.BorderSize = 0;
             this.Rulerbt.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -436,7 +435,7 @@
             // SububstrateAdd
             // 
             this.SububstrateAdd.BackColor = System.Drawing.Color.Transparent;
-            this.SububstrateAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SububstrateAdd.BackgroundImage")));
+            this.SububstrateAdd.BackgroundImage = global::pcbaoi.Properties.Resources._3格;
             this.SububstrateAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.SububstrateAdd.FlatAppearance.BorderSize = 0;
             this.SububstrateAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -464,7 +463,7 @@
             // btnBox
             // 
             this.btnBox.BackColor = System.Drawing.Color.Transparent;
-            this.btnBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBox.BackgroundImage")));
+            this.btnBox.BackgroundImage = global::pcbaoi.Properties.Resources.三维;
             this.btnBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnBox.FlatAppearance.BorderSize = 0;
             this.btnBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -479,7 +478,7 @@
             // btnCad
             // 
             this.btnCad.BackColor = System.Drawing.Color.Transparent;
-            this.btnCad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCad.BackgroundImage")));
+            this.btnCad.BackgroundImage = global::pcbaoi.Properties.Resources.cad;
             this.btnCad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnCad.FlatAppearance.BorderSize = 0;
             this.btnCad.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -494,7 +493,7 @@
             // btnSearch
             // 
             this.btnSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btnSearch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSearch.BackgroundImage")));
+            this.btnSearch.BackgroundImage = global::pcbaoi.Properties.Resources.搜索文件夹;
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSearch.FlatAppearance.BorderSize = 0;
             this.btnSearch.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -522,7 +521,7 @@
             // btnSave
             // 
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
-            this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
+            this.btnSave.BackgroundImage = global::pcbaoi.Properties.Resources.保存_线性;
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -538,7 +537,7 @@
             // btnOpen
             // 
             this.btnOpen.BackColor = System.Drawing.Color.Transparent;
-            this.btnOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpen.BackgroundImage")));
+            this.btnOpen.BackgroundImage = global::pcbaoi.Properties.Resources.文件夹;
             this.btnOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnOpen.FlatAppearance.BorderSize = 0;
             this.btnOpen.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -554,7 +553,7 @@
             // btnCamera
             // 
             this.btnCamera.BackColor = System.Drawing.Color.Transparent;
-            this.btnCamera.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCamera.BackgroundImage")));
+            this.btnCamera.BackgroundImage = global::pcbaoi.Properties.Resources.拍照;
             this.btnCamera.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnCamera.FlatAppearance.BorderSize = 0;
             this.btnCamera.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Gray;
@@ -602,7 +601,7 @@
             // button13
             // 
             this.button13.BackColor = System.Drawing.Color.Transparent;
-            this.button13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button13.BackgroundImage")));
+            this.button13.BackgroundImage = global::pcbaoi.Properties.Resources.微信图片_20191224110902;
             this.button13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button13.Enabled = false;
             this.button13.FlatAppearance.BorderSize = 0;
@@ -673,7 +672,7 @@
             // button18
             // 
             this.button18.BackColor = System.Drawing.Color.Transparent;
-            this.button18.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button18.BackgroundImage")));
+            this.button18.BackgroundImage = global::pcbaoi.Properties.Resources.统计__2_;
             this.button18.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button18.Enabled = false;
             this.button18.FlatAppearance.BorderSize = 0;
@@ -689,7 +688,7 @@
             // button17
             // 
             this.button17.BackColor = System.Drawing.Color.Transparent;
-            this.button17.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button17.BackgroundImage")));
+            this.button17.BackgroundImage = global::pcbaoi.Properties.Resources.运行__2_;
             this.button17.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button17.Enabled = false;
             this.button17.FlatAppearance.BorderSize = 0;
@@ -705,7 +704,7 @@
             // button16
             // 
             this.button16.BackColor = System.Drawing.Color.Transparent;
-            this.button16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button16.BackgroundImage")));
+            this.button16.BackgroundImage = global::pcbaoi.Properties.Resources.查看__3_;
             this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button16.Enabled = false;
             this.button16.FlatAppearance.BorderSize = 0;
@@ -721,7 +720,7 @@
             // button15
             // 
             this.button15.BackColor = System.Drawing.Color.Transparent;
-            this.button15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button15.BackgroundImage")));
+            this.button15.BackgroundImage = global::pcbaoi.Properties.Resources.代码_分支__3_;
             this.button15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button15.Enabled = false;
             this.button15.FlatAppearance.BorderSize = 0;
@@ -737,7 +736,7 @@
             // button14
             // 
             this.button14.BackColor = System.Drawing.Color.Transparent;
-            this.button14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button14.BackgroundImage")));
+            this.button14.BackgroundImage = global::pcbaoi.Properties.Resources.拍照__1_;
             this.button14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button14.FlatAppearance.BorderSize = 0;
             this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -1137,7 +1136,7 @@
             // 
             this.pbFrontImg.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.pbFrontImg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbFrontImg.Image = ((System.Drawing.Image)(resources.GetObject("pbFrontImg.Image")));
+            this.pbFrontImg.Image = global::pcbaoi.Properties.Resources.front;
             this.pbFrontImg.Location = new System.Drawing.Point(4, 4);
             this.pbFrontImg.Margin = new System.Windows.Forms.Padding(0);
             this.pbFrontImg.Name = "pbFrontImg";

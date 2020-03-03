@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ruleresult));
             this.panel1 = new System.Windows.Forms.Panel();
             this.Canelbt = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -55,7 +54,7 @@
             // Canelbt
             // 
             this.Canelbt.BackColor = System.Drawing.Color.Transparent;
-            this.Canelbt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Canelbt.BackgroundImage")));
+            this.Canelbt.BackgroundImage = global::pcbaoi.Properties.Resources.关__闭;
             this.Canelbt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Canelbt.FlatAppearance.BorderSize = 0;
             this.Canelbt.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;

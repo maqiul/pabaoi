@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Motioncontrol));
             this.Titlepanel = new System.Windows.Forms.Panel();
             this.Titlelabel = new System.Windows.Forms.Label();
             this.leftpanel = new System.Windows.Forms.Panel();
@@ -185,7 +184,7 @@
             // 
             // Xup
             // 
-            this.Xup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xup.BackgroundImage")));
+            this.Xup.BackgroundImage = global::pcbaoi.Properties.Resources.方向_向右_粗__3_;
             this.Xup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Xup.Location = new System.Drawing.Point(161, 100);
             this.Xup.Name = "Xup";
@@ -198,7 +197,7 @@
             // 
             // Ydown
             // 
-            this.Ydown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ydown.BackgroundImage")));
+            this.Ydown.BackgroundImage = global::pcbaoi.Properties.Resources.方向_向右_粗;
             this.Ydown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Ydown.Location = new System.Drawing.Point(118, 149);
             this.Ydown.Name = "Ydown";
@@ -211,7 +210,7 @@
             // 
             // Xdown
             // 
-            this.Xdown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Xdown.BackgroundImage")));
+            this.Xdown.BackgroundImage = global::pcbaoi.Properties.Resources.方向_向右_粗__2_;
             this.Xdown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Xdown.Location = new System.Drawing.Point(72, 100);
             this.Xdown.Name = "Xdown";
@@ -224,7 +223,7 @@
             // 
             // Yup
             // 
-            this.Yup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Yup.BackgroundImage")));
+            this.Yup.BackgroundImage = global::pcbaoi.Properties.Resources.方向_向右_粗__1_;
             this.Yup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Yup.Location = new System.Drawing.Point(118, 51);
             this.Yup.Name = "Yup";

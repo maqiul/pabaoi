@@ -38,6 +38,8 @@ namespace pcbaoi
             imgBoxWorkSpace.Width = Centerpanel.Width;
             imgBoxWorkSpace.Height = Centerpanel.Height;
             imgBoxWorkSpace.BackColor = Color.Black;
+            imgBoxWorkSpace.GridColor = Color.Black;
+            imgBoxWorkSpace.GridColorAlternate = Color.Black;
             Centerpanel.Controls.Add(imgBoxWorkSpace);
             imgBoxWorkSpace.SelectionMode = Cyotek.Windows.Forms.ImageBoxSelectionMode.Rectangle;
             imgBoxWorkSpace.Image = image;
