@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EmguCV.3.1.0.1\build\EmguCV.props" Condition="Exists('packages\EmguCV.3.1.0.1\build\EmguCV.props')" />
   <Import Project="packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
@@ -226,7 +226,7 @@
     <Compile Include="Algorithms\BaseAoiAlgorithms.cs" />
     <Compile Include="Algorithms\BaseDetectRect.cs" />
     <Compile Include="Algorithms\Pars\AiPars.cs" />
-    <Compile Include="Model\DetectFrameImage.cs" />
+    <Compile Include="Models\DetectFrameImage.cs" />
     <Compile Include="PopupForm\Addmark.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -370,6 +370,10 @@
     <Compile Include="TrackForm.Designer.cs">
       <DependentUpon>TrackForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Usercontrols\ImageBox\DragHandle.cs" />
+    <Compile Include="Usercontrols\ImageBox\DragHandleAnchor.cs" />
+    <Compile Include="Usercontrols\ImageBox\DragHandleCollection.cs" />
+    <Compile Include="Usercontrols\ImageBox\ImageBoxEx.cs">
     <Compile Include="Usercontrols\OperatorSelection.cs">
       <SubType>UserControl</SubType>
     </Compile>
