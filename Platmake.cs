@@ -10,12 +10,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Rectangle = System.Drawing.Rectangle;
+using RTRectangle = RTree.Rectangle;
 
 namespace pcbaoi
 {
@@ -27,13 +30,19 @@ namespace pcbaoi
         bool isAi = true;
         object oldRegion;
 
-        RTree<object> tree = new RTree<object>();
+        Snowflake snowflake = new Snowflake(14);
 
-        AiDetectRect workingAiRegion = new AiDetectRect();
+        Dictionary<long, AiDetectRect> _dictRect;
+
+        RTree<long> tree = new RTree<long>();
+
+        AiDetectRect workingAiRegion;
         ImageBoxEx imgBoxWorkSpace = new ImageBoxEx();
         public Platmake(Image image)
         {
             InitializeComponent();
+            _dictRect = new Dictionary<long, AiDetectRect>();
+
             imgBoxWorkSpace.Location = new System.Drawing.Point(0,0);
             imgBoxWorkSpace.Width = Centerpanel.Width;
             imgBoxWorkSpace.Height = Centerpanel.Height;
@@ -41,33 +50,176 @@ namespace pcbaoi
             imgBoxWorkSpace.GridColor = Color.Black;
             imgBoxWorkSpace.GridColorAlternate = Color.Black;
             Centerpanel.Controls.Add(imgBoxWorkSpace);
+
             imgBoxWorkSpace.SelectionMode = Cyotek.Windows.Forms.ImageBoxSelectionMode.Rectangle;
             imgBoxWorkSpace.Image = image;
             imgBoxWorkSpace.Selected += ImgBoxWorkSpace_Selected;
-            imgBoxWorkSpace.MouseClick += ImgBoxWorkSpace_MouseClick;
+            imgBoxWorkSpace.Selecting += ImgBoxWorkSpace_Selecting;
+            imgBoxWorkSpace.SelectionRegionChanged += ImgBoxWorkSpace_SelectionRegionChanged;
+            imgBoxWorkSpace.MouseDown += ImgBoxWorkSpace_MouseDown;
+            imgBoxWorkSpace.MouseUp += ImgBoxWorkSpace_MouseUp;
+            imgBoxWorkSpace.Paint += ImgBoxWorkSpace_Paint;
+
             imgBoxWorkSpace.ZoomToFit();
             addnum();
             //picturestart();
-            tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion);
 
+            Random rnd = new Random(); //在外面生成对象
 
+            //workingAiRegion = new AiDetectRect();
+            //workingAiRegion.algorithmsName = "test";
+            //workingAiRegion.operatorName = "test2222";
+            //workingAiRegion.rectangle = new Rectangle(90,90, 50,60);
+            //_listRect.Add(workingAiRegion);
+            //tree.Add(workingAiRegion.getRTreeRectangle(), 1000);
+            for (int i=0; i < 10; i++)
+            {
+                workingAiRegion = new AiDetectRect();
+                workingAiRegion.id = snowflake.nextId();
+                workingAiRegion.algorithmsName = "test" + i;
+                workingAiRegion.operatorName = "test2222" + i;
+                workingAiRegion.rectangle = new Rectangle(rnd.Next(540, 10000), rnd.Next(800, 5000), rnd.Next(300, 900), rnd.Next(100, 1000));
+                _dictRect.Add(workingAiRegion.id, workingAiRegion);
+                tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+            }
+            workingAiRegion = null;
 
-            tree.Delete(workingAiRegion.getRTreeRectangle(), workingAiRegion);
+            //tree.Delete(workingAiRegion.getRTreeRectangle(), workingAiRegion);
         }
 
-        private void ImgBoxWorkSpace_MouseClick(object sender, MouseEventArgs e)
+        private void ImgBoxWorkSpace_Selecting(object sender, Cyotek.Windows.Forms.ImageBoxCancelEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) {
-                var objects = tree.Nearest(new RTree.Point(e.X, e.Y, 0), 0);
-                try
+            //this.Text += "1";
+        }
+
+        /// <summary>
+        /// 主要应用于当前工作框的放大缩小和拖动操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ImgBoxWorkSpace_SelectionRegionChanged(object sender, EventArgs e)
+        {
+            this.Text += "1";
+        }
+
+        private void ImgBoxWorkSpace_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g;
+            GraphicsState originalState;
+            Size scaledSize;
+            Size originalSize;
+            Size drawSize;
+            bool scaleAdornmentSize;
+
+            scaleAdornmentSize = true;
+
+            g = e.Graphics;
+
+            originalState = g.Save();
+
+            // Work out the size of the marker graphic according to the current zoom level
+
+            foreach (var item in _dictRect)
+            {
+                originalSize = item.Value.rectangle.Size.ToSize();
+                scaledSize = imgBoxWorkSpace.GetScaledSize(originalSize);
+                drawSize = scaleAdornmentSize ? scaledSize : originalSize;
+
+                Rectangle location;
+
+                // Work out the location of the marker graphic according to the current zoom level and scroll offset
+                location = imgBoxWorkSpace.GetOffsetRectangle(item.Value.geDrawingRectangle());
+                if (imgBoxWorkSpace.IsPointInImage(location.Location))
                 {
-                    workingAiRegion = (AiDetectRect)objects[0];
-                    imgBoxWorkSpace.SelectionRegion = workingAiRegion.rectangle;
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+
+
+                    g.SetClip(imgBoxWorkSpace.GetInsideViewPort(true));
+                    //using (Brush brush = new SolidBrush(Color.FromArgb(128, Color.Blue)))
+                    //{
+                    //    g.FillRectangle(brush, location);
+                    //}
+
+                    using (Pen pen = new Pen(Color.Red))
+                    {
+                        g.DrawRectangle(pen, new Rectangle(location.Location, drawSize));
+                    }
+
+                    g.ResetClip();
+
                 }
-                catch (Exception er) { 
-                }
+                // adjust the location so that the image is displayed above the location and centered to it
+                //location.Y -= drawSize.Height;
+                //location.X -= drawSize.Width >> 1;
+
+                // Draw the marker
+                //g.DrawImage(_markerImage, new Rectangle(location.Location, drawSize), new Rectangle(Point.Empty, originalSize), GraphicsUnit.Pixel);
+            }
+
+            g.Restore(originalState);
+        }
+
+        private void ImgBoxWorkSpace_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (imgBoxWorkSpace.IsPointInImage(e.Location))
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    #region 先保存老的边框
+                    if (workingAiRegion != null)
+                    {
+                        _dictRect.Add(workingAiRegion.id, workingAiRegion);
+                        tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+                        //imgBoxWorkSpace.Invalidate();
+                        workingAiRegion = null;
+                    }
+                    #endregion
+
+                    System.Drawing.Point point = imgBoxWorkSpace.PointToImage(e.Location);
+                    ////var objects = tree.Intersects(new RTRectangle(e.X, e.Y, e.X + 1, e.Y + 1, 0, 0));
+                    var objects = tree.Nearest(new RTree.Point(point.X, point.Y, 0), 0);
+                    if (objects.Count == 0) {
+                        workingAiRegion = null;
+                        return;
+                    }
+                    //这里获取不到的原因是鼠标的x,y和图像的坐标位置不一样
+                    try
+                    {
+                        long key = objects[0];
+                        workingAiRegion = _dictRect[key];
+                        imgBoxWorkSpace.SelectionRegion = workingAiRegion.rectangle;
+                        tree.Delete(workingAiRegion.getRTreeRectangle(), key);
+                        _dictRect.Remove(key);
+                        //int index = 0;
+                        //imgBoxWorkSpace.SelectionRegion = _dictRect[index].rectangle;
+                        //tree.Delete(_dictRect[index].getRTreeRectangle(), _dictRect[index].id);
+                        //_dictRect.RemoveAt(index);
+                        //imgBoxWorkSpace.Invalidate();
+                        //imgBoxWorkSpace.IsPointInImage
+                        //_listRect.RemoveAt(0);
+                    }
+                    catch (Exception er)
+                    {
+                    }
+                } //左键
+                else if (e.Button == MouseButtons.Right)
+                {
+
+                } //右键
+                else { } //滚轮？
+            }
+        }
+
+
+        private void ImgBoxWorkSpace_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+               
             } //左键
-            else if (e.Button == MouseButtons.Right) { } //右键
+            else if (e.Button == MouseButtons.Right) {
+            } //右键
             else { } //滚轮？
         }
 
@@ -82,25 +234,30 @@ namespace pcbaoi
                 {
                     try
                     {
-                        tree.Delete(workingAiRegion.getRTreeRectangle(), workingAiRegion);
+                        tree.Delete(workingAiRegion.getRTreeRectangle(), 0);
                     }
                     catch (Exception er)
                     {
 
                     }
-                    tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion);
+                    tree.Add(workingAiRegion.getRTreeRectangle(), 0);
                 }
             }
         }
 
         /// <summary>
-        /// 画框完成后的函数
+        /// 第一次画框完成后的函数
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ImgBoxWorkSpace_Selected(object sender, EventArgs e)
-        {      
-
+        {
+            workingAiRegion = new AiDetectRect();
+            workingAiRegion.id = snowflake.nextId();
+            workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //_dictRect.Add(workingAiRegion.id, workingAiRegion);
+            //tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+            //imgBoxWorkSpace.Invalidate();
         }
 
         #region 左边菜单栏
