@@ -37,13 +37,17 @@ namespace pcbaoi
         RTree<long> tree = new RTree<long>();
 
         AiDetectRect workingAiRegion;
+        AiDetectRect otheraiDetectRect = new AiDetectRect();
         ImageBoxEx imgBoxWorkSpace = new ImageBoxEx();
+        private int addpicturebox;
+
+
         public Platmake(Image image)
         {
             InitializeComponent();
             _dictRect = new Dictionary<long, AiDetectRect>();
 
-            imgBoxWorkSpace.Location = new System.Drawing.Point(0,0);
+            imgBoxWorkSpace.Location = new System.Drawing.Point(0, 0);
             imgBoxWorkSpace.Width = Centerpanel.Width;
             imgBoxWorkSpace.Height = Centerpanel.Height;
             imgBoxWorkSpace.BackColor = Color.Black;
@@ -58,38 +62,44 @@ namespace pcbaoi
             imgBoxWorkSpace.SelectionRegionChanged += ImgBoxWorkSpace_SelectionRegionChanged;
             imgBoxWorkSpace.MouseDown += ImgBoxWorkSpace_MouseDown;
             imgBoxWorkSpace.MouseUp += ImgBoxWorkSpace_MouseUp;
+            imgBoxWorkSpace.MouseMove += ImgBoxWorkSpace_MouseMove;
             imgBoxWorkSpace.Paint += ImgBoxWorkSpace_Paint;
 
             imgBoxWorkSpace.ZoomToFit();
             addnum();
+            Console.WriteLine(imgBoxWorkSpace.Image);
             //picturestart();
 
-            Random rnd = new Random(); //在外面生成对象
+            //Random rnd = new Random(); //在外面生成对象
 
             //workingAiRegion = new AiDetectRect();
             //workingAiRegion.algorithmsName = "test";
             //workingAiRegion.operatorName = "test2222";
-            //workingAiRegion.rectangle = new Rectangle(90,90, 50,60);
+            //workingAiRegion.rectangle = new Rectangle(90, 90, 50, 60);
             //_listRect.Add(workingAiRegion);
             //tree.Add(workingAiRegion.getRTreeRectangle(), 1000);
-            for (int i=0; i < 10; i++)
-            {
-                workingAiRegion = new AiDetectRect();
-                workingAiRegion.id = snowflake.nextId();
-                workingAiRegion.algorithmsName = "test" + i;
-                workingAiRegion.operatorName = "test2222" + i;
-                workingAiRegion.rectangle = new Rectangle(rnd.Next(540, 10000), rnd.Next(800, 5000), rnd.Next(300, 900), rnd.Next(100, 1000));
-                _dictRect.Add(workingAiRegion.id, workingAiRegion);
-                tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
-            }
-            workingAiRegion = null;
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    workingAiRegion = new AiDetectRect();
+            //    workingAiRegion.id = snowflake.nextId();
+            //    workingAiRegion.algorithmsName = "test" + i;
+            //    workingAiRegion.operatorName = "test2222" + i;
+            //    workingAiRegion.rectangle = new Rectangle(rnd.Next(540, 10000), rnd.Next(800, 5000), rnd.Next(300, 900), rnd.Next(100, 1000));
+            //    _dictRect.Add(workingAiRegion.id, workingAiRegion);
+            //    tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+            //}
+            //workingAiRegion = null;
 
             //tree.Delete(workingAiRegion.getRTreeRectangle(), workingAiRegion);
         }
 
         private void ImgBoxWorkSpace_Selecting(object sender, Cyotek.Windows.Forms.ImageBoxCancelEventArgs e)
         {
-            //this.Text += "1";
+            //otheraiDetectRect = new AiDetectRect();
+            if (otheraiDetectRect.id == 0) {
+                return;
+            
+            }
         }
 
         /// <summary>
@@ -99,7 +109,21 @@ namespace pcbaoi
         /// <param name="e"></param>
         private void ImgBoxWorkSpace_SelectionRegionChanged(object sender, EventArgs e)
         {
-            this.Text += "1";
+            //this.Text += "1";
+            //workingAiRegion = new AiDetectRect();
+            //workingAiRegion.id = snowflake.nextId();
+            //workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //workingAiRegion = new AiDetectRect();
+            //workingAiRegion.id = snowflake.nextId();
+            //workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //if (workingAiRegion != null) {
+            //    workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //    //workingAiRegion = null;
+            //    //MessageBox.Show(workingAiRegion.id.ToString());
+
+
+            //}
+
         }
 
         private void ImgBoxWorkSpace_Paint(object sender, PaintEventArgs e)
@@ -141,7 +165,7 @@ namespace pcbaoi
                     //    g.FillRectangle(brush, location);
                     //}
 
-                    using (Pen pen = new Pen(Color.Red))
+                    using (Pen pen = new Pen(Color.Green))
                     {
                         g.DrawRectangle(pen, new Rectangle(location.Location, drawSize));
                     }
@@ -166,21 +190,31 @@ namespace pcbaoi
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    #region 先保存老的边框
-                    if (workingAiRegion != null)
-                    {
-                        _dictRect.Add(workingAiRegion.id, workingAiRegion);
-                        tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
-                        //imgBoxWorkSpace.Invalidate();
-                        workingAiRegion = null;
-                    }
-                    #endregion
 
+                    //#region 先保存老的边框
+                    //if (workingAiRegion != null)
+                    //{
+                    //    otheraiDetectRect = new AiDetectRect();
+                    //    _dictRect.Add(workingAiRegion.id, workingAiRegion);
+                    //    tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+                    //    otheraiDetectRect = workingAiRegion;
+                    //    //imgBoxWorkSpace.Invalidate();
+                    //    workingAiRegion = null;
+                    //    Console.WriteLine(_dictRect.Count);
+
+                    //}
+                    //#endregion
                     System.Drawing.Point point = imgBoxWorkSpace.PointToImage(e.Location);
                     ////var objects = tree.Intersects(new RTRectangle(e.X, e.Y, e.X + 1, e.Y + 1, 0, 0));
                     var objects = tree.Nearest(new RTree.Point(point.X, point.Y, 0), 0);
-                    if (objects.Count == 0) {
+                    if (objects.Count == 0)
+                    {
                         workingAiRegion = null;
+                        //otheraiDetectRect = new AiDetectRect();
+                        //if (otheraiDetectRect != null)
+                        //{
+                        //    otheraiDetectRect = new AiDetectRect();
+                        //}
                         return;
                     }
                     //这里获取不到的原因是鼠标的x,y和图像的坐标位置不一样
@@ -189,8 +223,32 @@ namespace pcbaoi
                         long key = objects[0];
                         workingAiRegion = _dictRect[key];
                         imgBoxWorkSpace.SelectionRegion = workingAiRegion.rectangle;
+                        otheraiDetectRect = workingAiRegion;
                         tree.Delete(workingAiRegion.getRTreeRectangle(), key);
                         _dictRect.Remove(key);
+                        int rowid = DataGridviewUtils.Getrowid(RtDg,0,otheraiDetectRect.algorithmsName);
+                        if (rowid != -99) {
+                            RtDg.CurrentCell = RtDg.Rows[rowid].Cells[0];
+                            DataGridViewRow row = RtDg.Rows[rowid];
+                            useroperatoe = new OperatorSelect();
+                            useroperatoe = (OperatorSelect)row.Cells[3].Value;
+                            foreach (Control control1 in Userpanel.Controls)
+                            {
+                                if (control1 is OperatorSelection)
+                                {
+                                    Userpanel.Controls.Remove(control1);
+
+                                }
+
+                            }
+                            OperatorSelection userControl1 = new OperatorSelection(useroperatoe);
+                            userControl1.MyEvent += updatedatagrade;
+                            Addopera = userControl1.Tag as OperatorSelect;
+                            Userpanel.Controls.Add(userControl1);
+                        }
+                        workingAiRegion = null;
+
+                        
                         //int index = 0;
                         //imgBoxWorkSpace.SelectionRegion = _dictRect[index].rectangle;
                         //tree.Delete(_dictRect[index].getRTreeRectangle(), _dictRect[index].id);
@@ -202,6 +260,9 @@ namespace pcbaoi
                     catch (Exception er)
                     {
                     }
+
+
+
                 } //左键
                 else if (e.Button == MouseButtons.Right)
                 {
@@ -216,13 +277,56 @@ namespace pcbaoi
         {
             if (e.Button == MouseButtons.Left)
             {
-               
+
+                if (otheraiDetectRect != null&&otheraiDetectRect.id != 0) {
+                    
+                    if (_dictRect.ContainsKey(otheraiDetectRect.id))
+                    {
+                        if (otheraiDetectRect.rectangle != imgBoxWorkSpace.SelectionRegion) {
+                            tree.Delete(otheraiDetectRect.getRTreeRectangle(), otheraiDetectRect.id);
+                            _dictRect.Remove(otheraiDetectRect.id);
+                            otheraiDetectRect.rectangle = imgBoxWorkSpace.SelectionRegion;
+                            _dictRect.Add(otheraiDetectRect.id, otheraiDetectRect);
+                            tree.Add(otheraiDetectRect.getRTreeRectangle(), otheraiDetectRect.id);
+                            useroperatoe.Outstartx = (int)otheraiDetectRect.rectangle.X;
+                            useroperatoe.Outstarty = (int)otheraiDetectRect.rectangle.Y;
+                            useroperatoe.Outwidth = (int)otheraiDetectRect.rectangle.Width;
+                            useroperatoe.Outheight = (int)otheraiDetectRect.rectangle.Height;
+                            RtDg.CurrentRow.Cells[3].Value = useroperatoe;
+                        }
+                    }
+                    else {
+                        if (otheraiDetectRect.rectangle != imgBoxWorkSpace.SelectionRegion)
+                        {
+                            otheraiDetectRect.rectangle = imgBoxWorkSpace.SelectionRegion;
+
+                        }
+                        _dictRect.Add(otheraiDetectRect.id, otheraiDetectRect);
+                        tree.Add(otheraiDetectRect.getRTreeRectangle(), otheraiDetectRect.id);
+                        useroperatoe.Outstartx = (int)otheraiDetectRect.rectangle.X;
+                        useroperatoe.Outstarty = (int)otheraiDetectRect.rectangle.Y;
+                        useroperatoe.Outwidth = (int)otheraiDetectRect.rectangle.Width;
+                        useroperatoe.Outheight = (int)otheraiDetectRect.rectangle.Height;
+                        RtDg.CurrentRow.Cells[3].Value = useroperatoe;
+                    }
+                    //otheraiDetectRect = new AiDetectRect();                   
+                    //Console.WriteLine("输出结果");
+                    //imgBoxWorkSpace.Invalidate();
+                    //otheraiDetectRect = null;
+                    //workingAiRegion = null;
+                }
+
             } //左键
             else if (e.Button == MouseButtons.Right) {
             } //右键
             else { } //滚轮？
         }
 
+        private void ImgBoxWorkSpace_MouseMove(object sender,MouseEventArgs e) {
+
+        
+        
+        }
         /// <summary>
         /// 保存制作的信息
         /// </summary>
@@ -252,9 +356,19 @@ namespace pcbaoi
         /// <param name="e"></param>
         private void ImgBoxWorkSpace_Selected(object sender, EventArgs e)
         {
-            workingAiRegion = new AiDetectRect();
-            workingAiRegion.id = snowflake.nextId();
-            workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //if (otheraiDetectRect != null) {
+            //    otheraiDetectRect = new AiDetectRect();
+            //}
+            //workingAiRegion = new AiDetectRect();
+            //workingAiRegion.id = snowflake.nextId();
+            //workingAiRegion.rectangle = imgBoxWorkSpace.SelectionRegion;
+            //otheraiDetectRect = workingAiRegion;
+            
+            ////this.Text += "1";
+            //if (otheraiDetectRect != null)
+            //{
+            //    otheraiDetectRect = new AiDetectRect();
+            //}
             //_dictRect.Add(workingAiRegion.id, workingAiRegion);
             //tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
             //imgBoxWorkSpace.Invalidate();
@@ -280,20 +394,37 @@ namespace pcbaoi
                     }
 
                 }
-                //int i = RtDg.Rows.Count;
-                //RtDg.Rows.Add();
-                //RtDg["Column1", i].Value = algorithmtype.Typename + addpicturebox;
-                //RtDg["Column2", i].Value = (addpicturebox + 1).ToString();
-                //RtDg["Column3", i].Value = algorithmtype.Owmername;
+                int i = RtDg.Rows.Count;
+                RtDg.Rows.Add();
+                RtDg["Column1", i].Value = algorithmtype.Typename + addpicturebox;
+                RtDg["Column2", i].Value = (addpicturebox + 1).ToString();
+                RtDg["Column3", i].Value = algorithmtype.Owmername;
 
 
-                //addpicturebox++;
-                //Addopera.Algorithm = algorithmtype.Typename;
-                //UserControl1 userControl1 = new UserControl1(Addopera);
-                //userControl1.MyEvent += updatedatagrade;
-                //Addopera = userControl1.Tag as Operatorselect;
-                //RtDg["Column4", i].Value = Addopera;
-                //Userpanel.Controls.Add(userControl1);
+
+                Addopera.Algorithm = algorithmtype.Typename;
+                OperatorSelection operatorSelection = new OperatorSelection(Addopera);
+                operatorSelection.MyEvent += updatedatagrade;
+                Addopera = operatorSelection.Tag as OperatorSelect;
+                RtDg["Column4", i].Value = Addopera;
+                Userpanel.Controls.Add(operatorSelection);
+                RtDg.CurrentCell = RtDg.Rows[this.RtDg.Rows.Count - 1].Cells[0];
+                Size size = imgBoxWorkSpace.ScrollSize;
+                workingAiRegion = new AiDetectRect();
+                workingAiRegion.id = snowflake.nextId();
+                workingAiRegion.algorithmsName = algorithmtype.Typename+addpicturebox;
+                workingAiRegion.operatorName =Addopera.Operatorname;
+                workingAiRegion.rectangle = new Rectangle(size.Width+540,size.Height+800,200,200);
+                Addopera.Outstartx = (int)workingAiRegion.rectangle.X;
+                Addopera.Outstarty = (int)workingAiRegion.rectangle.Y;
+                Addopera.Outwidth = (int)workingAiRegion.rectangle.Width;
+                Addopera.Outheight = (int)workingAiRegion.rectangle.Height;
+                _dictRect.Add(workingAiRegion.id, workingAiRegion);
+                tree.Add(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+                imgBoxWorkSpace.SelectionRegion = workingAiRegion.rectangle;
+                otheraiDetectRect = workingAiRegion;
+                workingAiRegion = null;
+                addpicturebox++;
                 //RtDg.CurrentCell = RtDg[0, i];
             }
 
@@ -403,52 +534,75 @@ namespace pcbaoi
        
         private void RtDg_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //try
-            //{
-            //    Addopera = new OperatorSelect();
-            //    if (e.ColumnIndex != -1)
-            //    {
-            //        DataGridViewColumn column = RtDg.Columns[e.ColumnIndex];
-            //        string picboxname = RtDg.CurrentRow.Cells[1].Value.ToString();
-            //        foreach (Control control in PbMain.Controls)
-            //        {
-            //            if (control.Name == picboxname)
-            //            {
-            //                control.Visible = true;
-            //                control.BringToFront();
-            //                thiscontrol = control;
+            try
+            {
+                Addopera = new OperatorSelect();
+                if (e.ColumnIndex != -1)
+                {
+                    DataGridViewColumn column = RtDg.Columns[e.ColumnIndex];
+                    string picboxname = RtDg.CurrentRow.Cells[1].Value.ToString();
+                    OperatorSelect operatorselect = (OperatorSelect)RtDg.CurrentRow.Cells[3].Value;
+                    //imgBoxWorkSpace.SelectionRegion = new Rectangle(operatorselect.Outstartx,operatorselect.Outstarty,operatorselect.Outwidth,operatorselect.Outheight);
+                    var objects = tree.Nearest(new RTree.Point(operatorselect.Outstartx, operatorselect.Outstarty, 0), 0);
+                    if (objects.Count == 0)
+                    {
+                        workingAiRegion = null;
+                        //otheraiDetectRect = new AiDetectRect();
+                        //if (otheraiDetectRect != null)
+                        //{
+                        //    otheraiDetectRect = new AiDetectRect();
+                        //}
+                        return;
+                    }
+                    //这里获取不到的原因是鼠标的x,y和图像的坐标位置不一样
+                    try
+                    {
+                        long key = objects[0];
+                        workingAiRegion = _dictRect[key];
+                        imgBoxWorkSpace.SelectionRegion = workingAiRegion.rectangle;
+                        otheraiDetectRect = new AiDetectRect();
+                        otheraiDetectRect = workingAiRegion;
+                        tree.Delete(workingAiRegion.getRTreeRectangle(), key);
+                        _dictRect.Remove(key);
+                        workingAiRegion = null;
+                        //int index = 0;
+                        //imgBoxWorkSpace.SelectionRegion = _dictRect[index].rectangle;
+                        //tree.Delete(_dictRect[index].getRTreeRectangle(), _dictRect[index].id);
+                        //_dictRect.RemoveAt(index);
+                        //imgBoxWorkSpace.Invalidate();
+                        //imgBoxWorkSpace.IsPointInImage
+                        //_listRect.RemoveAt(0);
+                    }
+                    catch (Exception er)
+                    {
+                        Loghelper.WriteLog("获取框问题",er);
+                    }
 
-            //            }
-            //            else
-            //            {
-            //                control.Visible = false;
-            //            }
+                    foreach (Control control1 in Userpanel.Controls)
+                    {
+                        if (control1 is OperatorSelection)
+                        {
+                            Userpanel.Controls.Remove(control1);
+
+                        }
+
+                    }
+                    useroperatoe = new OperatorSelect();
+                    useroperatoe = operatorselect;
+                    OperatorSelection userControl1 = new OperatorSelection(operatorselect);
+                    userControl1.MyEvent += updatedatagrade;
+                    Addopera = userControl1.Tag as OperatorSelect;
+                    Userpanel.Controls.Add(userControl1);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Loghelper.WriteLog("Platmake界面---选择框错误", ex);
 
 
-            //        }
-            //        foreach (Control control1 in Userpanel.Controls)
-            //        {
-            //            if (control1 is OperatorSelection)
-            //            {
-            //                Userpanel.Controls.Remove(control1);
-
-            //            }
-
-            //        }
-            //        OperatorSelection userControl1 = new OperatorSelection(RtDg.CurrentRow.Cells[3].Value);
-            //        userControl1.MyEvent += updatedatagrade;
-            //        Addopera = userControl1.Tag as OperatorSelect;
-            //        Userpanel.Controls.Add(userControl1);
-
-            //    }
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Loghelper.WriteLog("Platmake界面---选择框错误", ex);
-
-
-            //}
+            }
 
         }
 
@@ -461,6 +615,7 @@ namespace pcbaoi
         void updatedatagrade(object sender, EventArgs e)
         {
             OperatorSelect operatorselect = (OperatorSelect)sender;
+            useroperatoe = operatorselect;
             //operatorselect1 = operatorselect;
             RtDg.CurrentRow.Cells[3].Value = operatorselect;
 
@@ -470,13 +625,18 @@ namespace pcbaoi
 
         private void addnum()
         {
-            //string selectsql = "select id from operato order by id desc";
-            //DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
-            //if (dataTable.Rows.Count > 0)
-            //{
-            //    addpicturebox = Convert.ToInt32(dataTable.Rows[0]["id"].ToString());
+            string selectsql = "select id from operato order by id desc";
+            DataTable dataTable = SQLiteHelper.GetDataTable(selectsql);
+            if (dataTable.Rows.Count > 0)
+            {
+                addpicturebox = Convert.ToInt32(dataTable.Rows[0]["id"].ToString());
 
-            //}
+            }
+            else {
+                addpicturebox = 0;
+            
+            
+            }
 
 
         }
