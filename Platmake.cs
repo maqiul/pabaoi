@@ -121,7 +121,7 @@ namespace pcbaoi
         private void ImgBoxWorkSpace_SelectionRegionChanged(object sender, EventArgs e)
         {
             RectangleF rectangleF = imgBoxWorkSpace.SelectionRegion;
-            rectangleF.Inflate(imgBoxWorkSpace.DragHandleSize*3, imgBoxWorkSpace.DragHandleSize*3);
+            //rectangleF.Inflate(imgBoxWorkSpace.DragHandleSize*3, imgBoxWorkSpace.DragHandleSize*3);
             workingAiRegion.rectangle = rectangleF;
         }
 
@@ -194,7 +194,7 @@ namespace pcbaoi
                     Console.WriteLine("moving：" + imgBoxWorkSpace.IsMoving);
                     System.Drawing.Point point = imgBoxWorkSpace.PointToImage(e.Location);
                     ////var objects = tree.Intersects(new RTRectangle(e.X, e.Y, e.X + 1, e.Y + 1, 0, 0));
-                    var objects = tree.Nearest(new RTree.Point(point.X, point.Y, 0), 8);
+                    var objects = tree.Nearest(new RTree.Point(point.X, point.Y, 0), 0);
                     if (objects.Count == 0)
                     {
                         needSave = false;
