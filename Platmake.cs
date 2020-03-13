@@ -43,6 +43,32 @@ namespace pcbaoi
         ImageBoxEx imgBoxWorkSpace = new ImageBoxEx();
         private int addpicturebox;
 
+        /// <summary>
+        /// 键盘监听
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // if it is a hotkey, return true; otherwise, return false
+            switch (keyData)
+            {
+                case Keys.Delete:
+                    try
+                    {
+                        imgBoxWorkSpace.SelectionRegion = new RectangleF();
+                        tree.Delete(workingAiRegion.getRTreeRectangle(), workingAiRegion.id);
+                        _dictRect.Remove(workingAiRegion.id);
+                    }
+                    catch (Exception er) { }
+        
+                    break;
+                default:
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
         public Platmake(Image image)
         {
