@@ -23,8 +23,7 @@ namespace Cyotek.Windows.Forms.Demo
     private int _dragHandleSize;
 
     private Size _maximumSelectionSize;
-
-    private Size _minimumSelectionSize;
+        private Size _minimumSelectionSize;
 
     #endregion
 
@@ -102,42 +101,42 @@ namespace Cyotek.Windows.Forms.Demo
       base.OnMouseDown(e);
     }
 
-    /// <summary>
-    ///   Raises the <see cref="System.Windows.Forms.Control.MouseMove" /> event.
-    /// </summary>
-    /// <param name="e">
-    ///   A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.
-    /// </param>
-    protected override void OnMouseMove(MouseEventArgs e)
-    {
-      // start either a move or a resize operation
-      if (!this.IsSelecting && !this.IsMoving && !this.IsResizing && e.Button == MouseButtons.Left && !this.DragOrigin.IsEmpty && this.IsOutsideDragZone(e.Location))
-      {
-        DragHandleAnchor anchor;
-
-        anchor = this.HitTest(this.DragOrigin);
-
-        if (anchor == DragHandleAnchor.None)
+        /// <summary>
+        ///   Raises the <see cref="System.Windows.Forms.Control.MouseMove" /> event.
+        /// </summary>
+        /// <param name="e">
+        ///   A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.
+        /// </param>
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-          // move
-          this.StartMove();
+            // start either a move or a resize operation
+            if (!this.IsSelecting && !this.IsMoving && !this.IsResizing && e.Button == MouseButtons.Left && !this.DragOrigin.IsEmpty && this.IsOutsideDragZone(e.Location))
+            {
+                DragHandleAnchor anchor;
+
+                anchor = this.HitTest(this.DragOrigin);
+
+                if (anchor == DragHandleAnchor.None)
+                {
+                    // move
+                    this.StartMove();
+                }
+                else if (this.DragHandles[anchor].Enabled && this.DragHandles[anchor].Visible)
+                {
+                    // resize
+                    this.StartResize(anchor);
+                }
+            }
+
+            // set the cursor
+            this.SetCursor(e.Location);
+
+            // perform operations
+            this.ProcessSelectionMove(e.Location);
+            this.ProcessSelectionResize(e.Location);
+
+            base.OnMouseMove(e);
         }
-        else if (this.DragHandles[anchor].Enabled && this.DragHandles[anchor].Visible)
-        {
-          // resize
-          this.StartResize(anchor);
-        }
-      }
-
-      // set the cursor
-      this.SetCursor(e.Location);
-
-      // perform operations
-      this.ProcessSelectionMove(e.Location);
-      this.ProcessSelectionResize(e.Location);
-
-      base.OnMouseMove(e);
-    }
 
     /// <summary>
     ///   Raises the <see cref="System.Windows.Forms.Control.MouseUp" /> event.
@@ -619,23 +618,22 @@ namespace Cyotek.Windows.Forms.Demo
           int offsetY;
 
           viewport = this.GetImageViewPort();
-          offsetX = viewport.Left + this.Padding.Left + this.AutoScrollPosition.X;
-          offsetY = viewport.Top + this.Padding.Top + this.AutoScrollPosition.Y;
+          offsetX = viewport.Left + this.Padding.Left + this.AutoScrollPosition.X + this.DragHandleSize;
+          offsetY = viewport.Top + this.Padding.Top + this.AutoScrollPosition.Y + this.DragHandleSize;
           halfDragHandleSize = this.DragHandleSize / 2;
           left = Convert.ToInt32((this.SelectionRegion.Left * this.ZoomFactor) + offsetX);
           top = Convert.ToInt32((this.SelectionRegion.Top * this.ZoomFactor) + offsetY);
-          right = left + Convert.ToInt32(this.SelectionRegion.Width * this.ZoomFactor);
-          bottom = top + Convert.ToInt32(this.SelectionRegion.Height * this.ZoomFactor);
+          right = left + Convert.ToInt32(this.SelectionRegion.Width * this.ZoomFactor) - this.DragHandleSize * 2;
+          bottom = top + Convert.ToInt32(this.SelectionRegion.Height * this.ZoomFactor) - this.DragHandleSize * 2;
           halfWidth = Convert.ToInt32(this.SelectionRegion.Width * this.ZoomFactor) / 2;
           halfHeight = Convert.ToInt32(this.SelectionRegion.Height * this.ZoomFactor) / 2;
-
           this.DragHandles[DragHandleAnchor.TopLeft].Bounds = new Rectangle(left - this.DragHandleSize, top - this.DragHandleSize, this.DragHandleSize, this.DragHandleSize);
-          this.DragHandles[DragHandleAnchor.TopCenter].Bounds = new Rectangle(left + halfWidth - halfDragHandleSize, top - this.DragHandleSize, this.DragHandleSize, this.DragHandleSize);
+          //this.DragHandles[DragHandleAnchor.TopCenter].Bounds = new Rectangle(left + halfWidth - halfDragHandleSize, top - this.DragHandleSize, this.DragHandleSize, this.DragHandleSize);
           this.DragHandles[DragHandleAnchor.TopRight].Bounds = new Rectangle(right, top - this.DragHandleSize, this.DragHandleSize, this.DragHandleSize);
-          this.DragHandles[DragHandleAnchor.MiddleLeft].Bounds = new Rectangle(left - this.DragHandleSize, top + halfHeight - halfDragHandleSize, this.DragHandleSize, this.DragHandleSize);
-          this.DragHandles[DragHandleAnchor.MiddleRight].Bounds = new Rectangle(right, top + halfHeight - halfDragHandleSize, this.DragHandleSize, this.DragHandleSize);
+          //this.DragHandles[DragHandleAnchor.MiddleLeft].Bounds = new Rectangle(left - this.DragHandleSize, top + halfHeight - halfDragHandleSize, this.DragHandleSize, this.DragHandleSize);
+          //this.DragHandles[DragHandleAnchor.MiddleRight].Bounds = new Rectangle(right, top + halfHeight - halfDragHandleSize, this.DragHandleSize, this.DragHandleSize);
           this.DragHandles[DragHandleAnchor.BottomLeft].Bounds = new Rectangle(left - this.DragHandleSize, bottom, this.DragHandleSize, this.DragHandleSize);
-          this.DragHandles[DragHandleAnchor.BottomCenter].Bounds = new Rectangle(left + halfWidth - halfDragHandleSize, bottom, this.DragHandleSize, this.DragHandleSize);
+          //this.DragHandles[DragHandleAnchor.BottomCenter].Bounds = new Rectangle(left + halfWidth - halfDragHandleSize, bottom, this.DragHandleSize, this.DragHandleSize);
           this.DragHandles[DragHandleAnchor.BottomRight].Bounds = new Rectangle(right, bottom, this.DragHandleSize, this.DragHandleSize);
         }
       }
@@ -838,6 +836,17 @@ namespace Cyotek.Windows.Forms.Demo
       }
     }
 
-    #endregion
-  }
+        #endregion
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // ImageBoxEx
+            // 
+            this.DropShadowSize = 0;
+            this.ResumeLayout(false);
+
+        }
+    }
 }

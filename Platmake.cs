@@ -52,7 +52,7 @@ namespace pcbaoi
             imgBoxWorkSpace.Location = new System.Drawing.Point(0, 0);
             imgBoxWorkSpace.Width = Centerpanel.Width;
             imgBoxWorkSpace.Height = Centerpanel.Height;
-            imgBoxWorkSpace.DragHandleSize = 8;
+            imgBoxWorkSpace.DragHandleSize = 5;
             imgBoxWorkSpace.BackColor = Color.Black;
             imgBoxWorkSpace.GridColor = Color.Black;
             imgBoxWorkSpace.GridColorAlternate = Color.Black;
