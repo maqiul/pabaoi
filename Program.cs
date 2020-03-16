@@ -17,6 +17,7 @@ namespace pcbaoi
         private static int D2000 = 0;
 
         private static int D2002 = 0;
+        private static int D2004 = 0;
 
         static BackgroundWorker bw_MonitorMotionController;      //监控
         /// <summary>
@@ -37,13 +38,14 @@ namespace pcbaoi
             bw_MonitorMotionController.DoWork += Bw_MonitorMotionController_DoWork;
             //bw_MonitorMotionController.RunWorkerCompleted += Bw_MonitorMotionController_RunWorkerCompleted;
             bw_MonitorMotionController.WorkerReportsProgress = true;
-            //conn();
+            conn();
             IsMonitor = true;
             if (!bw_MonitorMotionController.IsBusy)
             {
                 bw_MonitorMotionController.WorkerSupportsCancellation = true;
                 bw_MonitorMotionController.RunWorkerAsync();
             }
+            RestValue();
             Login login = new Login();
             DialogResult dialogResult = login.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -51,7 +53,60 @@ namespace pcbaoi
                 login.Close();
                 Application.Run(new CaptureForm(1));
             }
+            substrateOut();
+            Environment.Exit(0);
         }
+        private static void substrateOut()
+        {
+            //while (true) {
+
+            byte[] receiveData = new byte[255];
+            double thenewvalue = 1.00;
+            byte[] thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2145, 1, thenewwriteValue, receiveData);
+            Console.Write("A面出板信号");
+            receiveData = new byte[255];
+            thenewvalue = 1.00;
+            thenewwriteValue = new byte[2];
+            thenewwriteValue[0] = (byte)(thenewvalue / Math.Pow(256, 1));
+            thenewwriteValue[1] = (byte)((thenewvalue / Math.Pow(256, 0)) % 256);
+            if (PLCController.Instance.IsConnected)
+                PLCController.Instance.WriteData(2147, 1, thenewwriteValue, receiveData);
+            Console.Write("B面出板信号");
+
+
+            //}
+
+        }
+        //转Double 转字节
+        private static byte[] DoubleToByte(double value)
+        {
+            byte[] obuf = new byte[4];
+
+            if (value < 0)
+            {
+                value = Math.Abs(value);
+                obuf[0] = (byte)~(byte)((value % Math.Pow(256, 2)) / 256);
+                obuf[1] = (byte)~(byte)((value % Math.Pow(256, 2)) % 256);
+                obuf[2] = (byte)~(byte)(value / Math.Pow(256, 3));
+                obuf[3] = (byte)~(byte)((value / Math.Pow(256, 2)) % 256);
+
+                obuf[1] = (byte)((byte)~(byte)((value % Math.Pow(256, 2)) % 256) + 1);
+                // obuf[2] = (byte)((byte)~(byte)(value / Math.Pow(256, 3)) + 128);
+            }
+            else
+            {
+                obuf[0] = (byte)((value % Math.Pow(256, 2)) / 256);
+                obuf[1] = (byte)((value % Math.Pow(256, 2)) % 256);
+                obuf[2] = (byte)(value / Math.Pow(256, 3));
+                obuf[3] = (byte)((value / Math.Pow(256, 2)) % 256);
+            }
+            return obuf;
+        }
+
         private static void conn()
         {
 
@@ -214,8 +269,48 @@ namespace pcbaoi
 
             }
         }
+        //软重置
+        private static void RestValue()
+        {
+            int[] registerBitall = { 10 };
+            foreach (int i in registerBitall)
+            {
+                int registerAddress = 2004;
+                int registerBit = i;
+                int value = 1 << registerBit;
 
-    
+                int currentValue = 0;
+
+                byte[] receiveData = new byte[255];
+
+                if (registerAddress == 2004)
+                {
+                    D2004 = value;
+                    currentValue = D2004;
+                    SendValueToRegister(2004, D2004, receiveData);
+                }
+            }
+            Thread.Sleep(500);
+
+            foreach (int i in registerBitall)
+            {
+                int registerAddress = 2004;
+                int registerBit = i;
+                int value = 0 << registerBit;
+
+                int currentValue = 0;
+
+                byte[] receiveData = new byte[255];
+
+                if (registerAddress == 2004)
+                {
+                    D2004 = value;
+                    currentValue = D2004;
+                    SendValueToRegister(2004, D2004, receiveData);
+                }
+            }
+        }
+
 
     }
 }

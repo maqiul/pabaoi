@@ -42,6 +42,7 @@ namespace pcbaoi
         private const float singleCaptureWidthInMM = 17.0f;
         //最终用于显示的大图每1mm对应的像素个数
         private const float pixelNumPerMM = 30.0f;
+        private const double scale = 0.5;
 
         //记录拍了多少块板子
         int captureCount = 0;
@@ -619,7 +620,7 @@ namespace pcbaoi
             pbMainImg.MouseWheel += PbMainImg_MouseWheel;
             this.MouseWheel += PbMainImg_MouseWheel;
             //运行轨道至固定宽度
-            Orbital();
+           // Orbital();
 
         }
         private void CaptureForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -638,6 +639,7 @@ namespace pcbaoi
             Stop();
             CloseTheImageProvider();
             Application.Exit();
+
         }
         private void PbMainImg_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -1912,37 +1914,31 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             while (isrun)
                             {
                                 ////检测拍完信号
-                                //newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-                                //num = PLCController.Instance.ReadData(portDataCaptureDone, 2, newreceiveData);
-                                //newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
-                                //if (newvalue == 1.00)
-                                //{
-
-                                //    isrun = false;
-                                //}
-                                if (side == SIDE.FRONT)
+                                newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+                                num = PLCController.Instance.ReadData(portDataCaptureDone, 2, newreceiveData);
+                                newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+                                if (newvalue == 0.00)
                                 {
-                                    if (Arun == n_cols)
+                                    Loghelper.WriteLog(portDataCaptureDone.ToString() + "取到0时间:" + System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff"));
+                                    while (isrun)
                                     {
-                                        isrun = false;
-                                        Arun = 0;
+                                        ////检测拍完信号
+                                        newreceiveData = new byte[255]; //{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+                                        num = PLCController.Instance.ReadData(portDataCaptureDone, 2, newreceiveData);
+                                        newvalue = newreceiveData[11] * Math.Pow(256, 3) + newreceiveData[12] * Math.Pow(256, 2) + newreceiveData[9] * Math.Pow(256, 1) + newreceiveData[10];
+                                        if (newvalue == 1.00)
+                                        {
+                                            isrun = false;
+                                            Loghelper.WriteLog(portDataCaptureDone.ToString() + "取到1时间:" + System.DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff"));
 
-                                    }
-                                }
-                                else
-                                {
-
-                                    if (Brun == n_cols)
-                                    {
-                                        isrun = false;
-                                        Brun = 0;
+                                        }
+                                        Thread.Sleep(20);
 
                                     }
 
                                 }
                                 Thread.Sleep(20);
                             }
-
 
                         }
                     }
@@ -1979,13 +1975,15 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         try
                         {
                             Image<Bgr, Byte> _image = null;
-                            _image = Amat.ToImage<Bgr, Byte>();
+                            Mat smallmat = new Mat();
+                            CvInvoke.Resize(Amat, smallmat, new Size(), scale, scale);
+                            _image = smallmat.ToImage<Bgr, Byte>();
                             Bitmap allbitmap = _image.Bitmap;
                             allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
                             allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
                             allbitmap.Save(savepath + captureCount.ToString() + "\\Ftotal.jpg", ImageFormat.Jpeg);
                             Amat.Dispose();
-                            allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
+                            //allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
                             Savepic(allbitmap, side);
 
                             Bitmap newbitmap;
@@ -2006,6 +2004,7 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                             allbitmap = null;
                             newbitmap.Dispose();
                             bitmapList = null;
+                            smallmat.Dispose();
                             Aend = true;
                             isruna = false;
                             Abitmaps.Clear();
@@ -2028,13 +2027,15 @@ e.ClipRectangle.Y + e.ClipRectangle.Height - 1);
                         try
                         {
                             Image<Bgr, Byte> _image = null;
-                            _image = Bmat.ToImage<Bgr, Byte>();
+                            Mat smallmat = new Mat();
+                            CvInvoke.Resize(Bmat, smallmat, new Size(), scale, scale);
+                            _image = smallmat.ToImage<Bgr, Byte>();
                             Bitmap allbitmap = _image.Bitmap;
                             //allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
                             allbitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
                             allbitmap.Save(savepath + captureCount.ToString() + "\\Btotal.jpg", ImageFormat.Jpeg);
                             Bmat.Dispose();
-                            allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
+                            //allbitmap = ImageManger.KiResizeImage(allbitmap, 2);
                             Bitmap newbitmap;
                             newbitmap = (Bitmap)allbitmap.Clone();
                             pbBackImg.Image = allbitmap;

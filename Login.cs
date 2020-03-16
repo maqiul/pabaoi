@@ -136,9 +136,10 @@ namespace pcbaoi
             }
         }
         private void Runspeed() {
-            int[] address = new int[] {2050,2052,2054 };
-            for (int i =0;i<address.Length; i++) {
-                double value = Convert.ToDouble(IniFile.iniRead("Runspeed",address[i].ToString()));
+            int[] address = new int[] { 2050, 2052, 2054 };
+            for (int i = 0; i < address.Length; i++)
+            {
+                double value = Convert.ToDouble(IniFile.iniRead("Runspeed", address[i].ToString()));
                 //double rate = (double)dataGridView6.Rows[rowIndex].Cells[2].Value;
                 int registerAddress = address[i];
                 //int wordBit = listMonitor_ServoConfig[e.RowIndex].WordBit;
@@ -154,6 +155,27 @@ namespace pcbaoi
                 writeValue = DoubleToByte(value);
                 if (PLCController.Instance.IsConnected)
                     PLCController.Instance.WriteData(registerAddress, 2, writeValue, receiveData);
+
+            }
+            address = new int[] { 2056 };
+            for (int i = 0; i < address.Length; i++)
+            {
+                int value = Convert.ToInt32(IniFile.iniRead("Runspeed", address[i].ToString()));
+                //double rate = (double)dataGridView6.Rows[rowIndex].Cells[2].Value;
+                int registerAddress = address[i];
+                //int wordBit = listMonitor_ServoConfig[e.RowIndex].WordBit;
+                byte[] receiveData = new byte[255];
+                if (value > 0xffff)
+                {
+                    MessageBox.Show("超出设置范围");
+                    return;
+                }
+
+                byte[] writeValue = new byte[2];
+                writeValue[0] = (byte)(value / Math.Pow(256, 1));
+                writeValue[1] = (byte)((value / Math.Pow(256, 0)) % 256);
+                if (PLCController.Instance.IsConnected)
+                    PLCController.Instance.WriteData(registerAddress, 1, writeValue, receiveData);
 
             }
 
